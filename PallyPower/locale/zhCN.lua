@@ -2,9 +2,9 @@
 
 L:RegisterTranslations("zhCN", function() return 
 {
-	AURAS = "Auras", -- Requires localization
-	AURAS_DESC = "Auras monitoring enable/disable", -- Requires localization
-	AUTOASSIGN = "Auto-Assign", -- Requires localization
+	AURAS = "光环", 
+	AURAS_DESC = "光环监控启用/禁用", 
+	AUTOASSIGN = "自动分配", 
 	AUTOBTN = "显示自动祝福按钮",
 	AUTOBTN_DESC = "显示/隐藏自动祝福按钮",
 	AUTOBUFF = "自动祝福",
@@ -28,8 +28,8 @@ L:RegisterTranslations("zhCN", function() return
 	DISPCOL = "列数",
 	DISPCOL_DESC = "设置列数",
 	DISP_DESC = "祝福施加窗口的设置",
-	DISPEDGES = "Display Button Edges", -- Requires localization
-	DISPEDGES_DESC = "Display Edges for Player Buttons", -- Requires localization
+	DISPEDGES = "显示职业按钮边框", 
+	DISPEDGES_DESC = "显示玩家按钮边框", 
 	DISPGAP = "间隔",
 	DISPGAP_DESC = "设置按钮间距",
 	DISPPL = "玩家按钮",
@@ -44,24 +44,24 @@ L:RegisterTranslations("zhCN", function() return
 	FREEASSIGN_DESC = "允许其他非团队领袖/助理人员更改你的祝福配置",
 	GREATER = "强效祝福",
 	GREATER_DESC = "启用/禁用强效祝福",
-	HIDECB = "Auto-Hide Class Buttons", -- Requires localization
-	HIDECB_DESC = "Auto-Hide Class Buttons", -- Requires localization
-	BLINKPA = "Flash 播放器/自动按钮",
-	BLINKPA_DESC = "Flash 播放器/自动按钮",
-	CLASSC = "职业颜色",
-	CLASSC_DESC = "职业颜色",
+	HIDECB = "自动隐藏职业按钮", 
+	HIDECB_DESC = "自动隐藏职业按钮", 
+	BLINKPA = "闪烁玩家/自动按钮",
+	BLINKPA_DESC = "闪烁玩家/自动按钮",
+	CLASSC = "职业着色",
+	CLASSC_DESC = "职业着色",
 	HIDEDH = "隐藏拖动柄",
 	HIDEDH_DESC = "显示/隐藏拖动柄",
 	HIDEPB = "隐藏玩家按钮",
 	HIDEPB_DESC = "显示/隐藏玩家按钮",
-	IGNOREEXTRA = "Ignore groups 6-8", -- Requires localization
-	IGNOREEXTRADESC = "Ignore people on stand-by placed in groups 6 to 8", -- Requires localization
-	LAYOUT = "Layout", -- Requires localization
-	LAYOUT_DESC = "Custom Layout", -- Requires localization
-	PET_FELHUNTER = "Felhunter", -- Requires localization
-	PET_GHOUL = "Ghoul", -- Requires localization
-	PET_IMP = "Imp", -- Requires localization
-	PET_SUCCUBUS = "Succubus", -- Requires localization
+	IGNOREEXTRA = "忽略6-8队", 
+	IGNOREEXTRADESC = "忽略6-8队的玩家", 
+	LAYOUT = "界面", 
+	LAYOUT_DESC = "设置界面", 
+	PET_FELHUNTER = "地狱犬", 
+	PET_GHOUL = "食尸鬼", 
+	PET_IMP = "小鬼", 
+	PET_SUCCUBUS = "魅魔", 
 	PP_CLEAR = "清除",
 	PP_OPTIONS = "设置",
 	PP_RAS1 = "--- 圣骑士祝福分配 ---",
@@ -71,23 +71,23 @@ L:RegisterTranslations("zhCN", function() return
 	RESET_DESC = "将所有PallyPower窗口的位置重置回屏幕中央",
 	RFBUFF = "正义之怒",
 	RFBUFF_DESC = "启用/禁用正义之怒监视器",
-	RFUSE = "Righteous Fury", -- Requires localization
-	RFUSE_DESC = "Righteous Fury on/off", -- Requires localization
+	RFUSE = "正义之怒按钮", 
+	RFUSE_DESC = "是否开启正义之怒按钮", 
 	SBUFF = "智能选择祝福",
 	SBUFF_DESC = "在选择祝福时为某些职业忽略特定的祝福",
-	SEAL = "Seal", -- Requires localization
-	SEAL_DESC = "Seal", -- Requires localization
+	SEAL = "圣印", 
+	SEAL_DESC = "圣印", 
 	SHOWPARTY = "在小队时显示",
 	SHOWPARTY_DESC = "当加入一个小队后显示/隐藏祝福施加窗口",
 	SHOWSINGLE = "在单独时显示",
 	SHOWSINGLE_DESC = "当单独一人显示/隐藏祝福施加窗口",
-	SKIN = "Skin", -- Requires localization
-	SKIN_DESC = "Apply a custom background to buff buttons", -- Requires localization
-	SPET = "Smart pets", -- Requires localization
-	SPET_DESC = "Smart pet handling. Attach pets to classes responsible for their greater buffs.", -- Requires localization
+	SKIN = "皮肤",
+	SKIN_DESC = "使用自定义Buff按钮背景", 
+	SPET = "智能宠物识别", 
+	SPET_DESC = "智能设置宠物。将宠物与相应职业的强效祝福挂钩。", 
 	WAIT = "等待所有队友",
 	WAIT_DESC = "是否等待所有队友都在线且都在祝福范围内才施放祝福",
-	["Water Elemental"] = "Water Elemental", -- Requires localization
+	["Water Elemental"] = "水元素", 
 }
  
 end)
