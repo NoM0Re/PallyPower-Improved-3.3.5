@@ -33,5 +33,5 @@ This add-on provides an interactive and easy to use interface that allows you to
 - **Class Buttons in Class Colors**: Class buttons now display in respective class colors, enhancing visual clarity.<br/>
 - **Flash Effect in Instances**: Added flash effect to highlight players without buffs in instanced content (Arena, BG, Raid, Dungeon).<br/>
 - **Class Buttons in Class Colors**: Class buttons now display in respective class colors, enhancing visual clarity.<br/>
-In-Combat Class Buff Button: Added functionality that enables players to click the class buff buttons during combat.<br/>
+- **In-Combat Class Buff Button**: Added functionality that enables players to click the class buff buttons during combat.<br/>
 A designated player for each class will be determined before combat, if the player/s are in range and alive they will receive the buff/s while combat now.
