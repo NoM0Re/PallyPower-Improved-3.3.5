@@ -1,0 +1,20 @@
+------------------------------------------------------------------------
+r143 | aznamir | 2010-08-20 10:57:34 +0000 (Fri, 20 Aug 2010) | 1 line
+Changed paths:
+   A /tags/v3.2.20 (from /trunk:142)
+
+Tagging as v3.2.20
+------------------------------------------------------------------------
+r141 | aznamir | 2010-07-20 23:34:09 +0000 (Tue, 20 Jul 2010) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/embeds.xml
+
+removed RosterLib references
+------------------------------------------------------------------------
+r139 | aznamir | 2010-07-20 23:27:34 +0000 (Tue, 20 Jul 2010) | 1 line
+Changed paths:
+   M /trunk/PallyPower.lua
+
+improved pet class detection logic, corrected 'show when single' option
+------------------------------------------------------------------------

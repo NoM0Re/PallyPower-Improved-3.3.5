@@ -1,0 +1,18 @@
+------------------------------------------------------------------------
+r129 | aznamir | 2010-05-29 03:09:41 +0000 (Sat, 29 May 2010) | 1 line
+Changed paths:
+   A /tags/v3.2.14 (from /trunk:128)
+
+Tagging as v3.2.14
+------------------------------------------------------------------------
+r126 | aznamir | 2010-05-15 04:26:13 +0000 (Sat, 15 May 2010) | 5 lines
+Changed paths:
+   M /trunk/PallyPower.lua
+   M /trunk/PallyPowerValues.lua
+
+- Re-implemented the primary and secondary spec changes. Now going to use config sets instead of profiles. Please revert your profile back to "Default".
+- Fixed the aura assignment save
+- Now the spec change only triggers the set change only if you're playing a paladin
+- Added a command to purge old assignments from SavedVariables. Use "/script PallyPower:Purge()"
+
+------------------------------------------------------------------------

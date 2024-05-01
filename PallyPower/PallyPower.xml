@@ -1,0 +1,1757 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ 
+C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+
+  <Button name="PallyPowerButtonTemplate" virtual="true" frameStrata="LOW">
+	  <Size>
+		  <AbsDimension x="100" y="34"/>
+	  </Size>
+	  <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+		  <EdgeSize>
+			  <AbsValue val="8"/>
+		  </EdgeSize>
+		  <TileSize>
+			  <AbsValue val="8"/>
+		  </TileSize>
+		  <BackgroundInsets>
+			  <AbsInset left="2" right="2" top="2" bottom="2"/>
+		  </BackgroundInsets>
+	  </Backdrop>
+	  <Layers>
+		  <Layer level="OVERLAY">
+			  <FontString name="$parentTime" inherits="GameFontHighlightSmall" text="30:00" justifyH="RIGHT">
+				  <Size>
+					  <AbsDimension x="35" y="16" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="TOPRIGHT">
+						  <Offset>
+							  <AbsDimension x="-5" y="-3" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </FontString>
+			  <FontString name="$parentTime2" inherits="GameFontHighlightSmall" text="10:00" justifyH="RIGHT">
+				  <Size>
+					  <AbsDimension x="35" y="16" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="BOTTOMRIGHT">
+						  <Offset>
+							  <AbsDimension x="-5" y="3" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </FontString>
+			  <Texture name="$parentClassIcon" file="Interface\AddOns\PallyPower\Icons\Warrior">
+				  <Size>
+					  <AbsDimension x="26" y="26" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="TOPLEFT">
+						  <Offset>
+							  <AbsDimension x="4" y="-4" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </Texture>
+			  <Texture name="$parentBuffIcon" file="Interface\Icons\Spell_Holy_SealOfWisdom">
+				  <Size>
+					  <AbsDimension x="26" y="26" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="TOPLEFT" relativeTo="$parentClassIcon" relativePoint="TOPRIGHT">
+						  <Offset>                                      
+							  <AbsDimension x="2" y="0" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </Texture>
+			  <FontString name="$parentText" inherits="GameFontHighlightSmall" text="99" justifyH="RIGHT">
+				  <Size>
+					  <AbsDimension x="10" y="16" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="TOPRIGHT" relativeTo="$parentTime2" relativePoint="TOPLEFT">
+						  <Offset>
+							  <AbsDimension x="7" y="0" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </FontString>
+		  </Layer>
+	  </Layers>
+	  <Scripts>
+		  <PreClick>
+			  PallyPower:ButtonPreClick(self, button);
+		  </PreClick>
+		  <OnMouseWheel>
+			  if InCombatLockdown() then return false end
+			  if (arg1==-1) then  --mouse wheel down
+				  PallyPower:PerformCycle(PallyPower.player, self:GetAttribute("classID"), true);
+			  else
+				  PallyPower:PerformCycleBackwards(PallyPower.player, self:GetAttribute("classID"), true);
+			  end
+			  PallyPower:ButtonsUpdate();
+		  </OnMouseWheel> 
+	  </Scripts>
+  </Button>
+
+  <Button name="PallyPowerAutoButtonTemplate" virtual="true" frameStrata="LOW">
+	  <Size>
+		  <AbsDimension x="100" y="34"/>
+	  </Size>
+	  <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+		  <EdgeSize>
+			  <AbsValue val="8"/>
+		  </EdgeSize>
+		  <TileSize>
+			  <AbsValue val="8"/>
+		  </TileSize>
+		  <BackgroundInsets>
+			  <AbsInset left="2" right="2" top="3" bottom="2"/>
+		  </BackgroundInsets>
+	  </Backdrop>
+	  <Layers>
+		  <Layer level="OVERLAY">
+			  <Texture name="$parentIcon" file="Interface\Icons\Spell_Holy_SummonChampion">
+				  <Size>
+					  <AbsDimension x="26" y="26" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="TOPLEFT">
+						  <Offset>
+							  <AbsDimension x="4" y="-4" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </Texture>
+			  <FontString name="$parentTime" inherits="GameFontHighlightSmall" text="30:00" justifyH="RIGHT">
+				  <Size>
+					  <AbsDimension x="35" y="16" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="TOPRIGHT">
+						  <Offset>
+							  <AbsDimension x="-5" y="-3" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </FontString>
+			  <FontString name="$parentTime2" inherits="GameFontHighlightSmall" text="10:00" justifyH="RIGHT">
+				  <Size>
+					  <AbsDimension x="35" y="16" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="BOTTOMRIGHT">
+						  <Offset>
+							  <AbsDimension x="-5" y="3" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </FontString>
+			  <FontString name="$parentText" inherits="GameFontHighlight" text="99" justifyH="RIGHT">
+				  <Size>
+					  <AbsDimension x="18" y="16" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="TOPLEFT" relativeTo="$parentIcon" relativePoint="TOPRIGHT">
+						  <Offset>
+							  <AbsDimension x="9" y="-4" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </FontString>
+		  </Layer>
+	  </Layers>
+	  <Scripts>
+                  <PreClick>
+			  PallyPower:AutoBuff(button);
+		  </PreClick>
+                        <PostClick>
+			  PallyPower:AutoBuffClear(button);
+		  </PostClick>
+	  </Scripts>
+  </Button>
+  
+  <Button name="PallyPowerRFButtonTemplate" virtual="true" frameStrata="LOW" inherits="SecureActionButtonTemplate">
+	  <Size>
+		  <AbsDimension x="100" y="34"/>
+	  </Size>
+	  <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+		  <EdgeSize>
+			  <AbsValue val="8"/>
+		  </EdgeSize>
+		  <TileSize>
+			  <AbsValue val="8"/>
+		  </TileSize>
+		  <BackgroundInsets>
+			  <AbsInset left="2" right="2" top="3" bottom="2"/>
+		  </BackgroundInsets>
+	  </Backdrop>
+	  <Layers>
+		  <Layer level="OVERLAY">
+			  <Texture name="$parentIcon" file="Interface/Icons/Spell_Holy_SealOfFury">
+				  <Size>
+					  <AbsDimension x="26" y="26" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="TOPLEFT">
+						  <Offset>
+							  <AbsDimension x="4" y="-4" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </Texture>
+			  <Texture name="$parentIconSeal" file="Interface/Icons/Spell_Holy_SealOfWisdom">
+				  <Size>
+					  <AbsDimension x="26" y="26" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="TOPLEFT">
+						  <Offset>
+							  <AbsDimension x="32" y="-4" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </Texture>
+			  <FontString name="$parentTime1" inherits="GameFontHighlightSmall" text="30:00" justifyH="RIGHT">
+				  <Size>
+					  <AbsDimension x="35" y="16" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="TOPRIGHT">
+						  <Offset>
+							  <AbsDimension x="-5" y="-3" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </FontString>
+			  <FontString name="$parentTime2" inherits="GameFontHighlightSmall" text="30:00" justifyH="RIGHT">
+				  <Size>
+					  <AbsDimension x="35" y="16" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="BOTTOMRIGHT">
+						  <Offset>
+							  <AbsDimension x="-5" y="3" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </FontString>
+
+		  </Layer>
+	  </Layers>
+	  <Scripts>
+		  <OnMouseWheel>
+			  if (arg1==-1) then
+				  PallyPower:SealCycle()
+			  else
+				  PallyPower:SealCycleBackward()
+			  end
+		  </OnMouseWheel>
+	  </Scripts>
+  </Button>
+
+  <Button name="PallyPowerAuraButtonTemplate" virtual="true" frameStrata="LOW" inherits="SecureActionButtonTemplate">
+    <Size>
+      <AbsDimension x="100" y="34"/>
+    </Size>
+    <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+      <EdgeSize>
+        <AbsValue val="8"/>
+      </EdgeSize>
+      <TileSize>
+        <AbsValue val="8"/>
+      </TileSize>
+      <BackgroundInsets>
+        <AbsInset left="2" right="2" top="3" bottom="2"/>
+      </BackgroundInsets>
+    </Backdrop>
+    <Layers>
+      <Layer level="OVERLAY">
+        <Texture name="$parentIcon" file="Interface/Icons/Spell_Holy_DevotionAura">
+          <Size>
+            <AbsDimension x="26" y="26" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="4" y="-4" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <FontString name="$parentPlayer1" inherits="GameFontHighlightSmall" text="30:00" justifyH="RIGHT">
+          <Size>
+            <AbsDimension x="65" y="16" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPRIGHT">
+              <Offset>
+                <AbsDimension x="-5" y="-3" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentPlayer2" inherits="GameFontHighlightSmall" text="30:00" justifyH="RIGHT">
+          <Size>
+            <AbsDimension x="65" y="16" />
+          </Size>
+          <Anchors>
+            <Anchor point="BOTTOMRIGHT">
+              <Offset>
+                <AbsDimension x="-5" y="3" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnMouseWheel>
+        if InCombatLockdown() then return false end
+        if (arg1==-1) then  --mouse wheel down
+        PallyPower:PerformAuraCycle(PallyPower.player, true);
+        else
+        PallyPower:PerformAuraCycleBackwards(PallyPower.player, true);
+        end
+        PallyPower:ButtonsUpdate();
+      </OnMouseWheel>
+    </Scripts>
+  </Button>
+  
+  <Button name="PallyPowerPopupTemplate" virtual="true" frameStrata="LOW">
+	  <Size>
+		  <AbsDimension x="100" y="34"/>
+	  </Size>
+	  <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+		  <EdgeSize>
+			  <AbsValue val="8"/>
+		  </EdgeSize>
+		  <TileSize>
+			  <AbsValue val="8"/>
+		  </TileSize>
+		  <BackgroundInsets>
+			  <AbsInset left="2" right="2" top="2" bottom="2"/>
+		  </BackgroundInsets>
+	  </Backdrop>
+	  <Layers>
+		  <Layer level="OVERLAY">
+			  <FontString name="$parentRng" inherits="GameFontHighlightSmall" text="R" justifyH="RIGHT">
+				  <Size>
+					  <AbsDimension x="30" y="16" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="TOPRIGHT">
+						  <Offset>
+							  <AbsDimension x="-5" y="-3" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </FontString>
+			  <FontString name="$parentDead" inherits="GameFontHighlightSmall" text="D" justifyH="RIGHT">
+				  <Size>
+					  <AbsDimension x="30" y="16" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="TOPRIGHT" relativeTo="$parentRng" relativePoint="TOPLEFT">
+						  <Offset>
+							  <AbsDimension x="-5" y="0" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </FontString>
+			  <FontString name="$parentName" inherits="GameFontHighlightSmall" text="" justifyH="RIGHT">
+				  <Size>
+					  <AbsDimension x="92" y="16" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="BOTTOMRIGHT">
+						  <Offset>
+							  <AbsDimension x="-5" y="3" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </FontString>
+			  <Texture name="$parentBuffIcon" file="Interface\Icons\Spell_Holy_SealOfWisdom">
+				  <Size>
+					  <AbsDimension x="16" y="16" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="TOPLEFT">
+						  <Offset>                                      
+							  <AbsDimension x="4" y="-4" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </Texture>
+			  <FontString name="$parentTime" inherits="GameFontHighlightSmall" text="15:00" justifyH="LEFT">
+				  <Size>
+					  <AbsDimension x="40" y="16" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="TOPLEFT" relativeTo="$parentBuffIcon" relativePoint="TOPRIGHT">
+						  <Offset>
+							  <AbsDimension x="1" y="0" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </FontString>
+      		  </Layer>
+	  </Layers>
+	  <Scripts>
+		  <OnMouseWheel>
+			  if InCombatLockdown() then return false end
+			  local pname = getglobal(self:GetName() .. "Name"):GetText()
+			  PallyPower:PerformPlayerCycle(arg1, pname, self:GetAttribute("classID"));
+			  PallyPower:ButtonsUpdate();
+		  </OnMouseWheel> 
+	  </Scripts>
+        </Button>
+
+  <Frame name="PallyPowerFrame" movable="true" frameStrata="LOW" enableMouse="true" parent="UIParent" hidden="false">
+	  <Size>
+		  <AbsDimension x="1" y="1" />
+	  </Size>
+	  <Anchors>
+		  <Anchor point="CENTER">
+			  <Offset x="0" y="0"/>
+		  </Anchor>
+	  </Anchors>
+	  <Frames>
+		  <CheckButton name="PallyPowerAnchor" enableMouse="true" frameStrata="LOW" inherits="SecureHandlerStateTemplate">
+			  <Scripts>
+				  <OnLoad>
+					  self:RegisterForDrag("LeftButton");
+					  self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+				  </OnLoad>
+				  <OnClick>
+					  PallyPower:ClickHandle(self, arg1);
+				  </OnClick>
+				  <OnDragStart>
+					  PallyPower:DragStart();
+				  </OnDragStart>
+				  <OnDragStop>
+					  PallyPower:DragStop();
+				  </OnDragStop>
+				  <OnEnter>
+					  GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+					  GameTooltip:SetText(PallyPower.CONFIG_DRAGHANDLE);
+					  GameTooltip:Show();
+					  CursorUpdate();
+				  </OnEnter>
+				  <OnLeave>
+					  GameTooltip:Hide();
+				  </OnLeave>
+			  </Scripts>
+			  <Size>
+				  <AbsDimension x="16" y="16" />
+			  </Size>
+			  <Anchors>
+				  <Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER"/>
+			  </Anchors>
+			  <NormalTexture file="Interface\AddOns\PallyPower\Icons\draghandle" />
+			  <CheckedTexture file="Interface\AddOns\PallyPower\Icons\draghandle-checked" />
+		  </CheckButton>
+		  <Frame name="PallyPowerHeader" toplevel="true" movable="true" enableMouse="true" resizable="true" frameStrata="LOW" inherits="SecureHandlerStateTemplate">
+			  <Size x="1" y="1"/>
+			  <Anchors>
+				  <Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER"/>
+			  </Anchors>
+		  </Frame>
+	  </Frames>
+  </Frame>
+
+  <Button name="ClassButtonTemplate" hidden="false" virtual="true">
+    <Size>
+      <AbsDimension x="84" y="54" />
+    </Size>
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parentIcon" file="Interface\AddOns\PallyPower\Icons\Warrior">
+          <Size>
+            <AbsDimension x="32" y="32" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="26" y="-12" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="OVERLAY">
+        <Texture name="$parentHighlight" file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD" hidden="true">
+          <Size>
+            <AbsDimension x="32" y="32"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOP" relativeTo="$parentIcon">
+              <Offset>
+                <AbsDimension x="0" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForClicks("LeftButtonUp","RightButtonUp");
+      </OnLoad>
+      <OnClick>
+        --PallyPowerClassButton_OnClick(this,arg1);
+      </OnClick>
+    </Scripts>
+  </Button>
+
+  <Button name="PlayerButtonTemplate" hidden="false" virtual="true" movable="false">
+  <Size>
+  <AbsDimension x="84" y="13" /> 
+  </Size>
+  <Layers>
+  <Layer level="OVERLAY">
+	  <FontString name="$parentText" inherits="GameFontHighlightSmall" text="PlayerButton" justifyH="LEFT">
+		  <Size>
+			  <AbsDimension x="80" y="13" />
+		  </Size>
+		  <Anchors>
+			  <Anchor point="LEFT">
+				  <Offset>
+					  <AbsDimension x="0" y="0" />
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </FontString>
+	  <Texture name="$parentIcon" file="Interface\Icons\Spell_Holy_SealOfWisdom">
+		  <Size>
+			  <AbsDimension x="12" y="12" />
+		  </Size>
+		  <Anchors>
+			  <Anchor point="TOPRIGHT" relativeTo="$parentText" relativePoint="TOPRIGHT">
+				  <Offset>
+					  <AbsDimension x="0" y="0" />
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Texture>
+  </Layer>
+  </Layers>
+  <Scripts>
+  <OnLoad>
+	  self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	  self:RegisterForDrag("LeftButton");
+	  self:EnableMouseWheel(1);
+  </OnLoad>
+  <OnDragStart>
+	  PlayerButton_DragStart(self)
+  </OnDragStart>
+  <OnDragStop>
+	  PlayerButton_DragStop(self)
+  </OnDragStop>
+  <OnClick>
+	  PallyPowerPlayerButton_OnClick(self, arg1);
+  </OnClick>
+  <OnMouseWheel>
+	  PallyPowerPlayerButton_OnMouseWheel(self, arg1);
+  </OnMouseWheel> 
+  </Scripts>
+  </Button>
+
+  <Frame name="ClassGroupTemplate" hidden="false" virtual="true">
+  <Size>
+	  <AbsDimension x="84" y="158" /> 
+  </Size>
+  <Layers>
+	  <Layer level="ARTWORK">
+    <Texture name="$parentLine" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+		  <Size>
+			  <AbsDimension x="2" y="192" /> 
+		  </Size>
+		  <Anchors>
+			  <Anchor point="TOPLEFT">
+				  <Offset>
+					  <AbsDimension x="0" y="0" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Texture>
+    </Layer>
+  </Layers>
+  <Frames>
+	  <Button name="$parentClassButton" inherits="ClassButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT">
+				  <Offset>
+					  <AbsDimension x="0" y="0" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentPlayerButton1" inherits="PlayerButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT">
+				  <Offset>
+					  <AbsDimension x="3" y="-54" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentPlayerButton2" inherits="PlayerButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT">
+				  <Offset>
+					  <AbsDimension x="3" y="-67" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentPlayerButton3" inherits="PlayerButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT">
+				  <Offset>
+					  <AbsDimension x="3" y="-80" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentPlayerButton4" inherits="PlayerButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT">
+				  <Offset>
+					  <AbsDimension x="3" y="-93" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentPlayerButton5" inherits="PlayerButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT">
+				  <Offset>
+					  <AbsDimension x="3" y="-106" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentPlayerButton6" inherits="PlayerButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT">
+				  <Offset>
+					  <AbsDimension x="3" y="-119" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentPlayerButton7" inherits="PlayerButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT">
+				  <Offset>
+					  <AbsDimension x="3" y="-132" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentPlayerButton8" inherits="PlayerButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT">
+				  <Offset>
+					  <AbsDimension x="3" y="-145" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+  </Frames>
+  </Frame>
+
+  <Button name="BuffGridButtonTemplate" hidden="false" virtual="true">
+    <Size>
+      <AbsDimension x="84" y="54" />
+    </Size>
+    <Layers>
+      <Layer level="OVERLAY">
+        <Texture file="Interface\Icons\Spell_Holy_SealOfWisdom" name="$parentIcon">
+          <Size>
+            <AbsDimension x="32" y="32" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="26" y="-22" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForClicks("LeftButtonUp","RightButtonUp");
+        self:EnableMouseWheel(1);
+      </OnLoad>
+      <OnClick>
+        PallyPowerGridButton_OnClick(self,arg1);
+      </OnClick>
+      <OnMouseWheel>
+        PallyPowerGridButton_OnMouseWheel(self, arg1);
+      </OnMouseWheel>
+    </Scripts>
+  </Button>
+
+  <Button name="AuraHeaderTemplate" hidden="false" virtual="true">
+    <Size>
+      <AbsDimension x="84" y="54" />
+    </Size>
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parentIcon" file="Interface\AddOns\PallyPower\Icons\AuraMastery">
+          <Size>
+            <AbsDimension x="32" y="32" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="26" y="-12" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="OVERLAY">
+        <Texture name="$parentHighlight" file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD" hidden="true">
+          <Size>
+            <AbsDimension x="32" y="32"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOP" relativeTo="$parentIcon">
+              <Offset>
+                <AbsDimension x="0" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForClicks("LeftButtonUp","RightButtonUp");
+      </OnLoad>
+      <OnClick>
+        --PallyPowerAuraHeader_OnClick(this,arg1);
+      </OnClick>
+    </Scripts>
+  </Button>
+
+  <Button name="AuraButtonTemplate" hidden="false" virtual="true" movable="false">
+    <Size>
+      <AbsDimension x="84" y="13" />
+    </Size>
+    <Layers>
+      <Layer level="OVERLAY">
+        <FontString name="$parentText" inherits="GameFontHighlightSmall" text="AuraButton" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="80" y="13" />
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT">
+              <Offset>
+                <AbsDimension x="0" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <Texture name="$parentIcon" file="Interface\Icons\Spell_Holy_SealOfWisdom">
+          <Size>
+            <AbsDimension x="12" y="12" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPRIGHT" relativeTo="$parentText" relativePoint="TOPRIGHT">
+              <Offset>
+                <AbsDimension x="0" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+        self:EnableMouseWheel(1);
+      </OnLoad>
+      <OnClick>
+        PallyPowerAuraButton_OnClick(self, arg1);
+      </OnClick>
+      <OnMouseWheel>
+        PallyPowerAuraButton_OnMouseWheel(self, arg1);
+      </OnMouseWheel>
+    </Scripts>
+  </Button>
+
+  <Frame name="AuraGroupTemplate" hidden="false" virtual="true">
+      <Size>
+        <AbsDimension x="84" y="158" />
+      </Size>
+      <Layers>
+        <Layer level="ARTWORK">
+        <Texture name="$parentLine" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+          <Size>
+            <AbsDimension x="2" y="192" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="0" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        </Layer>
+      </Layers>
+      <Frames>
+        <Button name="$parentAuraHeader" inherits="AuraHeaderTemplate">
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="0" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Button>
+        <Button name="$parentAuraButton1" inherits="AuraButtonTemplate">
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="3" y="-54" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Button>
+        <Button name="$parentAuraButton2" inherits="AuraButtonTemplate">
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="3" y="-67" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Button>
+        <Button name="$parentAuraButton3" inherits="AuraButtonTemplate">
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="3" y="-80" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Button>
+        <Button name="$parentAuraButton4" inherits="AuraButtonTemplate">
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="3" y="-93" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Button>
+        <Button name="$parentAuraButton5" inherits="AuraButtonTemplate">
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="3" y="-106" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Button>
+        <Button name="$parentAuraButton6" inherits="AuraButtonTemplate">
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="3" y="-119" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Button>
+        <Button name="$parentAuraButton7" inherits="AuraButtonTemplate">
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="3" y="-132" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Button>
+        <Button name="$parentAuraButton8" inherits="AuraButtonTemplate">
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="3" y="-145" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Button>
+      </Frames>
+    </Frame>
+
+  <Button name="AuraGridButtonTemplate" hidden="false" virtual="true">
+    <Size>
+      <AbsDimension x="84" y="54" />
+    </Size>
+    <Layers>
+      <Layer level="OVERLAY">
+        <Texture file="Interface\Icons\Spell_Holy_DevotionAura" name="$parentIcon">
+          <Size>
+            <AbsDimension x="32" y="32" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="26" y="-22" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForClicks("LeftButtonUp","RightButtonUp");
+        self:EnableMouseWheel(1);
+      </OnLoad>
+      <OnClick>
+        PallyPowerAuraButton_OnClick(self,arg1);
+      </OnClick>
+      <OnMouseWheel>
+        PallyPowerAuraButton_OnMouseWheel(self, arg1);
+      </OnMouseWheel>
+    </Scripts>
+  </Button>
+
+  <Frame name="UserTemplate" hidden="false" virtual="true">
+    <Size>
+	    <AbsDimension x="1072" y="80" /> 
+    </Size>
+    <Layers>
+	    <Layer level="OVERLAY">
+		    <FontString name="$parentName" inherits="GameFontHighlightSmall" text="SomePally$parent" justifyH="LEFT">
+			    <Size>
+				    <AbsDimension x="932" y="16" /> 
+			    </Size>
+			    <Anchors>
+				    <Anchor point="TOPLEFT" /> 
+			    </Anchors>
+		    </FontString>
+		    <FontString name="$parentSymbols" inherits="GameFontHighlightSmall" text="999" justifyH="RIGHT">
+			    <Size>
+				    <AbsDimension x="50" y="16" /> 
+			    </Size>
+			    <Anchors>
+				    <Anchor point="TOPRIGHT" relativePoint="TOPLEFT">
+					    <Offset>
+						    <AbsDimension x="128" y="0" /> 
+					    </Offset>
+				    </Anchor>
+			    </Anchors>
+		    </FontString>
+		    <Texture file="Interface\Icons\Spell_Holy_SealOfWisdom" name="$parentIcon1">
+			    <Size>
+				    <AbsDimension x="16" y="16" /> 
+			    </Size>
+			    <Anchors>
+				    <Anchor point="TOPLEFT">
+					    <Offset>
+						    <AbsDimension x="0" y="-16" /> 
+					    </Offset>
+				    </Anchor>
+			    </Anchors>
+		    </Texture>
+		    <Texture file="Interface\Icons\Spell_Holy_FistOfJustice" name="$parentIcon2">
+			    <Size>
+				    <AbsDimension x="16" y="16" /> 
+			    </Size>
+			    <Anchors>
+				    <Anchor point="TOPLEFT" relativeTo="$parentIcon1">
+					    <Offset>
+						    <AbsDimension x="45" y="0" /> 
+					    </Offset>
+				    </Anchor>
+			    </Anchors>
+		    </Texture>
+		    <Texture file="Interface\Icons\Spell_Magic_MageArmor" name="$parentIcon3">
+			    <Size>
+				    <AbsDimension x="16" y="16" /> 
+			    </Size>
+			    <Anchors>
+				    <Anchor point="TOPLEFT" relativeTo="$parentIcon2">
+					    <Offset>
+						    <AbsDimension x="45" y="0" /> 
+					    </Offset>
+				    </Anchor>
+			    </Anchors>
+		    </Texture>
+		    <Texture file="Interface\Icons\Spell_Nature_LightningShield" name="$parentIcon4">
+			    <Size>
+				    <AbsDimension x="16" y="16" /> 
+			    </Size>
+			    <Anchors>
+				    <Anchor point="TOPLEFT">
+					    <Offset>
+						    <AbsDimension x="0" y="-36" /> 
+					    </Offset>
+				    </Anchor>
+			    </Anchors>
+		    </Texture>
+        <Texture file="Interface\Icons\Spell_Magic_MageArmor" name="$parentIcon5">
+          <Size>
+            <AbsDimension x="16" y="16" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentIcon4">
+              <Offset>
+                <AbsDimension x="45" y="-0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\Icons\Spell_Nature_LightningShield" name="$parentIcon6">
+          <Size>
+            <AbsDimension x="16" y="16" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentIcon5">
+              <Offset>
+                <AbsDimension x="45" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\Icons\Spell_Holy_DevotionAura" name="$parentAIcon1">
+          <Size>
+            <AbsDimension x="16" y="16" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="0" y="-56" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\Icons\Spell_Holy_AuraofLight" name="$parentAIcon2">
+          <Size>
+            <AbsDimension x="16" y="16" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentAIcon1">
+              <Offset>
+                <AbsDimension x="45" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\Icons\Spell_Holy_MindSooth" name="$parentAIcon3">
+          <Size>
+            <AbsDimension x="16" y="16" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentAIcon2">
+              <Offset>
+                <AbsDimension x="45" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <Texture name="$parentLine1" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+        <Size>
+          <AbsDimension x="1150" y="2" /> 
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="0" y="2" /> 
+            </Offset>
+          </Anchor>
+        </Anchors>
+        </Texture>
+	      <Texture name="$parentLine2" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+		      <Size>
+			      <AbsDimension x="2" y="78" /> 
+		      </Size>
+		      <Anchors>
+			      <Anchor point="TOPLEFT">
+				      <Offset>
+					      <AbsDimension x="128" y="0" /> 
+				      </Offset>
+			      </Anchor>
+		      </Anchors>
+	      </Texture>
+	      <Texture name="$parentLine3" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+		      <Size>
+			      <AbsDimension x="2" y="78" /> 
+		      </Size>
+		      <Anchors>
+			      <Anchor point="TOPLEFT" relativeTo="$parentLine2">
+				      <Offset>
+					      <AbsDimension x="86" y="0" /> 
+				      </Offset>
+			      </Anchor>
+		      </Anchors>
+	      </Texture>
+	      <Texture name="$parentLine4" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+		      <Size>
+			      <AbsDimension x="2" y="78" /> 
+		      </Size>
+		      <Anchors>
+			      <Anchor point="TOPLEFT" relativeTo="$parentLine3">
+				      <Offset>
+					      <AbsDimension x="86" y="0" /> 
+				      </Offset>
+			      </Anchor>
+		      </Anchors>
+	      </Texture>
+        <Texture name="$parentLine5" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+	        <Size>
+		        <AbsDimension x="2" y="78" /> 
+	        </Size>
+	        <Anchors>
+		        <Anchor point="TOPLEFT" relativeTo="$parentLine4">
+			        <Offset>
+				        <AbsDimension x="86" y="0" /> 
+			        </Offset>
+		        </Anchor>
+	        </Anchors>
+        </Texture>
+	      <Texture name="$parentLine6" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+		      <Size>
+			      <AbsDimension x="2" y="78" /> 
+		      </Size>
+		      <Anchors>
+			      <Anchor point="TOPLEFT" relativeTo="$parentLine5">
+				      <Offset>
+					      <AbsDimension x="86" y="0" /> 
+				      </Offset>
+			      </Anchor>
+		      </Anchors>
+	      </Texture>
+	      <Texture name="$parentLine7" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+		      <Size>
+			      <AbsDimension x="2" y="78" /> 
+		      </Size>
+		      <Anchors>
+			      <Anchor point="TOPLEFT" relativeTo="$parentLine6">
+				      <Offset>
+					      <AbsDimension x="86" y="0" /> 
+				      </Offset>
+			      </Anchor>
+		      </Anchors>
+	      </Texture>
+	      <Texture name="$parentLine8" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+		      <Size>
+			      <AbsDimension x="2" y="78" /> 
+		      </Size>
+		      <Anchors>
+			      <Anchor point="TOPLEFT" relativeTo="$parentLine7">
+				      <Offset>
+					      <AbsDimension x="86" y="0" /> 
+				      </Offset>
+			      </Anchor>
+		      </Anchors>
+	      </Texture>
+	      <Texture name="$parentLine9" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+		      <Size>
+			      <AbsDimension x="2" y="78" /> 
+		      </Size>
+		      <Anchors>
+			      <Anchor point="TOPLEFT" relativeTo="$parentLine8">
+				      <Offset>
+					      <AbsDimension x="86" y="0" /> 
+				      </Offset>
+			      </Anchor>
+		      </Anchors>
+	      </Texture>
+	      <Texture name="$parentLine10" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+		      <Size>
+			      <AbsDimension x="2" y="78" /> 
+		      </Size>
+		      <Anchors>
+			      <Anchor point="TOPLEFT" relativeTo="$parentLine9">
+				      <Offset>
+					      <AbsDimension x="86" y="0" /> 
+				      </Offset>
+			      </Anchor>
+		      </Anchors>
+	      </Texture>
+	      <Texture name="$parentLine11" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+		      <Size>
+			      <AbsDimension x="2" y="78" /> 
+		      </Size>
+		      <Anchors>
+			      <Anchor point="TOPLEFT" relativeTo="$parentLine10">
+				      <Offset>
+					      <AbsDimension x="86" y="0" /> 
+				      </Offset>
+			      </Anchor>
+		      </Anchors>
+	      </Texture>
+        <Texture name="$parentLine12" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+          <Size>
+            <AbsDimension x="2" y="78" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentLine11">
+              <Offset>
+                <AbsDimension x="86" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <Texture name="$parentLine13" file="Interface\Tooltips\UI-Tooltip-Background" hidden="false">
+         <Size>
+            <AbsDimension x="2" y="78" />
+         </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentLine12">
+              <Offset>
+                <AbsDimension x="86" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <FontString name="$parentSkill1" inherits="GameFontNormalSmall" text="0/0" justifyH="LEFT">
+			    <Size>
+				    <AbsDimension x="30" y="16" /> 
+			    </Size>
+			    <Anchors>
+				    <Anchor point="TOPLEFT" relativeTo="$parentIcon1" relativePoint="TOPRIGHT" /> 
+			    </Anchors>
+		    </FontString>
+		    <FontString name="$parentSkill2" inherits="GameFontNormalSmall" text="0/0" justifyH="LEFT">
+			    <Size>
+				    <AbsDimension x="30" y="16" /> 
+			    </Size>
+			    <Anchors>
+				    <Anchor point="TOPLEFT" relativeTo="$parentIcon2" relativePoint="TOPRIGHT" /> 
+			    </Anchors>
+		    </FontString>
+		    <FontString name="$parentSkill3" inherits="GameFontNormalSmall" text="0/0" justifyH="LEFT">
+			    <Size>
+				    <AbsDimension x="30" y="16" /> 
+			    </Size>
+			    <Anchors>
+				    <Anchor point="TOPLEFT" relativeTo="$parentIcon3" relativePoint="TOPRIGHT" /> 
+			    </Anchors>
+		    </FontString>
+		    <FontString name="$parentSkill4" inherits="GameFontNormalSmall" text="0/0" justifyH="LEFT">
+			    <Size>
+				    <AbsDimension x="30" y="16" /> 
+			    </Size>
+			    <Anchors>
+				    <Anchor point="TOPLEFT" relativeTo="$parentIcon4" relativePoint="TOPRIGHT" /> 
+			    </Anchors>
+		    </FontString>
+		    <FontString name="$parentSkill5" inherits="GameFontNormalSmall" text="0/0" justifyH="LEFT">
+			    <Size>
+				    <AbsDimension x="30" y="16" /> 
+			    </Size>
+			    <Anchors>
+				    <Anchor point="TOPLEFT" relativeTo="$parentIcon5" relativePoint="TOPRIGHT" /> 
+			    </Anchors>
+		    </FontString>
+        <FontString name="$parentSkill6" inherits="GameFontNormalSmall" text="0/0" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="30" y="16" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentIcon6" relativePoint="TOPRIGHT" />
+          </Anchors>
+        </FontString>
+        <FontString name="$parentASkill1" inherits="GameFontNormalSmall" text="0/0" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="30" y="16" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentAIcon1" relativePoint="TOPRIGHT" />
+          </Anchors>
+        </FontString>
+        <FontString name="$parentASkill2" inherits="GameFontNormalSmall" text="0/0" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="30" y="16" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentAIcon2" relativePoint="TOPRIGHT" />
+          </Anchors>
+        </FontString>
+        <FontString name="$parentASkill3" inherits="GameFontNormalSmall" text="0/0" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="30" y="16" />
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentAIcon3" relativePoint="TOPRIGHT" />
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+    <Button name="$parentAura1" inherits="AuraGridButtonTemplate">
+      <Anchors>
+        <Anchor point="TOPLEFT">
+          <Offset>
+            <AbsDimension x="130" y="0" />
+          </Offset>
+        </Anchor>
+      </Anchors>
+    </Button>
+    <Button name="$parentClass1" inherits="BuffGridButtonTemplate">
+      <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parentAura1" relativePoint="TOPRIGHT">
+          <Offset>
+            <AbsDimension x="2" y="0" />
+          </Offset>
+        </Anchor>
+      </Anchors>
+    </Button>
+    <Button name="$parentClass2" inherits="BuffGridButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT" relativeTo="$parentClass1" relativePoint="TOPRIGHT">
+				  <Offset>
+					  <AbsDimension x="2" y="0" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentClass3" inherits="BuffGridButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT" relativeTo="$parentClass2" relativePoint="TOPRIGHT">
+				  <Offset>
+					  <AbsDimension x="2" y="0" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentClass4" inherits="BuffGridButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT" relativeTo="$parentClass3" relativePoint="TOPRIGHT">
+				  <Offset>
+					  <AbsDimension x="2" y="0" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentClass5" inherits="BuffGridButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT" relativeTo="$parentClass4" relativePoint="TOPRIGHT">
+				  <Offset>
+					  <AbsDimension x="2" y="0" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentClass6" inherits="BuffGridButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT" relativeTo="$parentClass5" relativePoint="TOPRIGHT">
+				  <Offset>
+					  <AbsDimension x="2" y="0" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentClass7" inherits="BuffGridButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT" relativeTo="$parentClass6" relativePoint="TOPRIGHT">
+				  <Offset>
+					  <AbsDimension x="2" y="0" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentClass8" inherits="BuffGridButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT" relativeTo="$parentClass7" relativePoint="TOPRIGHT">
+				  <Offset>
+					  <AbsDimension x="2" y="0" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentClass9" inherits="BuffGridButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT" relativeTo="$parentClass8" relativePoint="TOPRIGHT">
+				  <Offset>
+					  <AbsDimension x="2" y="0" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentClass10" inherits="BuffGridButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT" relativeTo="$parentClass9" relativePoint="TOPRIGHT">
+				  <Offset>
+					  <AbsDimension x="2" y="0" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+	  <Button name="$parentClass11" inherits="BuffGridButtonTemplate">
+		  <Anchors>
+			  <Anchor point="TOPLEFT" relativeTo="$parentClass10" relativePoint="TOPRIGHT">
+				  <Offset>
+					  <AbsDimension x="2" y="0" /> 
+				  </Offset>
+			  </Anchor>
+		  </Anchors>
+	  </Button>
+
+  </Frames>
+  </Frame>
+
+
+
+  <Frame name="PallyPowerConfigFrame" hidden="true" toplevel="true" frameStrata="HIGH" enableMouse="true" movable="true" parent="UIParent">
+	  <Size>
+		  <AbsDimension x="1170" y="960" /> 
+	  </Size>
+    <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="UIParent" relativePoint="BOTTOMLEFT">
+        <Offset>      
+	        <AbsDimension x="400" y="400" /> 
+        </Offset>
+      </Anchor>
+    </Anchors>
+	  <Backdrop bgFile="Interface\CharacterFrame\UI-Party-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+		  <EdgeSize>
+			  <AbsValue val="16"/>
+		  </EdgeSize>
+		  <TileSize>
+			  <AbsValue val="16"/>
+		  </TileSize>
+		  <BackgroundInsets>
+			  <AbsInset left="5" right="5" top="5" bottom="5"/>
+		  </BackgroundInsets>
+	  </Backdrop>
+	  <Frames>
+		  <Button name="$parentTitle">
+			  <Size>
+				  <AbsDimension x="100" y="20" /> 
+			  </Size>
+			  <Anchors>
+				  <Anchor point="TOP">
+					  <Offset>
+						  <AbsDimension x="0" y="-7" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+			  <Scripts>
+				  <OnEnter>
+					  PallyPowerConfig_ShowCredits()
+				  </OnEnter> 
+				  <OnLeave>
+					  HideUIPanel(GameTooltip);
+				  </OnLeave> 
+          			  <OnMouseDown>
+					  PallyPowerConfigFrame_MouseDown(arg1)
+				  </OnMouseDown>
+				  <OnMouseUp>
+					  PallyPowerConfigFrame_MouseUp()
+				  </OnMouseUp>
+				  <OnUpdate>
+					  PallyPowerConfigGrid_Update()
+				  </OnUpdate>
+			  </Scripts>
+			  <Layers>
+				  <Layer level="OVERLAY">
+					  <FontString name="$parentText" inherits="GameFontNormal" text="Pally Power" justifyH="CENTER">
+						  <Size>
+							  <AbsDimension x="100" y="12" /> 
+						  </Size>
+						  <Anchors>
+							  <Anchor point="LEFT">
+								  <Offset>
+									  <AbsDimension x="5" y="0" /> 
+								  </Offset>
+							  </Anchor>
+						  </Anchors>
+					  </FontString>
+				  </Layer>
+			  </Layers>
+		  </Button>
+		  <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+			  <Anchors>
+				  <Anchor point="TOPRIGHT">
+					  <Offset>
+						  <AbsDimension x="2" y="2" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+		  </Button>
+		  <Button name="$parentRefresh" inherits="GameMenuButtonTemplate" text="PALLYPOWER_REFRESH" hidden="false">
+			  <Size>
+				  <AbsDimension x="100" y="20" /> 
+			  </Size>
+			  <Anchors>
+				  <Anchor point="BOTTOMRIGHT">
+					  <Offset>
+						  <AbsDimension x="-7" y="7" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+			  <Scripts>
+				  <OnClick>
+					  PallyPowerConfig_Refresh()
+				  </OnClick> 
+			  </Scripts>
+		  </Button>
+		  <Button name="$parentClear" inherits="GameMenuButtonTemplate" text="PALLYPOWER_CLEAR" hidden="false">
+			  <Size>
+				  <AbsDimension x="100" y="20" /> 
+			  </Size>
+			  <Anchors>
+				  <Anchor point="BOTTOMRIGHT" relativeTo="$parentRefresh" relativePoint="BOTTOMLEFT">
+					  <Offset>
+						  <AbsDimension x="-7" y="0" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+			  <Scripts>
+				  <OnClick>
+					  PallyPowerConfig_Clear()
+				  </OnClick> 
+			  </Scripts>
+		  </Button>
+		  <Button name="$parentAutoAssign" inherits="GameMenuButtonTemplate" text="PALLYPOWER_AUTOASSIGN" hidden="false">
+			  <Size>
+				  <AbsDimension x="100" y="20" /> 
+			  </Size>
+			  <Anchors>
+				  <Anchor point="BOTTOMRIGHT" relativeTo="$parentClear" relativePoint="BOTTOMLEFT">
+					  <Offset>
+						  <AbsDimension x="-7" y="0" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+			  <Scripts>
+				  <OnClick>
+					  PallyPower:AutoAssign();
+				  </OnClick> 
+			  </Scripts>
+		  </Button>
+		  <Button name="$parentOptions" inherits="GameMenuButtonTemplate" text="PALLYPOWER_OPTIONS" hidden="false">
+			  <Size>
+				  <AbsDimension x="100" y="20" /> 
+			  </Size>
+			  <Anchors>
+				  <Anchor point="BOTTOMRIGHT" relativeTo="$parentAutoAssign" relativePoint="BOTTOMLEFT">
+					  <Offset>
+						  <AbsDimension x="-7" y="0" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+			  <Scripts>
+				  <OnClick>
+					  PallyPower:DewClick();
+				  </OnClick> 
+			  </Scripts>
+		  </Button>
+		  <CheckButton name="$parentFreeAssign" inherits="OptionsCheckButtonTemplate">
+			  <Anchors>
+				  <Anchor point="BOTTOMLEFT">
+					  <Offset>
+						  <AbsDimension x="4" y="0" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+			  <Scripts>
+				  <OnClick>
+					  PallyPower.opt.freeassign = self:GetChecked();
+					  if PallyPower.opt.freeassign then
+						  PallyPower:SendMessage("FREEASSIGN YES")
+					  else
+						  PallyPower:SendMessage("FREEASSIGN NO")
+					  end
+				  </OnClick>
+			  </Scripts>
+		  </CheckButton>
+      <Frame name="$parentAuraGroup1" inherits="AuraGroupTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="136" y="-25" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentClassGroup1" inherits="ClassGroupTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT"  relativeTo="$parentAuraGroup1" relativePoint="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="2" y="0" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentClassGroup2" inherits="ClassGroupTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentClassGroup1" relativePoint="TOPRIGHT">
+					  <Offset>
+						  <AbsDimension x="2" y="0" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentClassGroup3" inherits="ClassGroupTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentClassGroup2" relativePoint="TOPRIGHT">
+					  <Offset>
+						  <AbsDimension x="2" y="0" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentClassGroup4" inherits="ClassGroupTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentClassGroup3" relativePoint="TOPRIGHT">
+					  <Offset>
+						  <AbsDimension x="2" y="0" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentClassGroup5" inherits="ClassGroupTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentClassGroup4" relativePoint="TOPRIGHT">
+					  <Offset>
+						  <AbsDimension x="2" y="0" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentClassGroup6" inherits="ClassGroupTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentClassGroup5" relativePoint="TOPRIGHT">
+					  <Offset>
+						  <AbsDimension x="2" y="0" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentClassGroup7" inherits="ClassGroupTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentClassGroup6" relativePoint="TOPRIGHT">
+					  <Offset>
+						  <AbsDimension x="2" y="0" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentClassGroup8" inherits="ClassGroupTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentClassGroup7" relativePoint="TOPRIGHT">
+					  <Offset>
+						  <AbsDimension x="2" y="0" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentClassGroup9" inherits="ClassGroupTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentClassGroup8" relativePoint="TOPRIGHT">
+					  <Offset>
+						  <AbsDimension x="2" y="0" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentClassGroup10" inherits="ClassGroupTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentClassGroup9" relativePoint="TOPRIGHT">
+					  <Offset>
+						  <AbsDimension x="2" y="0" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentClassGroup11" inherits="ClassGroupTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentClassGroup10" relativePoint="TOPRIGHT">
+					  <Offset>
+						  <AbsDimension x="2" y="0" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentPlayer1" inherits="UserTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT">
+					  <Offset>
+						  <AbsDimension x="8" y="-217" /> 
+					  </Offset>
+				  </Anchor>
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentPlayer2" inherits="UserTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentPlayer1" relativePoint="BOTTOMLEFT" /> 
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentPlayer3" inherits="UserTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentPlayer2" relativePoint="BOTTOMLEFT" /> 
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentPlayer4" inherits="UserTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentPlayer3" relativePoint="BOTTOMLEFT" /> 
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentPlayer5" inherits="UserTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentPlayer4" relativePoint="BOTTOMLEFT" /> 
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentPlayer6" inherits="UserTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentPlayer5" relativePoint="BOTTOMLEFT" /> 
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentPlayer7" inherits="UserTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentPlayer6" relativePoint="BOTTOMLEFT" /> 
+			  </Anchors>
+		  </Frame>
+		  <Frame name="$parentPlayer8" inherits="UserTemplate">
+			  <Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parentPlayer7" relativePoint="BOTTOMLEFT" /> 
+			  </Anchors>
+		  </Frame>
+	  </Frames>
+	  <Layers>
+		  <Layer level="OVERLAY">
+			  <FontString name="$parentFreeAssignText" inherits="GameFontHighlightSmall" text="PALLYPOWER_FREEASSIGN" justifyH="LEFT">
+				  <Size>
+					  <AbsDimension x="100" y="16" /> 
+				  </Size>
+				  <Anchors>
+					  <Anchor point="BOTTOMLEFT" relativeTo="PallyPowerConfigFrame" relativePoint="BOTTOMLEFT"> 
+						  <Offset>
+							  <AbsDimension x="33" y="9" /> 
+						  </Offset>
+					  </Anchor>
+				  </Anchors>
+			  </FontString>
+		  </Layer>
+	  </Layers>
+	  <Scripts>
+		  <OnMouseUp>
+			  PallyPowerConfigFrame_MouseUp()
+		  </OnMouseUp> 
+		  <OnMouseDown>
+			  PallyPowerConfigFrame_MouseDown(arg1)
+		  </OnMouseDown> 
+		  <OnHide>
+			  if ( self.isMoving ) then 
+				  self:StopMovingOrSizing(); 
+				  self.isMoving = false;
+			  end
+		  </OnHide> 
+	  </Scripts>
+  </Frame>
+</Ui>

@@ -1,0 +1,37 @@
+﻿## Interface: 30300
+## Author: Aznamir
+## Title: PallyPower
+## Version: v3.2.20 
+## Notes: Raid/Party Paladin buffs
+## Notes-esES: Buffs de Paladín para Grupo/Banda
+## Notes-zhCN: 圣骑士祝福管理
+## DefaultState: enabled
+## Dependencies:
+## OptionalDeps: Ace2, RosterLib, DewdropLib
+## X-Category: Paladin
+## X-Embeds: Ace2, RosterLib, DewdropLib
+## X-RelSite-Curse: 3738
+## SavedVariables: PallyPowerDB, PallyPower_Assignments, PallyPower_NormalAssignments, PallyPower_AuraAssignments, PallyPower_SavedPresets
+## X-Curse-Packaged-Version: v3.2.20
+## X-Curse-Project-Name: PallyPower
+## X-Curse-Project-ID: pally-power
+## X-Curse-Repository-ID: wow/pally-power/mainline
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+locale\enUS.lua
+locale\ruRU.lua
+locale\deDE.lua
+locale\frFR.lua
+locale\koKR.lua
+locale\esES.lua
+locale\esMX.lua
+locale\zhCN.lua
+locale\zhTW.lua
+
+PallyPower.lua
+PallyPowerValues.lua
+PallyPowerOptions.lua
+PallyPower.xml
