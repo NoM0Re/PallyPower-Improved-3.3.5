@@ -50,6 +50,8 @@ L:RegisterTranslations("koKR", function() return
 	BLINKPA_DESC = "플래시 플레이어/자동 버튼",
 	CLASSC = "직업 색상",
 	CLASSC_DESC = "직업 색상",
+	CLASSCN = "클래스 색상 이름",
+	CLASSCN_DESC = "클래스 색상 이름클래스 색상 이름",
 	HIDEDH = "이동 버튼 숨기기",
 	HIDEDH_DESC = "이동 버튼 표시/숨기기",
 	HIDEPB = "플레이어 버튼 숨기기",

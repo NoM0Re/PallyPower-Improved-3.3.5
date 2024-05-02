@@ -29,9 +29,19 @@ This add-on provides an interactive and easy to use interface that allows you to
 
 **This version of PallyPower for WoW 3.3.5a introduces several new features:** <br/>
 
+**New Options:**<br/>
+
 - **Auto-Hide Player Buttons**: New option to automatically hide player buttons after a set time, optimizing UI space.<br/>
-- **Class Buttons in Class Colors**: Class buttons now display in respective class colors, enhancing visual clarity.<br/>
-- **Flash Effect in Instances**: Added flash effect to highlight players without buffs in instanced content (Arena, BG, Raid, Dungeon).<br/>
-- **Class Buttons in Class Colors**: Class buttons now display in respective class colors, enhancing visual clarity.<br/>
+- **Class Buttons in Class Colors**: New option to display class buttons now in respective class colors, enhancing visual clarity.<br/>
+- **Flash Effect in Instances**: New option to add a flash effect to highlight players without buffs in instanced content (Arena, BG, Raid, Dungeon).<br/>
+- **Player Button Names in Class Colors**: New option to display player buttons names now in respective class colors, enhancing visual clarity.<br/>
+
+**Hotfixes:**<br/>
+
 - **In-Combat Class Buff Button**: Added functionality that enables players to click the class buff buttons during combat.<br/>
-A designated player for each class will be determined before combat, if the player/s are in range and alive they will receive the buff/s while combat now.
+A designated player for each class will be determined before combat, if the player/s are in range and alive they will receive the buff/s while combat now, otherwise you'll still need to use the Player Buttons.<br/>
+
+# **Installation:**
+1. [Download here](https://github.com/NoM0Re/PallyPower-Improved-3.3.5/archive/refs/heads/main.zip)<br/><br/>
+2. Unzip and take folder **PallyPower** (not the PallyPower-Improved-3.3.5-main)<br/><br/>
+3. Put it in your WoW/Interface/Addons folder<br/><br/><br/>

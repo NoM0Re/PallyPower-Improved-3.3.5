@@ -50,6 +50,8 @@ L:RegisterTranslations("zhTW", function() return
 	BLINKPA_DESC = "Flash 播放器/自動按鈕",
 	CLASSC = "職業顏色",
 	CLASSC_DESC = "職業顏色",
+	CLASSCN = "類別顏色名稱",
+	CLASSCN_DESC = "類別顏色名稱",
 	HIDEDH = "隱藏拖動錨點",
 	HIDEDH_DESC = "顯示/隱藏拖動錨點",
 	HIDEPB = "隱藏玩家按鈕",

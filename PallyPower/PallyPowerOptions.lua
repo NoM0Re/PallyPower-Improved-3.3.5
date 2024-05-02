@@ -224,6 +224,17 @@ PallyPower.options = {
 						[true] = L["ENABLED"]
 					},
 				},
+				nameclasscolor = {
+					name = L["CLASSCN"],
+					type = "toggle",
+					desc = L["CLASSCN_DESC"],
+					get = "ToggleNameClassColor",
+					set = "ToggleNameClassColor",
+					map = {
+						[false]=L["DISABLED"],
+						[true] = L["ENABLED"]
+					},
+				},
 				handle = {
 					name = L["HIDEDH"],
 					type = "toggle",
@@ -511,6 +522,12 @@ end
 function PallyPower:ToggleClassColor(value)
 	if type(value) == "nil" then return self.opt.classColor end
 	self.opt.classColor = value;
+	PallyPower:UpdateLayout();
+end
+
+function PallyPower:ToggleNameClassColor(value)
+	if type(value) == "nil" then return self.opt.nameClassColor end
+	self.opt.nameClassColor = value;
 	PallyPower:UpdateLayout();
 end
 

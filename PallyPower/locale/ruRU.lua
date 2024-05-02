@@ -50,6 +50,8 @@ L:RegisterTranslations("ruRU", function() return
 	BLINKPA_DESC = "Flash Player/кнопка «Авто»",
 	CLASSC = "Цвет класса",
 	CLASSC_DESC = "Цвет класса",
+	CLASSCN = "Названия цветов классов",
+	CLASSCN_DESC = "Названия цветов классов",
 	HIDEDH = "Скрыть якорь",
 	HIDEDH_DESC = "Показать/Скрыть якорь",
 	HIDEPB = "Скрыть кнопки игроков",

@@ -2238,6 +2238,11 @@ function PallyPower:UpdatePButton(button, baseName, classID, playerID)
 			end
 		end
 		name:SetText(unit.name)
+		if self.opt.nameClassColor then
+			self:ApplyTextColor(name, PallyPower:GetClassColor(self.ClassID[classID], {r=1, g=1, b=1, t=1}))
+		else
+			self:ApplyTextColor(name, {r=1, g=1, b=1, t=1})
+		end
 	else
 		self:ApplyBackdrop(button, self.opt.cBuffGood)
 		buffIcon:SetAlpha(0)
@@ -2697,6 +2702,11 @@ end
 -- button coloring: preset
 function PallyPower:ApplyBackdrop(button, preset)
 	button:SetBackdropColor(preset["r"], preset["g"], preset["b"], preset["t"])
+end
+
+-- text coloring: preset
+function PallyPower:ApplyTextColor(fontstring, preset)
+	fontstring:SetTextColor(preset["r"], preset["g"], preset["b"], preset["t"])
 end
 
 function PallyPower:SetSeal(seal)

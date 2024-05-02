@@ -50,6 +50,8 @@ L:RegisterTranslations("zhCN", function() return
 	BLINKPA_DESC = "闪烁玩家/自动按钮",
 	CLASSC = "职业着色",
 	CLASSC_DESC = "职业着色",
+	CLASSCN = "类别颜色名称",
+	CLASSCN_DESC = "类别颜色名称",
 	HIDEDH = "隐藏拖动柄",
 	HIDEDH_DESC = "显示/隐藏拖动柄",
 	HIDEPB = "隐藏玩家按钮",

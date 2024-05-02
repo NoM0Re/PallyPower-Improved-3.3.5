@@ -41,6 +41,7 @@ PALLYPOWER_DEFAULT_VALUES = {
 		hidePlayerButtons = false,
 		hideClassButtons = true,
 		classColor = false,
+		nameClassColor = false,
 		flashBuffAutoButtons = true,
 		PlainButtons = false,
 		HideKeyText = false,
