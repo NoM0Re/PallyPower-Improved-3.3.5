@@ -1880,8 +1880,11 @@ end
 function PallyPower:GetClassColor(classFilename, fallback)
     local color = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[classFilename]
     if color and color.r and color.g and color.b then
-        return { r = color.r, g = color.g, b = color.b, a = 0.5}
+        return { r = color.r, g = color.g, b = color.b, a = 1}
     end
+	if classFilename == "PET" then
+		return { r = 1, g = 1, b = 0, a = 1}
+	end
     -- Fallback
     return fallback
 end
@@ -2238,6 +2241,7 @@ function PallyPower:UpdatePButton(button, baseName, classID, playerID)
 			end
 		end
 		name:SetText(unit.name)
+
 		if self.opt.nameClassColor then
 			self:ApplyTextColor(name, PallyPower:GetClassColor(self.ClassID[classID], {r=1, g=1, b=1, t=1}))
 		else
