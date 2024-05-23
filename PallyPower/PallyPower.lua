@@ -2049,29 +2049,35 @@ function PallyPower:UpdateButton(button, baseName, classID)
 	local flash = self.opt.flashBuffAutoButtons
 	local instanced = IsInInstance()
 	if (nhave == 0) then
-		if flash and instanced then
-			StartAnimation(button)
-		elseif flash and not instanced then
-			StopAnimation(button)
-			self:ApplyBackdrop(button, self.opt.cBuffNeedAll)
+		if flash then
+			if instanced then
+				StartAnimation(button)
+			else
+				StopAnimation(button)
+				self:ApplyBackdrop(button, self.opt.cBuffNeedAll)
+			end
 		else
 			self:ApplyBackdrop(button, self.opt.cBuffNeedAll)
 		end
 	elseif (nneed > 0) then
-		if flash and instanced then
-			StartAnimation(button)
-		elseif flash and not instanced then
-			StopAnimation(button)
-			self:ApplyBackdrop(button, self.opt.cBuffNeedSome)
+		if flash then
+			if instanced then
+				StartAnimation(button)
+			else
+				StopAnimation(button)
+				self:ApplyBackdrop(button, self.opt.cBuffNeedSome)
+			end
 		else
 			self:ApplyBackdrop(button, self.opt.cBuffNeedSome)
 		end
 	elseif (nspecial > 0) then
-		if flash and instanced then
-			StartAnimation(button)
-		elseif flash and not instanced then
-			StopAnimation(button)
-			self:ApplyBackdrop(button, self.opt.cBuffNeedSpecial)
+		if flash then
+			if instanced then
+				StartAnimation(button)
+			else
+				StopAnimation(button)
+				self:ApplyBackdrop(button, self.opt.cBuffNeedSpecial)
+			end
 		else
 			self:ApplyBackdrop(button, self.opt.cBuffNeedSpecial)
 		end
@@ -2299,29 +2305,35 @@ function PallyPower:ButtonsUpdate()
 	local flash = self.opt.flashBuffAutoButtons
 	local instanced = IsInInstance()
 	if (sumnhave == 0) then
-		if flash and instanced then
-			StartAnimation(autobutton)
-		elseif flash and not instanced then
-			StopAnimation(autobutton)
-			self:ApplyBackdrop(autobutton, self.opt.cBuffNeedSome)
+		if flash then
+			if instanced then
+				StartAnimation(autobutton)
+			else
+				StopAnimation(autobutton)
+				self:ApplyBackdrop(autobutton, self.opt.cBuffNeedSome)
+			end
 		else
 			self:ApplyBackdrop(autobutton, self.opt.cBuffNeedSome)
 		end
 	elseif (sumnneed > 0) then
-		if flash and instanced then
-			StartAnimation(autobutton)
-		elseif flash and not instanced then
-			StopAnimation(autobutton)
-			self:ApplyBackdrop(autobutton, self.opt.cBuffNeedSome)
+		if flash then
+			if instanced then
+				StartAnimation(autobutton)
+			else
+				StopAnimation(autobutton)
+				self:ApplyBackdrop(autobutton, self.opt.cBuffNeedSome)
+			end
 		else
 			self:ApplyBackdrop(autobutton, self.opt.cBuffNeedSome)
 		end
 	elseif (sumnspecial > 0) then
-		if flash and instanced then
-			StartAnimation(autobutton)
-		elseif flash and not instanced then
-			StopAnimation(autobutton)
-			self:ApplyBackdrop(autobutton, self.opt.cBuffNeedSpecial)
+		if flash then
+			if instanced then
+				StartAnimation(autobutton)
+			else
+				StopAnimation(autobutton)
+				self:ApplyBackdrop(autobutton, self.opt.cBuffNeedSpecial)
+			end
 		else
 			self:ApplyBackdrop(autobutton, self.opt.cBuffNeedSpecial)
 		end
