@@ -33,7 +33,7 @@ do
 			return {}
 		end
 	end
-	
+
 	function del(t)
 		for k in pairs(t) do
 			t[k] = nil
@@ -61,6 +61,10 @@ end
 setmetatable(LegitimateUnits, {__index=function(self, key)
 	if type(key) ~= "string" then
 		return false
+	end
+    if key:match("^nameplate%d+$") then
+        self[key] = true
+        return true
 	end
 	if key:find("target$") and not key:find("^npc") then
 		local value = self[key:sub(1, -7)]
