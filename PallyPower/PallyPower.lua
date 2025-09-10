@@ -249,10 +249,12 @@ function PallyPowerGrid_NormalBlessingMenu(btn, mouseBtn, pname, class)
 				suf = ""
 			end
 			local blessings = {[1] = sformat("%s%s%s", pre, "(none)", suf)}
+			local orderIndex = 2
 			for index, blessing in ipairs(PallyPower.Spells) do
 				if PallyPower:CanBuff(pally, index) then
 					--if PallyPower:NeedsBuff(class, index, pname) then
-						blessings[index+1] = sformat("%s%s%s", pre, blessing, suf)
+						blessings[orderIndex] = sformat("%s%s%s", pre, blessing, suf)
+						orderIndex = orderIndex + 1
 					--end
 				end
 			end
