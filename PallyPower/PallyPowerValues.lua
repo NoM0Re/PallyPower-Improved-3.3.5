@@ -3,7 +3,7 @@ local L = AceLibrary("AceLocale-2.2"):new("PallyPower");
 
 PallyPower.commPrefix = "PLPWR";
 
-PALLYPOWER_MAXCLASSES = (PallyPower.IsVanilla and 9) or (PallyPower.IsTBC and 10) or (PallyPower.IsWrath and 11);
+PALLYPOWER_MAXCLASSES = (PallyPower.IsVanilla and 9) or (PallyPower.IsTBC and 10) or 11;
 PALLYPOWER_MAXPERCLASS = 8;
 PALLYPOWER_NORMALBLESSINGDURATION = (PallyPower.IsTBC or PallyPower.IsWrath) and 10*60 or 5*60;
 PALLYPOWER_GREATERBLESSINGDURATION = (PallyPower.IsTBC or PallyPower.IsWrath) and 30*60 or 15*60;
@@ -29,7 +29,7 @@ PALLYPOWER_DEFAULT_VALUES = {
 	},
 	display = {
 		-- buttons
-		rows = (PallyPower.IsVanilla and 9) or (PallyPower.IsTBC and 10) or (PallyPower.IsWrath and 11),
+		rows = (PallyPower.IsVanilla and 9) or (PallyPower.IsTBC and 10) or 11,
 		columns = 1,
 		gapping = -1,
 		buttonWidth = 100,
@@ -105,7 +105,7 @@ PallyPower.ClassID = PallyPower.IsVanilla and {
 	[8] = "WARLOCK",
 	[9] = "SHAMAN",
 	[10] = "PET",
-} or PallyPower.IsWrath and { 
+} or { 
 	[1] = "WARRIOR",
 	[2] = "ROGUE",
 	[3] = "PRIEST",
@@ -140,7 +140,7 @@ PallyPower.ClassToID = PallyPower.IsVanilla and {
 	["WARLOCK"]		= 8,
 	["SHAMAN"]		= 9,
 	["PET"]			= 10,
-} or PallyPower.IsWrath and {
+} or {
 	["WARRIOR"] 	= 1,
 	["ROGUE"] 		= 2,
 	["PRIEST"] 		= 3,
@@ -175,7 +175,7 @@ PallyPower.ClassIcons = PallyPower.IsVanilla and {
 	[8] = "Interface\\AddOns\\PallyPower\\Icons\\Warlock",
 	[9] = "Interface\\AddOns\\PallyPower\\Icons\\Shaman",
 	[10] = "Interface\\AddOns\\PallyPower\\Icons\\Pet",
-} or PallyPower.IsWrath and {
+} or {
 	[1] = "Interface\\AddOns\\PallyPower\\Icons\\Warrior",
 	[2] = "Interface\\AddOns\\PallyPower\\Icons\\Rogue",
 	[3] = "Interface\\AddOns\\PallyPower\\Icons\\Priest",
@@ -197,7 +197,7 @@ PallyPower.BlessingIcons = PallyPower.IsVanillaOrTBC and {
 	[4] = "Interface\\Icons\\Spell_Holy_GreaterBlessingofSalvation", -- Greater Salvation
 	[5] = "Interface\\Icons\\Spell_Holy_GreaterBlessingofLight", -- Greater Light
 	[6] = "Interface\\Icons\\Spell_Holy_GreaterBlessingofSanctuary", -- Greater Sanctuary
-} or PallyPower.IsWrath and {
+} or {
     [-1] = "",
 	[1] = "Interface\\Icons\\Spell_Holy_GreaterBlessingofWisdom",
 	[2] = "Interface\\Icons\\Spell_Holy_GreaterBlessingofKings",
@@ -213,7 +213,7 @@ PallyPower.NormalBlessingIcons = PallyPower.IsVanillaOrTBC and {
 	[4] = "Interface\\Icons\\Spell_Holy_SealOfSalvation", -- Salvation
 	[5] = "Interface\\Icons\\Spell_Holy_PrayerOfHealing02", -- Light
 	[6] = "Interface\\Icons\\Spell_Nature_LightningShield", -- Sanctuary
-} or PallyPower.IsWrath and {
+} or {
     [-1] = "",
 	[1] = "Interface\\Icons\\Spell_Holy_SealOfWisdom",
 	[2] = "Interface\\Icons\\Spell_Holy_FistOfJustice",
@@ -240,7 +240,7 @@ PallyPower.AuraIcons = PallyPower.IsVanilla and {
 	[6] = "Interface\\Icons\\Spell_Fire_SealOfFire",
 	[7] = "Interface\\Icons\\Spell_Holy_MindVision",
 	[8] = "Interface\\Icons\\Spell_Holy_CrusaderAura",
-} or PallyPower.IsWrath and {
+} or {
     [-1] = "",
 	[1] = "Interface\\Icons\\Spell_Holy_DevotionAura",
 	[2] = "Interface\\Icons\\Spell_Holy_AuraOfLight",
@@ -272,7 +272,7 @@ PallyPower.Spells = PallyPower.IsVanillaOrTBC and {
 	[4] = GetSpellInfo(1038),	--BS["Blessing of Salvation"],
 	[5] = GetSpellInfo(19977),	--BS["Blessing of Light"],
 	[6] = GetSpellInfo(20911),	--BS["Blessing of Sanctuary"],
-} or PallyPower.IsWrath and {
+} or {
 	[0] = "",
 	[1] = GetSpellInfo(19742),	--BS["Blessing of Wisdom"],
 	[2] = GetSpellInfo(19740),	--BS["Blessing of Might"],
@@ -288,7 +288,7 @@ PallyPower.GSpells = PallyPower.IsVanillaOrTBC and {
 	[4] = GetSpellInfo(25895),	--BS["Greater Blessing of Salvation"],
 	[5] = GetSpellInfo(25890),	--BS["Greater Blessing of Light"],
 	[6] = GetSpellInfo(25899),	--BS["Greater Blessing of Sanctuary"],
-} or PallyPower.IsWrath and {
+} or {
 	[0] = "",
 	[1] = GetSpellInfo(25894),	--BS["Greater Blessing of Wisdom"],
 	[2] = GetSpellInfo(25782),	--BS["Greater Blessing of Might"],
@@ -347,7 +347,7 @@ PallyPower.Auras = PallyPower.IsVanilla and {
 	[6] = GetSpellInfo(19891), --BS["Fire Resistance Aura"],
 	[7] = GetSpellInfo(20218), --BS["Sanctity Aura"],
 	[8] = GetSpellInfo(32223), --BS["Crusader Aura"],
-} or PallyPower.IsWrath and {
+} or {
 	[0] = "",
 	[1] = GetSpellInfo(465), --BS["Devotion Aura"],
 	[2] = GetSpellInfo(7294), --BS["Retribution Aura"],
@@ -498,7 +498,7 @@ PallyPower.Templates = PallyPower.IsVanilla and {
 		[9]=  {1, 2, 4, 3, 5, 6},
 		[10]=  {2, 1, 4, 3, 5, 6},
 	},
-} or PallyPower.IsWrath and {
+} or {
 	[1] = {
 		[1]=  {3},
 		[2]=  {3},
@@ -1862,7 +1862,7 @@ PallyPower.Layouts = PallyPower.IsVanilla and {
     			rf = {x = 2, y = 0},
 		 		au = {x = 1, y = 0},
 	},
-} or PallyPower.IsWrath and {
+} or {
 	["Layout 1"] = { 	
 					c = {
 							[1] = {	

@@ -11,7 +11,7 @@
 ## X-Category: Paladin
 ## X-Embeds: Ace2, RosterLib, DewdropLib
 ## X-RelSite-Curse: 3738
-## SavedVariables: PallyPowerDB, PallyPower_Assignments, PallyPower_NormalAssignments, PallyPower_AuraAssignments, PallyPower_SavedPresets
+## SavedVariables: PallyPowerDB, PallyPower_Assignments_Vanilla, PallyPower_Assignments_TBC, PallyPower_Assignments_Wrath, PallyPower_NormalAssignments_Vanilla, PallyPower_NormalAssignments_TBC, PallyPower_NormalAssignments_Wrath, PallyPower_AuraAssignments_Vanilla, PallyPower_AuraAssignments_TBC, PallyPower_AuraAssignments_Wrath, PallyPower_SavedPresets
 ## X-Curse-Packaged-Version: v3.2.20
 ## X-Curse-Project-Name: PallyPower
 ## X-Curse-Project-ID: pally-power

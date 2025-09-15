@@ -13,9 +13,18 @@ local IsInInstance = IsInInstance
 
 local classlist, classes = {}, {}
 LastCast = {}
-PallyPower_Assignments = {}
-PallyPower_NormalAssignments = {}
-PallyPower_AuraAssignments = {}
+
+PallyPower_Assignments_Vanilla = {}
+PallyPower_Assignments_TBC = {}
+PallyPower_Assignments_Wrath = {}
+
+PallyPower_NormalAssignments_Vanilla = {}
+PallyPower_NormalAssignments_TBC = {}
+PallyPower_NormalAssignments_Wrath = {}
+
+PallyPower_AuraAssignments_Vanilla = {}
+PallyPower_AuraAssignments_TBC = {}
+PallyPower_AuraAssignments_Wrath = {}
 
 PallyPower_SavedPresets = {}
 
@@ -166,12 +175,29 @@ end
 --
 
 function PallyPower:Purge()
-	PallyPower_Assignments = nil
-	PallyPower_NormalAssignments = nil
-	PallyPower_AuraAssignments = nil
-	PallyPower_Assignments = {}
-	PallyPower_NormalAssignments = {}
-	PallyPower_AuraAssignments = {}
+	PallyPower_Assignments_Vanilla = nil
+	PallyPower_Assignments_TBC = nil
+	PallyPower_Assignments_Wrath = nil
+
+	PallyPower_NormalAssignments_Vanilla = nil
+	PallyPower_NormalAssignments_TBC = nil
+	PallyPower_NormalAssignments_Wrath = nil
+
+	PallyPower_AuraAssignments_Vanilla = nil
+	PallyPower_AuraAssignments_TBC = nil
+	PallyPower_AuraAssignments_Wrath = nil
+
+	PallyPower_Assignments_Vanilla = {}
+	PallyPower_Assignments_TBC = {}
+	PallyPower_Assignments_Wrath = {}
+
+	PallyPower_NormalAssignments_Vanilla = {}
+	PallyPower_NormalAssignments_TBC = {}
+	PallyPower_NormalAssignments_Wrath = {}
+
+	PallyPower_AuraAssignments_Vanilla = {}
+	PallyPower_AuraAssignments_TBC = {}
+	PallyPower_AuraAssignments_Wrath = {}
 end
 
 function PallyPowerConfig_Clear()
@@ -228,12 +254,32 @@ function PallyPowerConfig_ShowCredits()
 end
 
 function GetNormalBlessings(pname, class, tname)
-	if PallyPower_NormalAssignments[pname] and PallyPower_NormalAssignments[pname][class] then
-		local blessing = PallyPower_NormalAssignments[pname][class][tname]
-		if blessing then
-			return PallyPower.Spells[blessing]
-		else
-			return "(none)"
+	if PallyPower.IsVanilla then
+		if PallyPower_NormalAssignments_Vanilla[pname] and PallyPower_NormalAssignments_Vanilla[pname][class] then
+			local blessing = PallyPower_NormalAssignments_Vanilla[pname][class][tname]
+			if blessing then
+				return PallyPower.Spells[blessing]
+			else
+				return "(none)"
+			end
+		end
+	elseif PallyPower.IsTBC then
+		if PallyPower_NormalAssignments_TBC[pname] and PallyPower_NormalAssignments_TBC[pname][class] then
+			local blessing = PallyPower_NormalAssignments_TBC[pname][class][tname]
+			if blessing then
+				return PallyPower.Spells[blessing]
+			else
+				return "(none)"
+			end
+		end
+	else
+		if PallyPower_NormalAssignments_Wrath[pname] and PallyPower_NormalAssignments_Wrath[pname][class] then
+			local blessing = PallyPower_NormalAssignments_Wrath[pname][class][tname]
+			if blessing then
+				return PallyPower.Spells[blessing]
+			else
+				return "(none)"
+			end
 		end
 	end
 end
@@ -248,15 +294,37 @@ local function GetNormalBlessingsIndexFromName(blessing)
 end
 
 function SetNormalBlessings(pname, class, tname, value)
-	if not PallyPower_NormalAssignments[pname] then
-		PallyPower_NormalAssignments[pname] = {}
+	if PallyPower.IsVanilla then
+		if not PallyPower_NormalAssignments_Vanilla[pname] then
+			PallyPower_NormalAssignments_Vanilla[pname] = {}
+		end
+		if not PallyPower_NormalAssignments_Vanilla[pname][class] then
+			PallyPower_NormalAssignments_Vanilla[pname][class] = {}
+		end
+		PallyPower:SendMessage("NASSIGN "..pname.." "..class.." "..tname.." "..value)  
+		if value == 0 then value = nil end
+		PallyPower_NormalAssignments_Vanilla[pname][class][tname] = value
+	elseif PallyPower.IsTBC then
+		if not PallyPower_NormalAssignments_TBC[pname] then
+			PallyPower_NormalAssignments_TBC[pname] = {}
+		end
+		if not PallyPower_NormalAssignments_TBC[pname][class] then
+			PallyPower_NormalAssignments_TBC[pname][class] = {}
+		end
+		PallyPower:SendMessage("NASSIGN "..pname.." "..class.." "..tname.." "..value)  
+		if value == 0 then value = nil end
+		PallyPower_NormalAssignments_TBC[pname][class][tname] = value
+	else
+		if not PallyPower_NormalAssignments_Wrath[pname] then
+			PallyPower_NormalAssignments_Wrath[pname] = {}
+		end
+		if not PallyPower_NormalAssignments_Wrath[pname][class] then
+			PallyPower_NormalAssignments_Wrath[pname][class] = {}
+		end
+		PallyPower:SendMessage("NASSIGN "..pname.." "..class.." "..tname.." "..value)  
+		if value == 0 then value = nil end
+		PallyPower_NormalAssignments_Wrath[pname][class][tname] = value
 	end
-	if not PallyPower_NormalAssignments[pname][class] then
-		PallyPower_NormalAssignments[pname][class] = {}
-	end
-	PallyPower:SendMessage("NASSIGN "..pname.." "..class.." "..tname.." "..value)  
-	if value == 0 then value = nil end
-	PallyPower_NormalAssignments[pname][class][tname] = value
 end
 
 function PallyPowerGrid_NormalBlessingMenu(btn, mouseBtn, pname, class)
@@ -317,9 +385,21 @@ function PallyPowerGrid_NormalBlessingMenu(btn, mouseBtn, pname, class)
 		dewdrop:Open(btn)
 	elseif (mouseBtn == "RightButton") then
 		for pally in pairs(AllPallys) do
-			if PallyPower_NormalAssignments[pally] and PallyPower_NormalAssignments[pally][class] and PallyPower_NormalAssignments[pally][class][pname] then
-				PallyPower_NormalAssignments[pally][class][pname] = nil
-				PallyPower:SendMessage("NASSIGN "..pally.." "..class.." "..pname.." 0")
+			if PallyPower.IsVanilla then
+				if PallyPower_NormalAssignments_Vanilla[pally] and PallyPower_NormalAssignments_Vanilla[pally][class] and PallyPower_NormalAssignments_Vanilla[pally][class][pname] then
+					PallyPower_NormalAssignments_Vanilla[pally][class][pname] = nil
+					PallyPower:SendMessage("NASSIGN "..pally.." "..class.." "..pname.." 0")
+				end
+			elseif PallyPower.IsTBC then
+				if PallyPower_NormalAssignments_TBC[pally] and PallyPower_NormalAssignments_TBC[pally][class] and PallyPower_NormalAssignments_TBC[pally][class][pname] then
+					PallyPower_NormalAssignments_TBC[pally][class][pname] = nil
+					PallyPower:SendMessage("NASSIGN "..pally.." "..class.." "..pname.." 0")
+				end
+			else
+				if PallyPower_NormalAssignments_Wrath[pally] and PallyPower_NormalAssignments_Wrath[pally][class] and PallyPower_NormalAssignments_Wrath[pally][class][pname] then
+					PallyPower_NormalAssignments_Wrath[pally][class][pname] = nil
+					PallyPower:SendMessage("NASSIGN "..pally.." "..class.." "..pname.." 0")
+				end
 			end
 		end
 	end
@@ -351,7 +431,13 @@ function PallyPowerGridButton_OnClick(btn, mouseBtn)
 	if not PallyPower:CanControl(pname) then return false end
 
 	if (mouseBtn == "RightButton") then
-		PallyPower_Assignments[pname][class] = 0
+		if PallyPower.IsVanilla then
+			PallyPower_Assignments_Vanilla[pname][class] = 0
+		elseif PallyPower.IsTBC then
+			PallyPower_Assignments_TBC[pname][class] = 0
+		else
+			PallyPower_Assignments_Wrath[pname][class] = 0
+		end
 		PallyPower:SendMessage("ASSIGN "..pname.." "..class.. " 0")
 	else
 		PallyPower:PerformCycle(pname, class)
@@ -458,8 +544,8 @@ function PallyPowerConfigGrid_Update()
 			local fname = "PallyPowerConfigFramePlayer" .. i
 
 			local SkillInfo = AllPallys[name]
-			local BuffInfo = PallyPower_Assignments[name]
-			local NormalBuffInfo = PallyPower_NormalAssignments[name]
+			local BuffInfo = (PallyPower.IsVanilla and PallyPower_Assignments_Vanilla[name]) or (PallyPower.IsTBC and PallyPower_Assignments_TBC[name]) or PallyPower_Assignments_Wrath[name]
+			local NormalBuffInfo = (PallyPower.IsVanilla and PallyPower_NormalAssignments_Vanilla[name]) or (PallyPower.IsTBC and PallyPower_NormalAssignments_TBC[name]) or PallyPower_NormalAssignments_Wrath[name]
 	
 			getglobal(fname .. "Name"):SetText(name)
 
@@ -527,7 +613,7 @@ function PallyPowerConfigGrid_Update()
 				end
 			end
 			
-			local aura = PallyPower_AuraAssignments[name]
+			local aura = (PallyPower.IsVanilla and PallyPower_AuraAssignments_Vanilla[name]) or (PallyPower.IsTBC and PallyPower_AuraAssignments_TBC[name]) or PallyPower_AuraAssignments_Wrath[name]
 			if ( aura and aura > 0 ) then
 				getglobal(fname.."Aura1Icon"):SetTexture(PallyPower.AuraIcons[aura])
 			else
@@ -585,7 +671,7 @@ function PallyPower:Report(type)
 					list[i] = 0
 				end
 				for id = 1, PALLYPOWER_MAXCLASSES do
-					local bid = PallyPower_Assignments[name][id]
+					local bid = (PallyPower.IsVanilla and PallyPower_Assignments_Vanilla[name][id]) or (PallyPower.IsTBC and PallyPower_Assignments_TBC[name][id]) or PallyPower_Assignments_Wrath[name][id]
 					if bid and bid > 0 then
 						list[bid] = list[bid] + 1
 					end
@@ -620,17 +706,37 @@ function PallyPower:PerformCycle(name, class, skipzero)
 
 	if shift then class = 4 end
 
-	if not PallyPower_Assignments[name] then
-		PallyPower_Assignments[name] = { }
-	end
-
-	if not PallyPower_Assignments[name][class] then
-		cur=0
+	if PallyPower.IsVanilla then
+		if not PallyPower_Assignments_Vanilla[name] then
+			PallyPower_Assignments_Vanilla[name] = { }
+		end
+		if not PallyPower_Assignments_Vanilla[name][class] then
+			cur=0
+		else
+			cur=PallyPower_Assignments_Vanilla[name][class]
+		end
+		PallyPower_Assignments_Vanilla[name][class] = 0
+	elseif PallyPower.IsTBC then
+		if not PallyPower_Assignments_TBC[name] then
+			PallyPower_Assignments_TBC[name] = { }
+		end
+		if not PallyPower_Assignments_TBC[name][class] then
+			cur=0
+		else
+			cur=PallyPower_Assignments_TBC[name][class]
+		end
+		PallyPower_Assignments_TBC[name][class] = 0
 	else
-		cur=PallyPower_Assignments[name][class]
+		if not PallyPower_Assignments_Wrath[name] then
+			PallyPower_Assignments_Wrath[name] = { }
+		end
+		if not PallyPower_Assignments_Wrath[name][class] then
+			cur=0
+		else
+			cur=PallyPower_Assignments_Wrath[name][class]
+		end
+		PallyPower_Assignments_Wrath[name][class] = 0
 	end
-
-	PallyPower_Assignments[name][class] = 0
 
 	for test = cur+1, PALLYPOWER_MAXBLESSINGS+1 do
 		if PallyPower:CanBuff(name, test) and (PallyPower:NeedsBuff(class, test) or shift) then
@@ -647,34 +753,77 @@ function PallyPower:PerformCycle(name, class, skipzero)
 		end
 	end
 
-	if shift then
-		for test = 1, PALLYPOWER_MAXCLASSES do
-			PallyPower_Assignments[name][test] = cur
+	if PallyPower.IsVanilla then
+		if shift then
+			for test = 1, PALLYPOWER_MAXCLASSES do
+				PallyPower_Assignments_Vanilla[name][test] = cur
+			end
+			PallyPower:SendMessage("MASSIGN "..name.." "..cur)
+		else
+			PallyPower_Assignments_Vanilla[name][class] = cur
+			PallyPower:SendMessage("ASSIGN "..name.." "..class.." "..cur)
 		end
-		PallyPower:SendMessage("MASSIGN "..name.." "..cur)
+	elseif PallyPower.IsTBC then
+		if shift then
+			for test = 1, PALLYPOWER_MAXCLASSES do
+				PallyPower_Assignments_TBC[name][test] = cur
+			end
+			PallyPower:SendMessage("MASSIGN "..name.." "..cur)
+		else
+			PallyPower_Assignments_TBC[name][class] = cur
+			PallyPower:SendMessage("ASSIGN "..name.." "..class.." "..cur)
+		end
 	else
-		PallyPower_Assignments[name][class] = cur
-		PallyPower:SendMessage("ASSIGN "..name.." "..class.." "..cur)
+		if shift then
+			for test = 1, PALLYPOWER_MAXCLASSES do
+				PallyPower_Assignments_Wrath[name][test] = cur
+			end
+			PallyPower:SendMessage("MASSIGN "..name.." "..cur)
+		else
+			PallyPower_Assignments_Wrath[name][class] = cur
+			PallyPower:SendMessage("ASSIGN "..name.." "..class.." "..cur)
+		end
 	end
 end
 
 function PallyPower:PerformCycleBackwards(name, class, skipzero)
 	local shift=IsShiftKeyDown()
-
 	if shift then class=4 end
 
-	if not PallyPower_Assignments[name] then
-		PallyPower_Assignments[name] = { }
-	end
-
-	if not PallyPower_Assignments[name][class] then
-		cur=PALLYPOWER_MAXBLESSINGS+1
+	if PallyPower.IsVanilla then
+		if not PallyPower_Assignments_Vanilla[name] then
+			PallyPower_Assignments_Vanilla[name] = { }
+		end
+		if not PallyPower_Assignments_Vanilla[name][class] then
+			cur=PALLYPOWER_MAXBLESSINGS+1
+		else
+			cur=PallyPower_Assignments_Vanilla[name][class]
+			if cur == 0 or skipzero and cur == 1 then cur = PALLYPOWER_MAXBLESSINGS+1 end
+		end
+		PallyPower_Assignments_Vanilla[name][class] = 0
+	elseif PallyPower.IsTBC then
+		if not PallyPower_Assignments_TBC[name] then
+			PallyPower_Assignments_TBC[name] = { }
+		end
+		if not PallyPower_Assignments_TBC[name][class] then
+			cur=PALLYPOWER_MAXBLESSINGS+1
+		else
+			cur=PallyPower_Assignments_TBC[name][class]
+			if cur == 0 or skipzero and cur == 1 then cur = PALLYPOWER_MAXBLESSINGS+1 end
+		end
+		PallyPower_Assignments_TBC[name][class] = 0
 	else
-		cur=PallyPower_Assignments[name][class]
-		if cur == 0 or skipzero and cur == 1 then cur = PALLYPOWER_MAXBLESSINGS+1 end
+		if not PallyPower_Assignments_Wrath[name] then
+			PallyPower_Assignments_Wrath[name] = { }
+		end
+		if not PallyPower_Assignments_Wrath[name][class] then
+			cur=PALLYPOWER_MAXBLESSINGS+1
+		else
+			cur=PallyPower_Assignments_Wrath[name][class]
+			if cur == 0 or skipzero and cur == 1 then cur = PALLYPOWER_MAXBLESSINGS+1 end
+		end
+		PallyPower_Assignments_Wrath[name][class] = 0
 	end
-
-	PallyPower_Assignments[name][class] = 0
 
 	for test = cur-1, 0, -1 do
 		cur = test
@@ -683,22 +832,54 @@ function PallyPower:PerformCycleBackwards(name, class, skipzero)
 		end
 	end
 
-	if shift then
-		for test = 1, PALLYPOWER_MAXCLASSES do
-			PallyPower_Assignments[name][test] = cur
+	if PallyPower.IsVanilla then
+		if shift then
+			for test = 1, PALLYPOWER_MAXCLASSES do
+				PallyPower_Assignments_Vanilla[name][test] = cur
+			end
+			PallyPower:SendMessage("MASSIGN "..name.." "..cur)
+		else
+			PallyPower_Assignments_Vanilla[name][class] = cur
+			PallyPower:SendMessage("ASSIGN "..name.." "..class.." "..cur)
 		end
-		PallyPower:SendMessage("MASSIGN "..name.." "..cur)
+	elseif PallyPower.IsTBC then
+		if shift then
+			for test = 1, PALLYPOWER_MAXCLASSES do
+				PallyPower_Assignments_TBC[name][test] = cur
+			end
+			PallyPower:SendMessage("MASSIGN "..name.." "..cur)
+		else
+			PallyPower_Assignments_TBC[name][class] = cur
+			PallyPower:SendMessage("ASSIGN "..name.." "..class.." "..cur)
+		end
 	else
-		PallyPower_Assignments[name][class] = cur
-		PallyPower:SendMessage("ASSIGN "..name.." "..class.." "..cur)
+		if shift then
+			for test = 1, PALLYPOWER_MAXCLASSES do
+				PallyPower_Assignments_Wrath[name][test] = cur
+			end
+			PallyPower:SendMessage("MASSIGN "..name.." "..cur)
+		else
+			PallyPower_Assignments_Wrath[name][class] = cur
+			PallyPower:SendMessage("ASSIGN "..name.." "..class.." "..cur)
+		end
 	end
 end
 
 function PallyPower:PerformPlayerCycle(arg1, pname, class)
 	local blessing = 0
 	local playername = PallyPower.player
-	if PallyPower_NormalAssignments[playername] and PallyPower_NormalAssignments[playername][class] and PallyPower_NormalAssignments[playername][class][pname] then
-		blessing = PallyPower_NormalAssignments[playername][class][pname]
+	if PallyPower.IsVanilla then
+		if PallyPower_NormalAssignments_Vanilla[playername] and PallyPower_NormalAssignments_Vanilla[playername][class] and PallyPower_NormalAssignments_Vanilla[playername][class][pname] then
+			blessing = PallyPower_NormalAssignments_Vanilla[playername][class][pname]
+		end
+	elseif PallyPower.IsTBC then
+		if PallyPower_NormalAssignments_TBC[playername] and PallyPower_NormalAssignments_TBC[playername][class] and PallyPower_NormalAssignments_TBC[playername][class][pname] then
+			blessing = PallyPower_NormalAssignments_TBC[playername][class][pname]
+		end
+	else
+		if PallyPower_NormalAssignments_Wrath[playername] and PallyPower_NormalAssignments_Wrath[playername][class] and PallyPower_NormalAssignments_Wrath[playername][class][pname] then
+			blessing = PallyPower_NormalAssignments_Wrath[playername][class][pname]
+		end
 	end
 
 	local test = (blessing - arg1) % (PALLYPOWER_MAXBLESSINGS+1)
@@ -716,24 +897,62 @@ end
 function PallyPower:AssignPlayerAsClass(pname, pclass, tclass)
 	local greater, target, targetsorted, freepallies =  {}, {}, {}, {}
 	-- Find blessings we want
-	for pally, classes in pairs(PallyPower_Assignments) do
-		if AllPallys[pally] and classes[tclass] and classes[tclass] > 0 then
-			target[classes[tclass]] = pally
-			tinsert(targetsorted, classes[tclass])
+	if PallyPower.IsVanilla then
+		for pally, classes in pairs(PallyPower_Assignments_Vanilla) do
+			if AllPallys[pally] and classes[tclass] and classes[tclass] > 0 then
+				target[classes[tclass]] = pally
+				tinsert(targetsorted, classes[tclass])
+			end
+		end
+	elseif PallyPower.IsTBC then
+		for pally, classes in pairs(PallyPower_Assignments_TBC) do
+			if AllPallys[pally] and classes[tclass] and classes[tclass] > 0 then
+				target[classes[tclass]] = pally
+				tinsert(targetsorted, classes[tclass])
+			end
+		end
+	else
+		for pally, classes in pairs(PallyPower_Assignments_Wrath) do
+			if AllPallys[pally] and classes[tclass] and classes[tclass] > 0 then
+				target[classes[tclass]] = pally
+				tinsert(targetsorted, classes[tclass])
+			end
 		end
 	end
 	-- Sort blessings because we want to look at might > wisdom > the rest
 	tsort(targetsorted, function(a,b) return a == 2 or a == 1 and b ~= 2 end)
 	-- Find greater blessings we have
 	for pally, info in pairs(AllPallys) do
-		if PallyPower_Assignments[pally] and PallyPower_Assignments[pally][pclass] then
-			local blessing = PallyPower_Assignments[pally][pclass]
-			greater[blessing] = pally
-			if not target[blessing] then
+		if PallyPower.IsVanilla then
+			if PallyPower_Assignments_Vanilla[pally] and PallyPower_Assignments_Vanilla[pally][pclass] then
+				local blessing = PallyPower_Assignments_Vanilla[pally][pclass]
+				greater[blessing] = pally
+				if not target[blessing] then
+					freepallies[pally] = info
+				end
+			else
+				freepallies[pally] = info
+			end
+		elseif PallyPower.IsTBC then
+			if PallyPower_Assignments_TBC[pally] and PallyPower_Assignments_TBC[pally][pclass] then
+				local blessing = PallyPower_Assignments_TBC[pally][pclass]
+				greater[blessing] = pally
+				if not target[blessing] then
+					freepallies[pally] = info
+				end
+			else
 				freepallies[pally] = info
 			end
 		else
-			freepallies[pally] = info
+			if PallyPower_Assignments_Wrath[pally] and PallyPower_Assignments_Wrath[pally][pclass] then
+				local blessing = PallyPower_Assignments_Wrath[pally][pclass]
+				greater[blessing] = pally
+				if not target[blessing] then
+					freepallies[pally] = info
+				end
+			else
+				freepallies[pally] = info
+			end
 		end
 	end
 	-- Find blessings we will have to assign
@@ -741,10 +960,24 @@ function PallyPower:AssignPlayerAsClass(pname, pclass, tclass)
 		if greater[blessing] then
 			local pally = greater[blessing]
 			-- Use greater blessing if already assigned
-			if PallyPower_NormalAssignments[pally] and 
-			   PallyPower_NormalAssignments[pally][pclass] and 
-			   PallyPower_NormalAssignments[pally][pclass][pname] then
-				SetNormalBlessings(pally, pclass, pname, 0)
+			if PallyPower.IsVanilla then
+				if PallyPower_NormalAssignments_Vanilla[pally] and 
+				PallyPower_NormalAssignments_Vanilla[pally][pclass] and 
+				PallyPower_NormalAssignments_Vanilla[pally][pclass][pname] then
+					SetNormalBlessings(pally, pclass, pname, 0)
+				end
+			elseif PallyPower.IsTBC then
+				if PallyPower_NormalAssignments_TBC[pally] and 
+				PallyPower_NormalAssignments_TBC[pally][pclass] and 
+				PallyPower_NormalAssignments_TBC[pally][pclass][pname] then
+					SetNormalBlessings(pally, pclass, pname, 0)
+				end
+			else
+				if PallyPower_NormalAssignments_Wrath[pally] and 
+				PallyPower_NormalAssignments_Wrath[pally][pclass] and 
+				PallyPower_NormalAssignments_Wrath[pally][pclass][pname] then
+					SetNormalBlessings(pally, pclass, pname, 0)
+				end
 			end
 		else
 			-- We got a blessing we want, find best paladin (greedy approach)
@@ -800,26 +1033,65 @@ function PallyPower:NeedsBuff(class, test, playerName)
 			return false
 		end
 	end
-
-	if playerName then
-		for pname, classes in pairs(PallyPower_NormalAssignments) do
-			if AllPallys[pname] and not pname == self.player then
-				for class_id, tnames in pairs(classes) do
-					for tname, blessing_id in pairs(tnames) do
-						if blessing_id == test then
-							return false
+	if PallyPower.IsVanilla then
+		if playerName then
+			for pname, classes in pairs(PallyPower_NormalAssignments_Vanilla) do
+				if AllPallys[pname] and not pname == self.player then
+					for class_id, tnames in pairs(classes) do
+						for tname, blessing_id in pairs(tnames) do
+							if blessing_id == test then
+								return false
+							end
 						end
 					end
 				end
 			end
 		end
-	end
-
-	for name, skills in pairs(PallyPower_Assignments) do
-		if (AllPallys[name]) and ((skills[class]) and (skills[class]==test)) then 
-			return false 
+		for name, skills in pairs(PallyPower_Assignments_Vanilla) do
+			if (AllPallys[name]) and ((skills[class]) and (skills[class]==test)) then 
+				return false 
+			end
+		end
+	elseif PallyPower.IsTBC then
+		if playerName then
+			for pname, classes in pairs(PallyPower_NormalAssignments_TBC) do
+				if AllPallys[pname] and not pname == self.player then
+					for class_id, tnames in pairs(classes) do
+						for tname, blessing_id in pairs(tnames) do
+							if blessing_id == test then
+								return false
+							end
+						end
+					end
+				end
+			end
+		end
+		for name, skills in pairs(PallyPower_Assignments_TBC) do
+			if (AllPallys[name]) and ((skills[class]) and (skills[class]==test)) then 
+				return false 
+			end
+		end
+	else
+		if playerName then
+			for pname, classes in pairs(PallyPower_NormalAssignments_Wrath) do
+				if AllPallys[pname] and not pname == self.player then
+					for class_id, tnames in pairs(classes) do
+						for tname, blessing_id in pairs(tnames) do
+							if blessing_id == test then
+								return false
+							end
+						end
+					end
+				end
+			end
+		end
+		for name, skills in pairs(PallyPower_Assignments_Wrath) do
+			if (AllPallys[name]) and ((skills[class]) and (skills[class]==test)) then 
+				return false 
+			end
 		end
 	end
+
 	return true
 end
 
@@ -852,7 +1124,7 @@ function PallyPower:ScanSpells()
 				elseif i == 2 then -- Might
 					if PallyPower.IsVanillaOrTBC then
 						talent = talent + select(5, GetTalentInfo(3, 1))
-					elseif PallyPower.IsWrath then
+					else
 						talent = talent + select(5, GetTalentInfo(3, 5))
 					end
 				--elseif i == 3 then -- Kings
@@ -894,7 +1166,7 @@ function PallyPower:ScanSpells()
 					elseif i == 3 then
 						talent = talent + select(5, GetTalentInfo(2, 12))  -- Improved Concentration Aura
 					end
-				elseif PallyPower.IsWrath then
+				else
 					if i == 1 then
 						-- Lach22Mar08: Prot talent tree appears to be out-of-sync... 
 						-- Imp Dev. Aura should be 10, but wont return correct value unless 11 is used for the index...
@@ -954,14 +1226,30 @@ function PallyPower:SendSelf()
 	end
 	s = s .. "@"
 
-	if not PallyPower_Assignments[self.player] then
-		PallyPower_Assignments[self.player] = {}
-		for i = 1, PALLYPOWER_MAXCLASSES do
-			PallyPower_Assignments[self.player][i] = 0
+	if PallyPower.IsVanilla then
+		if not PallyPower_Assignments_Vanilla[self.player] then
+			PallyPower_Assignments_Vanilla[self.player] = {}
+			for i = 1, PALLYPOWER_MAXCLASSES do
+				PallyPower_Assignments_Vanilla[self.player][i] = 0
+			end
+		end
+	elseif PallyPower.IsTBC then
+		if not PallyPower_Assignments_TBC[self.player] then
+			PallyPower_Assignments_TBC[self.player] = {}
+			for i = 1, PALLYPOWER_MAXCLASSES do
+				PallyPower_Assignments_TBC[self.player][i] = 0
+			end
+		end
+	else
+		if not PallyPower_Assignments_Wrath[self.player] then
+			PallyPower_Assignments_Wrath[self.player] = {}
+			for i = 1, PALLYPOWER_MAXCLASSES do
+				PallyPower_Assignments_Wrath[self.player][i] = 0
+			end
 		end
 	end
 
-	local BuffInfo = PallyPower_Assignments[self.player]
+	local BuffInfo = (PallyPower.IsVanilla and PallyPower_Assignments_Vanilla[self.player]) or (PallyPower.IsTBC and PallyPower_Assignments_TBC[self.player]) or PallyPower_Assignments_Wrath[self.player]
 
 	for i = 1, PALLYPOWER_MAXCLASSES do
 		if not BuffInfo[i] or BuffInfo[i] == 0 then
@@ -983,20 +1271,49 @@ function PallyPower:SendSelf()
 		end
 	end
 
-	if not PallyPower_AuraAssignments[self.player] then
-		PallyPower_AuraAssignments[self.player] = 0
+	if PallyPower.IsVanilla then
+		if not PallyPower_AuraAssignments_Vanilla[self.player] then
+			PallyPower_AuraAssignments_Vanilla[self.player] = 0
+		end
+		s = s .. "@" .. PallyPower_AuraAssignments_Vanilla[self.player]
+	elseif PallyPower.IsTBC then
+		if not PallyPower_AuraAssignments_TBC[self.player] then
+			PallyPower_AuraAssignments_TBC[self.player] = 0
+		end
+		s = s .. "@" .. PallyPower_AuraAssignments_TBC[self.player]
+	else
+		if not PallyPower_AuraAssignments_Wrath[self.player] then
+			PallyPower_AuraAssignments_Wrath[self.player] = 0
+		end
+		s = s .. "@" .. PallyPower_AuraAssignments_Wrath[self.player]
 	end
-	
-	s = s .. "@" .. PallyPower_AuraAssignments[self.player]
 	
 	self:SendMessage("ASELF " .. s)
 
 	local AssignList = {}
 	local inraid = GetNumRaidMembers() > 0
-	if PallyPower_NormalAssignments[self.player] then
-		for class_id, tnames in pairs(PallyPower_NormalAssignments[self.player]) do
-			for tname, blessing_id in pairs(tnames) do
-				tinsert(AssignList, sformat("%s %s %s %s", self.player, class_id, tname, blessing_id))
+	if PallyPower.IsVanilla then
+		if PallyPower_NormalAssignments_Vanilla[self.player] then
+			for class_id, tnames in pairs(PallyPower_NormalAssignments_Vanilla[self.player]) do
+				for tname, blessing_id in pairs(tnames) do
+					tinsert(AssignList, sformat("%s %s %s %s", self.player, class_id, tname, blessing_id))
+				end
+			end
+		end
+	elseif PallyPower.IsTBC then
+		if PallyPower_NormalAssignments_TBC[self.player] then
+			for class_id, tnames in pairs(PallyPower_NormalAssignments_TBC[self.player]) do
+				for tname, blessing_id in pairs(tnames) do
+					tinsert(AssignList, sformat("%s %s %s %s", self.player, class_id, tname, blessing_id))
+				end
+			end
+		end
+	else
+		if PallyPower_NormalAssignments_Wrath[self.player] then
+			for class_id, tnames in pairs(PallyPower_NormalAssignments_Wrath[self.player]) do
+				for tname, blessing_id in pairs(tnames) do
+					tinsert(AssignList, sformat("%s %s %s %s", self.player, class_id, tname, blessing_id))
+				end
 			end
 		end
 	end
@@ -1055,16 +1372,36 @@ function PallyPower:ACTIVE_TALENT_GROUP_CHANGED()
 		
 		self.opt.sets[old].seal = self.opt.seal
 		self.opt.seal = self.opt.sets[new].seal
-			
-		self.opt.sets[old].aura = PallyPower_AuraAssignments[self.player]
-		PallyPower_AuraAssignments[self.player] = self.opt.sets[new].aura
+		
+		if PallyPower.IsVanilla then
+			self.opt.sets[old].aura = PallyPower_AuraAssignments_Vanilla[self.player]
+			PallyPower_AuraAssignments_Vanilla[self.player] = self.opt.sets[new].aura
+		elseif PallyPower.IsTBC then
+			self.opt.sets[old].aura = PallyPower_AuraAssignments_TBC[self.player]
+			PallyPower_AuraAssignments_TBC[self.player] = self.opt.sets[new].aura
+		else
+			self.opt.sets[old].aura = PallyPower_AuraAssignments_Wrath[self.player]
+			PallyPower_AuraAssignments_Wrath[self.player] = self.opt.sets[new].aura
+		end
 			
 		self.opt.sets[old].rf = self.opt.rf
 		self.opt.rf = self.opt.sets[new].rf
-			
-		for i = 1, PALLYPOWER_MAXCLASSES do
-			self.opt.sets[old].buffs[i]=PallyPower_Assignments[self.player][i]
-			PallyPower_Assignments[self.player][i] = self.opt.sets[new].buffs[i]
+		
+		if PallyPower.IsVanilla then
+			for i = 1, PALLYPOWER_MAXCLASSES do
+				self.opt.sets[old].buffs[i]=PallyPower_Assignments_Vanilla[self.player][i]
+				PallyPower_Assignments_Vanilla[self.player][i] = self.opt.sets[new].buffs[i]
+			end
+		elseif PallyPower.IsTBC then
+			for i = 1, PALLYPOWER_MAXCLASSES do
+				self.opt.sets[old].buffs[i]=PallyPower_Assignments_TBC[self.player][i]
+				PallyPower_Assignments_TBC[self.player][i] = self.opt.sets[new].buffs[i]
+			end
+		else
+			for i = 1, PALLYPOWER_MAXCLASSES do
+				self.opt.sets[old].buffs[i]=PallyPower_Assignments_Wrath[self.player][i]
+				PallyPower_Assignments_Wrath[self.player][i] = self.opt.sets[new].buffs[i]
+			end
 		end
 		PallyPower:UpdateLayout()
 	end
@@ -1118,26 +1455,74 @@ end
 
 function PallyPower:ClearAssignments(sender)
 	local leader = self:CheckRaidLeader(sender)
-	for name, skills in pairs(PallyPower_Assignments) do
-		if leader or name == sender then
-			--self:Print("Clearing: %s", name)
-			for i = 1, PALLYPOWER_MAXCLASSES do
-				PallyPower_Assignments[name][i] = 0
-			end
-		end
-	end
-	for pname, classes in pairs(PallyPower_NormalAssignments) do
-		if leader or pname == sender then
-			for class_id, tnames in pairs(classes) do
-				for tname, blessing_id in pairs(tnames) do
-					tnames[tname] = nil
+	if PallyPower.IsVanilla then
+		for name, skills in pairs(PallyPower_Assignments_Vanilla) do
+			if leader or name == sender then
+				--self:Print("Clearing: %s", name)
+				for i = 1, PALLYPOWER_MAXCLASSES do
+					PallyPower_Assignments_Vanilla[name][i] = 0
 				end
 			end
 		end
-	end
-	for name, auras in pairs(PallyPower_AuraAssignments) do
-		if leader or name ==sender then
-			PallyPower_AuraAssignments[name] = 0
+		for pname, classes in pairs(PallyPower_NormalAssignments_Vanilla) do
+			if leader or pname == sender then
+				for class_id, tnames in pairs(classes) do
+					for tname, blessing_id in pairs(tnames) do
+						tnames[tname] = nil
+					end
+				end
+			end
+		end
+		for name, auras in pairs(PallyPower_AuraAssignments_Vanilla) do
+			if leader or name ==sender then
+				PallyPower_AuraAssignments_Vanilla[name] = 0
+			end
+		end
+	elseif PallyPower.IsTBC then
+		for name, skills in pairs(PallyPower_Assignments_TBC) do
+			if leader or name == sender then
+				--self:Print("Clearing: %s", name)
+				for i = 1, PALLYPOWER_MAXCLASSES do
+					PallyPower_Assignments_TBC[name][i] = 0
+				end
+			end
+		end
+		for pname, classes in pairs(PallyPower_NormalAssignments_TBC) do
+			if leader or pname == sender then
+				for class_id, tnames in pairs(classes) do
+					for tname, blessing_id in pairs(tnames) do
+						tnames[tname] = nil
+					end
+				end
+			end
+		end
+		for name, auras in pairs(PallyPower_AuraAssignments_TBC) do
+			if leader or name ==sender then
+				PallyPower_AuraAssignments_TBC[name] = 0
+			end
+		end
+	else
+		for name, skills in pairs(PallyPower_Assignments_Wrath) do
+			if leader or name == sender then
+				--self:Print("Clearing: %s", name)
+				for i = 1, PALLYPOWER_MAXCLASSES do
+					PallyPower_Assignments_Wrath[name][i] = 0
+				end
+			end
+		end
+		for pname, classes in pairs(PallyPower_NormalAssignments_Wrath) do
+			if leader or pname == sender then
+				for class_id, tnames in pairs(classes) do
+					for tname, blessing_id in pairs(tnames) do
+						tnames[tname] = nil
+					end
+				end
+			end
+		end
+		for name, auras in pairs(PallyPower_AuraAssignments_Wrath) do
+			if leader or name ==sender then
+				PallyPower_AuraAssignments_Wrath[name] = 0
+			end
 		end
 	end
 end
@@ -1173,8 +1558,16 @@ function PallyPower:ParseMessage(sender, msg)
 	end
 
 	if sfind(msg, "^SELF") then
-		PallyPower_NormalAssignments[sender] = {}
-		PallyPower_Assignments[sender] = { }
+		if PallyPower.IsVanilla then
+			PallyPower_NormalAssignments_Vanilla[sender] = {}
+			PallyPower_Assignments_Vanilla[sender] = { }
+		elseif PallyPower.IsTBC then
+			PallyPower_NormalAssignments_TBC[sender] = {}
+			PallyPower_Assignments_TBC[sender] = { }
+		else
+			PallyPower_NormalAssignments_Wrath[sender] = {}
+			PallyPower_Assignments_Wrath[sender] = { }
+		end
 		AllPallys[sender] = { }
 		
 		self:SyncAdd(sender)
@@ -1194,7 +1587,13 @@ function PallyPower:ParseMessage(sender, msg)
 			for i = 1, PALLYPOWER_MAXCLASSES do
 				tmp =ssub(assign, i, i)
 				if tmp == "n" or tmp == "" then tmp = 0 end
-				PallyPower_Assignments[sender][i] = tmp + 0
+				if Pallypower.IsVanilla then
+					PallyPower_Assignments_Vanilla[sender][i] = tmp + 0
+				elseif PallyPower.IsTBC then
+					PallyPower_Assignments_TBC[sender][i] = tmp + 0
+				else
+					PallyPower_Assignments_Wrath[sender][i] = tmp + 0
+				end
 			end
 		end
 	end
@@ -1202,31 +1601,73 @@ function PallyPower:ParseMessage(sender, msg)
 	if sfind(msg, "^ASSIGN") then
 		_, _, name, class, skill = sfind(msg, "^ASSIGN (.*) (.*) (.*)")
 		if name ~= sender and not (leader or PallyPower.opt.freeassign) then return false end
-		if not PallyPower_Assignments[name] then PallyPower_Assignments[name] = {} end
-		class = class + 0
-		skill = skill + 0
-		PallyPower_Assignments[name][class] = skill
+		if PallyPower.IsVanilla then
+			if not PallyPower_Assignments_Vanilla[name] then PallyPower_Assignments_Vanilla[name] = {} end
+			class = class + 0
+			skill = skill + 0
+			PallyPower_Assignments_Vanilla[name][class] = skill
+		elseif PallyPower.IsTBC then
+			if not PallyPower_Assignments_TBC[name] then PallyPower_Assignments_TBC[name] = {} end
+			class = class + 0
+			skill = skill + 0
+			PallyPower_Assignments_TBC[name][class] = skill
+		else
+			if not PallyPower_Assignments_Wrath[name] then PallyPower_Assignments_Wrath[name] = {} end
+			class = class + 0
+			skill = skill + 0
+			PallyPower_Assignments_Wrath[name][class] = skill
+		end
 	end
 
 	if sfind(msg, "^NASSIGN") then
 		for pname, class, tname, skill in string.gmatch(ssub(msg, 9), "([^@]*) ([^@]*) ([^@]*) ([^@]*)") do
 			if pname ~= sender and not (leader or PallyPower.opt.freeassign) then return end
-			if not PallyPower_NormalAssignments[pname] then PallyPower_NormalAssignments[pname] = {} end
-			class = class + 0
-			if not PallyPower_NormalAssignments[pname][class] then PallyPower_NormalAssignments[pname][class] = {} end
-			skill = skill + 0
-			if skill == 0 then skill = nil end
-			PallyPower_NormalAssignments[pname][class][tname] = skill
+			if PallyPower.IsVanilla then
+				if not PallyPower_NormalAssignments_Vanilla[pname] then PallyPower_NormalAssignments_Vanilla[pname] = {} end
+				class = class + 0
+				if not PallyPower_NormalAssignments_Vanilla[pname][class] then PallyPower_NormalAssignments_Vanilla[pname][class] = {} end
+				skill = skill + 0
+				if skill == 0 then skill = nil end
+				PallyPower_NormalAssignments_Vanilla[pname][class][tname] = skill
+			elseif PallyPower.IsTBC then
+				if not PallyPower_NormalAssignments_TBC[pname] then PallyPower_NormalAssignments_TBC[pname] = {} end
+				class = class + 0
+				if not PallyPower_NormalAssignments_TBC[pname][class] then PallyPower_NormalAssignments_TBC[pname][class] = {} end
+				skill = skill + 0
+				if skill == 0 then skill = nil end
+				PallyPower_NormalAssignments_TBC[pname][class][tname] = skill
+			else
+				if not PallyPower_NormalAssignments_Wrath[pname] then PallyPower_NormalAssignments_Wrath[pname] = {} end
+				class = class + 0
+				if not PallyPower_NormalAssignments_Wrath[pname][class] then PallyPower_NormalAssignments_Wrath[pname][class] = {} end
+				skill = skill + 0
+				if skill == 0 then skill = nil end
+				PallyPower_NormalAssignments_Wrath[pname][class][tname] = skill
+			end
 		end
 	end
 
 	if sfind(msg, "^MASSIGN") then
 		_, _, name, skill = sfind(msg, "^MASSIGN (.*) (.*)")
 		if name ~= sender and not (leader or PallyPower.opt.freeassign) then return false end
-		if not PallyPower_Assignments[name] then PallyPower_Assignments[name] = {} end
-		skill = skill + 0
-		for i = 1, PALLYPOWER_MAXCLASSES do
-			PallyPower_Assignments[name][i] = skill
+		if PallyPower.IsVanilla then
+			if not PallyPower_Assignments_Vanilla[name] then PallyPower_Assignments_Vanilla[name] = {} end
+			skill = skill + 0
+			for i = 1, PALLYPOWER_MAXCLASSES do
+				PallyPower_Assignments_Vanilla[name][i] = skill
+			end
+		elseif PallyPower.IsTBC then
+			if not PallyPower_Assignments_TBC[name] then PallyPower_Assignments_TBC[name] = {} end
+			skill = skill + 0
+			for i = 1, PALLYPOWER_MAXCLASSES do
+				PallyPower_Assignments_TBC[name][i] = skill
+			end
+		else
+			if not PallyPower_Assignments_Wrath[name] then PallyPower_Assignments_Wrath[name] = {} end
+			skill = skill + 0
+			for i = 1, PALLYPOWER_MAXCLASSES do
+				PallyPower_Assignments_Wrath[name][i] = skill
+			end
 		end
 	end
 
@@ -1253,7 +1694,13 @@ function PallyPower:ParseMessage(sender, msg)
 	end
 
 	if sfind(msg, "^ASELF") then
-		PallyPower_AuraAssignments[sender] = 0
+		if PallyPower.IsVanilla then
+			PallyPower_AuraAssignments_Vanilla[sender] = 0
+		elseif PallyPower.IsTBC then
+			PallyPower_AuraAssignments_TBC[sender] = 0
+		else
+			PallyPower_AuraAssignments_Wrath[sender] = 0
+		end
 		AllPallys[sender].AuraInfo = { }
 		_, _, numbers, assign = sfind(msg, "ASELF ([0-9a-fn]*)@([0-9n]*)")
 		for i = 1, PALLYPOWER_MAXAURAS do
@@ -1269,16 +1716,32 @@ function PallyPower:ParseMessage(sender, msg)
 			if assign == "n" or assign == "" then 
 				assign = 0
 			end
-			PallyPower_AuraAssignments[sender] = assign + 0
+			if PallyPower.IsVanilla then
+				PallyPower_AuraAssignments_Vanilla[sender] = assign + 0
+			elseif PallyPower.IsTBC then
+				PallyPower_AuraAssignments_TBC[sender] = assign + 0
+			else
+				PallyPower_AuraAssignments_Wrath[sender] = assign + 0
+			end
 		end
 	end
 
 	if sfind(msg, "^AASSIGN") then
 		_, _, name, aura = sfind(msg, "^AASSIGN (.*) (.*)")
 		if name ~= sender and not (leader or PallyPower.opt.freeassign) then return false end
-		if not PallyPower_AuraAssignments[name] then PallyPower_AuraAssignments[name] = {} end
-		aura = aura + 0
-		PallyPower_AuraAssignments[name] = aura
+		if PallyPower.IsVanilla then
+			if not PallyPower_AuraAssignments_Vanilla[name] then PallyPower_AuraAssignments_Vanilla[name] = {} end
+			aura = aura + 0
+			PallyPower_AuraAssignments_Vanilla[name] = aura
+		elseif PallyPower.IsTBC then
+			if not PallyPower_AuraAssignments_TBC[name] then PallyPower_AuraAssignments_TBC[name] = {} end
+			aura = aura + 0
+			PallyPower_AuraAssignments_TBC[name] = aura
+		else
+			if not PallyPower_AuraAssignments_Wrath[name] then PallyPower_AuraAssignments_Wrath[name] = {} end
+			aura = aura + 0
+			PallyPower_AuraAssignments_Wrath[name] = aura
+		end
 	end
 
 end
@@ -1716,7 +2179,13 @@ function PallyPower:UpdateLayout()
 		
 		auraBtn:SetAttribute("type1", "spell")
 		auraBtn:SetAttribute("unit1", "player")
-		PallyPower:UpdateAuraButton(PallyPower_AuraAssignments[self.player])
+		if PallyPower.IsVanilla then
+			PallyPower:UpdateAuraButton(PallyPower_AuraAssignments_Vanilla[self.player])
+		elseif PallyPower.IsTBC then
+			PallyPower:UpdateAuraButton(PallyPower_AuraAssignments_TBC[self.player])
+		else
+			PallyPower:UpdateAuraButton(PallyPower_AuraAssignments_Wrath[self.player])
+		end
 		
 		if self:GetNumUnits() > 0 and self.opt.auras and not self.opt.disabled and PP_IsPally then
 			auraBtn:Show()
@@ -1803,7 +2272,13 @@ function PallyPower:UpdateLayout()
 		
 		auraBtn:SetAttribute("type1", "spell")
 		auraBtn:SetAttribute("unit1", "player")
-		PallyPower:UpdateAuraButton(PallyPower_AuraAssignments[self.player])
+		if PallyPower.IsVanilla then
+			PallyPower:UpdateAuraButton(PallyPower_AuraAssignments_Vanilla[self.player])
+		elseif PallyPower.IsTBC then
+			PallyPower:UpdateAuraButton(PallyPower_AuraAssignments_TBC[self.player])
+		else
+			PallyPower:UpdateAuraButton(PallyPower_AuraAssignments_Wrath[self.player])
+		end
 		
 		if self:GetNumUnits() > 0 and self.opt.auras and not self.opt.disabled and PP_IsPally then
 			auraBtn:Show()
@@ -2469,7 +2944,13 @@ function PallyPower:ButtonsUpdate()
 	end
 	
 	if self.opt.auras then
-		PallyPower:UpdateAuraButton( PallyPower_AuraAssignments[self.player] )
+		if PallyPower.IsVanilla then
+			PallyPower:UpdateAuraButton(PallyPower_AuraAssignments_Vanilla[self.player])
+		elseif PallyPower.IsTBC then
+			PallyPower:UpdateAuraButton(PallyPower_AuraAssignments_TBC[self.player])
+		else
+			PallyPower:UpdateAuraButton(PallyPower_AuraAssignments_Wrath[self.player])
+		end
 	end
 end
 
@@ -2487,12 +2968,27 @@ function PallyPower:NormalBlessingCount(classID)
 	if classlist[classID] then
 		for pbNum = 1, math.min(classlist[classID], PALLYPOWER_MAXPERCLASS) do
 			local unit  = self:GetUnit(classID, pbNum)
-
-			if unit and unit.name and
-			PallyPower_NormalAssignments[self.player] and
-			PallyPower_NormalAssignments[self.player][classID] and
-			PallyPower_NormalAssignments[self.player][classID][unit.name] then
-				nbcount = nbcount+1
+			if PallyPower.IsVanilla then
+				if unit and unit.name and
+				PallyPower_NormalAssignments_Vanilla[self.player] and
+				PallyPower_NormalAssignments_Vanilla[self.player][classID] and
+				PallyPower_NormalAssignments_Vanilla[self.player][classID][unit.name] then
+					nbcount = nbcount+1
+				end
+			elseif PallyPower.IsTBC then
+				if unit and unit.name and
+				PallyPower_NormalAssignments_TBC[self.player] and
+				PallyPower_NormalAssignments_TBC[self.player][classID] and
+				PallyPower_NormalAssignments_TBC[self.player][classID][unit.name] then
+					nbcount = nbcount+1
+				end
+			else
+				if unit and unit.name and
+				PallyPower_NormalAssignments_Wrath[self.player] and
+				PallyPower_NormalAssignments_Wrath[self.player][classID] and
+				PallyPower_NormalAssignments_Wrath[self.player][classID][unit.name] then
+					nbcount = nbcount+1
+				end
 			end
 		end -- by pbnum
 	end
@@ -2502,14 +2998,36 @@ end
 function PallyPower:GetSpellID(classID, playerName)
 	local normal = 0
 	local greater = 0
-	if playerName and
-	   PallyPower_NormalAssignments[self.player] and 
-	   PallyPower_NormalAssignments[self.player][classID] and
-	   PallyPower_NormalAssignments[self.player][classID][playerName] then
-		normal = PallyPower_NormalAssignments[self.player][classID][playerName]
-	end
-	if PallyPower_Assignments[self.player] and PallyPower_Assignments[self.player][classID] then
-		greater = PallyPower_Assignments[self.player][classID]
+	if PallyPower.IsVanilla then
+		if playerName and
+		PallyPower_NormalAssignments_Vanilla[self.player] and 
+		PallyPower_NormalAssignments_Vanilla[self.player][classID] and
+		PallyPower_NormalAssignments_Vanilla[self.player][classID][playerName] then
+			normal = PallyPower_NormalAssignments_Vanilla[self.player][classID][playerName]
+		end
+		if PallyPower_Assignments_Vanilla[self.player] and PallyPower_Assignments_Vanilla[self.player][classID] then
+			greater = PallyPower_Assignments_Vanilla[self.player][classID]
+		end
+	elseif PallyPower.IsTBC then
+		if playerName and
+		PallyPower_NormalAssignments_TBC[self.player] and 
+		PallyPower_NormalAssignments_TBC[self.player][classID] and
+		PallyPower_NormalAssignments_TBC[self.player][classID][playerName] then
+			normal = PallyPower_NormalAssignments_TBC[self.player][classID][playerName]
+		end
+		if PallyPower_Assignments_TBC[self.player] and PallyPower_Assignments_TBC[self.player][classID] then
+			greater = PallyPower_Assignments_TBC[self.player][classID]
+		end
+	else
+		if playerName and
+		PallyPower_NormalAssignments_Wrath[self.player] and 
+		PallyPower_NormalAssignments_Wrath[self.player][classID] and
+		PallyPower_NormalAssignments_Wrath[self.player][classID][playerName] then
+			normal = PallyPower_NormalAssignments_Wrath[self.player][classID][playerName]
+		end
+		if PallyPower_Assignments_Wrath[self.player] and PallyPower_Assignments_Wrath[self.player][classID] then
+			greater = PallyPower_Assignments_Wrath[self.player][classID]
+		end
 	end
 	if normal == 0 then 
 		normal = greater
@@ -2756,10 +3274,24 @@ function PallyPower:SavePreset(preset)
 		PallyPower_SavedPresets[preset][name] = {}
 	    local i
 	    for i = 1, PALLYPOWER_MAXCLASSES do
- 	        if not PallyPower_Assignments[name][i] then
-	            PallyPower_SavedPresets[preset][name][i] = 0
-		 	else
-		 	    PallyPower_SavedPresets[preset][name][i] = PallyPower_Assignments[name][i]
+			if PallyPower.IsVanilla then
+				if not PallyPower_Assignments_Vanilla[name][i] then
+					PallyPower_SavedPresets[preset][name][i] = 0
+				else
+					PallyPower_SavedPresets[preset][name][i] = PallyPower_Assignments_Vanilla[name][i]
+				end
+			elseif PallyPower.IsTBC then
+				if not PallyPower_Assignments_TBC[name][i] then
+					PallyPower_SavedPresets[preset][name][i] = 0
+				else
+					PallyPower_SavedPresets[preset][name][i] = PallyPower_Assignments_TBC[name][i]
+				end
+			else
+				if not PallyPower_Assignments_Wrath[name][i] then
+					PallyPower_SavedPresets[preset][name][i] = 0
+				else
+					PallyPower_SavedPresets[preset][name][i] = PallyPower_Assignments_Wrath[name][i]
+				end
 			end
 	    end
 	end
@@ -2771,14 +3303,36 @@ function PallyPower:LoadPreset(preset)
 	--if not self:CheckRaidLeader(self.player) then return false end
 	if PallyPower_SavedPresets[preset] then
 	    self:Print("Loading preset: "..preset)
-		for name in pairs(PallyPower_SavedPresets[preset]) do
-			if not PallyPower_Assignments[name] then PallyPower_Assignments[name] = {} end
-			self:Print("       Paladin: " .. name)
-			local i
-			for i = 1, PALLYPOWER_MAXCLASSES do
-				PallyPower_Assignments[name][i] = PallyPower_SavedPresets[preset][name][i]
-				PallyPower:SendMessage("ASSIGN "..name.." "..i.." "..PallyPower_SavedPresets[preset][name][i]) 
-			end 
+		if PallyPower.IsVanilla then
+			for name in pairs(PallyPower_SavedPresets[preset]) do
+				if not PallyPower_Assignments_Vanilla[name] then PallyPower_Assignments_Vanilla[name] = {} end
+				self:Print("       Paladin: " .. name)
+				local i
+				for i = 1, PALLYPOWER_MAXCLASSES do
+					PallyPower_Assignments_Vanilla[name][i] = PallyPower_SavedPresets[preset][name][i]
+					PallyPower:SendMessage("ASSIGN "..name.." "..i.." "..PallyPower_SavedPresets[preset][name][i]) 
+				end 
+			end
+		elseif PallyPower.IsTBC then
+			for name in pairs(PallyPower_SavedPresets[preset]) do
+				if not PallyPower_Assignments_TBC[name] then PallyPower_Assignments_TBC[name] = {} end
+				self:Print("       Paladin: " .. name)
+				local i
+				for i = 1, PALLYPOWER_MAXCLASSES do
+					PallyPower_Assignments_TBC[name][i] = PallyPower_SavedPresets[preset][name][i]
+					PallyPower:SendMessage("ASSIGN "..name.." "..i.." "..PallyPower_SavedPresets[preset][name][i]) 
+				end 
+			end
+		else
+			for name in pairs(PallyPower_SavedPresets[preset]) do
+				if not PallyPower_Assignments_Wrath[name] then PallyPower_Assignments_Wrath[name] = {} end
+				self:Print("       Paladin: " .. name)
+				local i
+				for i = 1, PALLYPOWER_MAXCLASSES do
+					PallyPower_Assignments_Wrath[name][i] = PallyPower_SavedPresets[preset][name][i]
+					PallyPower:SendMessage("ASSIGN "..name.." "..i.." "..PallyPower_SavedPresets[preset][name][i]) 
+				end 
+			end
 		end
 		self:Print("Done.")
 	else
@@ -2954,7 +3508,7 @@ function PallyPower:CalcSkillRanks1(name)
 		else
 			sanct = 0
 		end
-	elseif PallyPower.IsWrath then
+	else
 		if AllPallys[name][4] then
 			sanct  = tonumber(AllPallys[name][4].rank)
 		else
@@ -3031,7 +3585,7 @@ function PallyPower:AutoAssignBlessings()
 		PallyPower:SelectBuffsByClass(pallycount, 8, pt[8]) 	-- lock
 		PallyPower:SelectBuffsByClass(pallycount, 9, pt[9]) 	-- shaman
 		PallyPower:SelectBuffsByClass(pallycount, 10, pt[10]) 	-- pets
-	elseif PallyPower.IsWrath then
+	else
 		PallyPower:SelectBuffsByClass(pallycount, 1, pt[1])  	-- warrior
 		PallyPower:SelectBuffsByClass(pallycount, 2, pt[2])  	-- rogue
 		PallyPower:SelectBuffsByClass(pallycount, 3, pt[3])  	-- priest
@@ -3084,7 +3638,7 @@ function PallyPower:BuffSelections(buff, class, pallys)
 		if buff == 4 then t = SalvPallys end
 		if buff == 5 then t = LightPallys end
 		if buff == 6 then t = SancPallys end
-	elseif PallyPower.IsWrath then
+	else
 		if buff == 1 then t = WisdomPallys end
 		if buff == 2 then t = MightPallys end
 		if buff == 3 then t = KingsPallys end
@@ -3124,7 +3678,13 @@ function PallyPower:BuffSelections(buff, class, pallys)
 		--end
 	--end
 	if Buffer ~= "" then
-			PallyPower_Assignments[Buffer][class] = buff
+			if PallyPower.IsVanilla then
+				PallyPower_Assignments_Vanilla[Buffer][class] = buff
+			elseif PallyPower.IsTBC then
+				PallyPower_Assignments_TBC[Buffer][class] = buff
+			else
+				PallyPower_Assignments_Wrath[Buffer][class] = buff
+			end
 			PallyPower:SendMessage("ASSIGN "..Buffer.." "..class.. " " ..buff)
 	else end
 	return Buffer
@@ -3148,7 +3708,13 @@ function PallyPowerAuraButton_OnClick(btn, mouseBtn)
 	if not PallyPower:CanControl(pname) then return false end
 
 	if (mouseBtn == "RightButton") then
-		PallyPower_AuraAssignments[pname] = 0
+		if PallyPower.IsVanilla then
+			PallyPower_AuraAssignments_Vanilla[pname] = 0
+		elseif PallyPower.IsTBC then
+			PallyPower_AuraAssignments_TBC[pname] = 0
+		else
+			PallyPower_AuraAssignments_Wrath[pname] = 0
+		end
 		PallyPower:SendMessage("AASSIGN "..pname.." 0")
 	else
 		PallyPower:PerformAuraCycle(pname)
@@ -3177,47 +3743,132 @@ function PallyPower:HasAura(name, test)
 end
 
 function PallyPower:PerformAuraCycle(name, skipzero)
-	if not PallyPower_AuraAssignments[name] then
-		PallyPower_AuraAssignments[name] = 0
-	end
-
-	local cur = PallyPower_AuraAssignments[name]
-
-	for test = cur+1, PALLYPOWER_MAXAURAS do
-		if PallyPower:HasAura(name, test) then
-			cur = test
-			do break end
+	if PallyPower.IsVanilla then
+		if not PallyPower_AuraAssignments_Vanilla[name] then
+			PallyPower_AuraAssignments_Vanilla[name] = 0
 		end
-	end
 	
-	if ( cur == PallyPower_AuraAssignments[name] ) then
-		if skipzero and PallyPower:HasAura(name, 1) then
-			cur = 1	
-		else
-			cur = 0
+		local cur = PallyPower_AuraAssignments_Vanilla[name]
+	
+		for test = cur+1, PALLYPOWER_MAXAURAS do
+			if PallyPower:HasAura(name, test) then
+				cur = test
+				do break end
+			end
 		end
-	end
+		
+		if ( cur == PallyPower_AuraAssignments_Vanilla[name] ) then
+			if skipzero and PallyPower:HasAura(name, 1) then
+				cur = 1	
+			else
+				cur = 0
+			end
+		end
+		
+		PallyPower_AuraAssignments_Vanilla[name] = cur
+		PallyPower:SendMessage("AASSIGN "..name.." "..cur)
+	elseif PallyPower.IsTBC then
+		if not PallyPower_AuraAssignments_TBC[name] then
+			PallyPower_AuraAssignments_TBC[name] = 0
+		end
 	
-	PallyPower_AuraAssignments[name] = cur
-	PallyPower:SendMessage("AASSIGN "..name.." "..cur)
+		local cur = PallyPower_AuraAssignments_TBC[name]
 	
+		for test = cur+1, PALLYPOWER_MAXAURAS do
+			if PallyPower:HasAura(name, test) then
+				cur = test
+				do break end
+			end
+		end
+		
+		if ( cur == PallyPower_AuraAssignments_TBC[name] ) then
+			if skipzero and PallyPower:HasAura(name, 1) then
+				cur = 1	
+			else
+				cur = 0
+			end
+		end
+		
+		PallyPower_AuraAssignments_TBC[name] = cur
+		PallyPower:SendMessage("AASSIGN "..name.." "..cur)
+	else
+		if not PallyPower_AuraAssignments_Wrath[name] then
+			PallyPower_AuraAssignments_Wrath[name] = 0
+		end
+	
+		local cur = PallyPower_AuraAssignments_Wrath[name]
+	
+		for test = cur+1, PALLYPOWER_MAXAURAS do
+			if PallyPower:HasAura(name, test) then
+				cur = test
+				do break end
+			end
+		end
+		
+		if ( cur == PallyPower_AuraAssignments_Wrath[name] ) then
+			if skipzero and PallyPower:HasAura(name, 1) then
+				cur = 1	
+			else
+				cur = 0
+			end
+		end
+		
+		PallyPower_AuraAssignments_Wrath[name] = cur
+		PallyPower:SendMessage("AASSIGN "..name.." "..cur)
+	end	
 end
 
 function PallyPower:PerformAuraCycleBackwards(name, skipzero)
-	if not PallyPower_AuraAssignments[name] then
-		PallyPower_AuraAssignments[name] = 0
-	end
-
-	local cur = PallyPower_AuraAssignments[name] - 1
-	if (cur < 0) or (skipzero and (cur < 1)) then
-		cur = PALLYPOWER_MAXAURAS
-	end
+	if PallyPower.IsVanilla then
+		if not PallyPower_AuraAssignments_Vanilla[name] then
+			PallyPower_AuraAssignments_Vanilla[name] = 0
+		end
 	
-	for test = cur, 0, -1 do
-		if PallyPower:HasAura(name, test) or (test == 0 and not skipzero) then
-			PallyPower_AuraAssignments[name] = test
-			PallyPower:SendMessage("AASSIGN "..name.." "..test)
-			do break end
+		local cur = PallyPower_AuraAssignments_Vanilla[name] - 1
+		if (cur < 0) or (skipzero and (cur < 1)) then
+			cur = PALLYPOWER_MAXAURAS
+		end
+		
+		for test = cur, 0, -1 do
+			if PallyPower:HasAura(name, test) or (test == 0 and not skipzero) then
+				PallyPower_AuraAssignments_Vanilla[name] = test
+				PallyPower:SendMessage("AASSIGN "..name.." "..test)
+				do break end
+			end
+		end
+	elseif PallyPower.IsTBC then
+		if not PallyPower_AuraAssignments_TBC[name] then
+			PallyPower_AuraAssignments_TBC[name] = 0
+		end
+	
+		local cur = PallyPower_AuraAssignments_TBC[name] - 1
+		if (cur < 0) or (skipzero and (cur < 1)) then
+			cur = PALLYPOWER_MAXAURAS
+		end
+		
+		for test = cur, 0, -1 do
+			if PallyPower:HasAura(name, test) or (test == 0 and not skipzero) then
+				PallyPower_AuraAssignments_TBC[name] = test
+				PallyPower:SendMessage("AASSIGN "..name.." "..test)
+				do break end
+			end
+		end
+	else
+		if not PallyPower_AuraAssignments_Wrath[name] then
+			PallyPower_AuraAssignments_Wrath[name] = 0
+		end
+	
+		local cur = PallyPower_AuraAssignments_Wrath[name] - 1
+		if (cur < 0) or (skipzero and (cur < 1)) then
+			cur = PALLYPOWER_MAXAURAS
+		end
+		
+		for test = cur, 0, -1 do
+			if PallyPower:HasAura(name, test) or (test == 0 and not skipzero) then
+				PallyPower_AuraAssignments_Wrath[name] = test
+				PallyPower:SendMessage("AASSIGN "..name.." "..test)
+				do break end
+			end
 		end
 	end
 end
@@ -3251,8 +3902,18 @@ function PallyPower:UpdateAuraButton(aura)
 	
 	if ( aura and aura > 0 ) then
 		for name in pairs(AllPallys) do
-			if (name ~= self.player) and (aura == PallyPower_AuraAssignments[name]) then
-				tinsert(pallys, name)
+			if PallyPower.IsVanilla then
+				if (name ~= self.player) and (aura == PallyPower_AuraAssignments_Vanilla[name]) then
+					tinsert(pallys, name)
+				end
+			elseif PallyPower.IsTBC then
+				if (name ~= self.player) and (aura == PallyPower_AuraAssignments_TBC[name]) then
+					tinsert(pallys, name)
+				end
+			else
+				if (name ~= self.player) and (aura == PallyPower_AuraAssignments_Wrath[name]) then
+					tinsert(pallys, name)
+				end
 			end
 		end
 
@@ -3321,7 +3982,13 @@ function PallyPower:AutoAssignAuras(precedence)
 			for i, name in pairs(pallys) do
 				if assignee == name then 
 					tremove(pallys, i)
-					PallyPower_AuraAssignments[assignee] = aura
+					if PallyPower.IsVanilla then
+						PallyPower_AuraAssignments_Vanilla[assignee] = aura
+					elseif PallyPower.IsTBC then
+						PallyPower_AuraAssignments_TBC[assignee] = aura
+					else
+						PallyPower_AuraAssignments_Wrath[assignee] = aura
+					end
 					PallyPower:SendMessage("AASSIGN "..assignee.." "..aura)
 				end
 			end
