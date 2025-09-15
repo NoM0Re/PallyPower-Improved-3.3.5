@@ -164,13 +164,7 @@ PallyPower.options = {
 							"Top Left", 
 							"Bottom Left", 
 							"Bottom Right"},
-					disabled = function()
-						if PallyPower.opt.layout == "Standard" then
-							return false
-						else
-							return true
-						end
-					end,
+					disabled = function() return PallyPower.opt.layout ~= "Standard" end,
 				},
 				palign = {
 					name = L["DISPPL"],
