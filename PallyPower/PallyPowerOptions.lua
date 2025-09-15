@@ -117,7 +117,7 @@ PallyPower.options = {
 					type = "range",
 					desc = L["DISPCOL_DESC"],
 					min = 1,
-					max = 11,
+					max = (PallyPower.IsVanilla and 9) or (PallyPower.IsTBC and 10) or (PallyPower.IsWrath and 11),
 					step = 1,
 					get = "displayColumns",
 					set = "displayColumns",	
@@ -127,7 +127,7 @@ PallyPower.options = {
 					type = "range",
 					desc = L["DISPROWS_DESC"],
 					min = 1,
-					max = 11,
+					max = (PallyPower.IsVanilla and 9) or (PallyPower.IsTBC and 10) or (PallyPower.IsWrath and 11),
 					step = 1,
 					get = "displayRows",
 					set = "displayRows",	
@@ -160,10 +160,17 @@ PallyPower.options = {
 					get = "displayAlignClassButtons",
 					set = "displayAlignClassButtons",
 					validate = {
-							"1", 
-							"3", 
-							"7", 
-							"9"},
+							"Top Right", 
+							"Top Left", 
+							"Bottom Left", 
+							"Bottom Right"},
+					disabled = function()
+						if PallyPower.opt.layout == "Standard" then
+							return false
+						else
+							return true
+						end
+					end,
 				},
 				palign = {
 					name = L["DISPPL"],

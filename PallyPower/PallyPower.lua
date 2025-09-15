@@ -27,6 +27,20 @@ local initalized = false
 PP_Symbols = 0
 PP_IsPally = false
 
+local flavor
+--if then
+--	flavor = "Vanilla"
+if ((GetRealmName() == "Onyxia" or GetRealmName() == "Blackrock [PvP only]") and GetExpansionLevel() == 1) or GetRealmName() == "Kezan" or GetRealmName() == "Menethil" or GetRealmName() == "Gurubashi" then
+	flavor = "TBC"
+else
+	flavor = "Wrath"
+end
+
+PallyPower.IsVanilla = flavor == "Vanilla"
+PallyPower.IsTBC = flavor == "TBC"
+PallyPower.IsVanillaOrTBC = flavor == "Vanilla" or flavor == "TBC"
+PallyPower.IsWrath = flavor == "Wrath"
+
 -- unit tables
 local party_units = {}
 local raid_units = {}
@@ -59,13 +73,36 @@ function PallyPower:OnInitialize()
 	if self.opt.skin then
 		PallyPower:ApplySkin(self.opt.skin)
  	end
+	PallyPowerConfigFrame_UpdateFlavor()
 	dewdrop:Register(PallyPowerConfigFrame, "children",
 		function(level, value) dewdrop:FeedAceOptionsTable(self.options) end,
 		"dontHook", true
 	)
-
 	self.AutoBuffedList = {}
 	self.PreviousAutoBuffedUnit = nil
+end
+
+function PallyPowerConfigFrame_UpdateFlavor()
+	if PallyPower.IsVanilla then
+		for pNum = 1, PALLYPOWER_MAXPERCLASS do
+			getglobal("PallyPowerConfigFramePlayer" .. pNum .. "Line1"):SetWidth(978)
+			getglobal("PallyPowerConfigFramePlayer" .. pNum .."Line12"):Hide()
+			getglobal("PallyPowerConfigFramePlayer" .. pNum .. "Line13"):Hide()
+			getglobal("PallyPowerConfigFramePlayer" .. pNum .. "Class10"):Hide()
+			getglobal("PallyPowerConfigFramePlayer" .. pNum .. "Class11"):Hide()
+		end
+		getglobal("PallyPowerConfigFrameClassGroup10"):Hide()
+		getglobal("PallyPowerConfigFrameClassGroup11"):Hide()
+		getglobal("PallyPowerConfigFrame"):SetWidth(998)
+	elseif PallyPower.IsTBC then
+		for pNum = 1, PALLYPOWER_MAXPERCLASS do
+			getglobal("PallyPowerConfigFramePlayer" .. pNum .. "Line1"):SetWidth(1064)
+			getglobal("PallyPowerConfigFramePlayer" .. pNum .. "Line13"):Hide()
+			getglobal("PallyPowerConfigFramePlayer" .. pNum .. "Class11"):Hide()
+		end
+		getglobal("PallyPowerConfigFrameClassGroup11"):Hide()
+		getglobal("PallyPowerConfigFrame"):SetWidth(1084)
+	end
 end
 
 function PallyPower:OnProfileEnable()
@@ -439,8 +476,18 @@ function PallyPowerConfigGrid_Update()
 			getglobal(fname .. "Symbols"):SetTextColor(1,1,0.5)
 			
 			-- display the rank/talents for the blessings...
-			for id = 1, 4 do
+			for id = 1, PALLYPOWER_MAXBLESSINGS do
 				if SkillInfo[id] then
+					if PallyPower.IsVanillaOrTBC then
+						-- Order is: Wisdom, Might, Kings, Salvation, Light, Sanctuary
+						if id == 4 then
+							getglobal(fname.."Icon"..id):SetTexture("Interface\\Icons\\Spell_Holy_SealOfSalvation")
+						elseif id == 5 then
+							getglobal(fname.."Icon"..id):SetTexture("Interface\\Icons\\Spell_Holy_PrayerOfHealing02")
+						elseif id == 6 then
+							getglobal(fname.."Icon"..id):SetTexture("Interface\\Icons\\Spell_Nature_LightningShield")
+						end
+					end
 					getglobal(fname.."Icon"..id):Show()
 					getglobal(fname.."Skill"..id):Show()
 					local txt = SkillInfo[id].rank
@@ -453,9 +500,11 @@ function PallyPowerConfigGrid_Update()
 					getglobal(fname.."Skill"..id):Hide()
 				end
 			end
-			for id = 5, 6 do
-				getglobal(fname.."Icon"..id):Hide()
-				getglobal(fname.."Skill"..id):Hide()
+			if PallyPower.IsWrath then
+				for id = 5, 6 do
+					getglobal(fname.."Icon"..id):Hide()
+					getglobal(fname.."Skill"..id):Hide()
+				end
 			end
 			
 			-- display the rank/talents for only the 3 primary auras (devotion, retribution, concentration)
@@ -532,7 +581,7 @@ function PallyPower:Report(type)
 			local list = {}
 			for name in pairs(AllPallys) do
 				local blessings
-				for i = 1, 4 do
+				for i = 1, PALLYPOWER_MAXBLESSINGS do
 					list[i] = 0
 				end
 				for id = 1, PALLYPOWER_MAXCLASSES do
@@ -541,7 +590,7 @@ function PallyPower:Report(type)
 						list[bid] = list[bid] + 1
 					end
 				end
-				for id = 1, 4 do
+				for id = 1, PALLYPOWER_MAXBLESSINGS do
 					if (list[id] > 0) then
 						if (blessings) then
 							blessings = blessings .. ", "
@@ -583,14 +632,14 @@ function PallyPower:PerformCycle(name, class, skipzero)
 
 	PallyPower_Assignments[name][class] = 0
 
-	for test = cur+1, 5 do
+	for test = cur+1, PALLYPOWER_MAXBLESSINGS+1 do
 		if PallyPower:CanBuff(name, test) and (PallyPower:NeedsBuff(class, test) or shift) then
 			cur = test
 			do break end
 		end
 	end
 
-	if cur == 5 then
+	if cur == PALLYPOWER_MAXBLESSINGS+1 then
 		if skipzero then
 			cur = 1
 		else
@@ -619,10 +668,10 @@ function PallyPower:PerformCycleBackwards(name, class, skipzero)
 	end
 
 	if not PallyPower_Assignments[name][class] then
-		cur=5
+		cur=PALLYPOWER_MAXBLESSINGS+1
 	else
 		cur=PallyPower_Assignments[name][class]
-		if cur == 0 or skipzero and cur == 1 then cur = 5 end
+		if cur == 0 or skipzero and cur == 1 then cur = PALLYPOWER_MAXBLESSINGS+1 end
 	end
 
 	PallyPower_Assignments[name][class] = 0
@@ -652,9 +701,9 @@ function PallyPower:PerformPlayerCycle(arg1, pname, class)
 		blessing = PallyPower_NormalAssignments[playername][class][pname]
 	end
 
-	local test = (blessing - arg1) % 5
+	local test = (blessing - arg1) % (PALLYPOWER_MAXBLESSINGS+1)
 	while not (PallyPower:CanBuff(playername, test) and PallyPower:NeedsBuff(class, test, pname)) and test > 0 do
-		test = (test - arg1) % 5
+		test = (test - arg1) % (PALLYPOWER_MAXBLESSINGS+1)
 		if test == blessing then
 			test = 0
 			break
@@ -722,7 +771,7 @@ function PallyPower:AssignPlayerAsClass(pname, pclass, tclass)
 end
 
 function PallyPower:CanBuff(name, test)
-	if test==5 then
+	if test==PALLYPOWER_MAXBLESSINGS+1 then
 		return true
 	end
 
@@ -733,13 +782,13 @@ function PallyPower:CanBuff(name, test)
 end
 
 function PallyPower:NeedsBuff(class, test, playerName)
-	if test==5 or test==0 then
+	if test==PALLYPOWER_MAXBLESSINGS+1 or test==0 then
 		return true
 	end
 
 	if self.opt.smartbuffs then
 		-- no wisdom for warriors, rogues and DKs
-		if (class == 1 or class == 2 or class == 10) and test == 1 then
+		if (class == 1 or class == 2 or (PallyPower.IsWrath and class == 10)) and test == 1 then
 			return false
 		end
 		-- no salv for warriors except normal blessings
@@ -779,8 +828,13 @@ function PallyPower:ScanSpells()
 	local _, class=UnitClass("player")
 	if (class == "PALADIN") then
 		local RankInfo = {}
-		for i = 1, 4 do -- find max spell ranks
+		for i = 1, PALLYPOWER_MAXBLESSINGS do -- find max spell ranks
 			local spellName, spellRank = GetSpellInfo(PallyPower.GSpells[i])
+			-- Case for kings when spell is showing as known even if talent not selected.
+			if PallyPower.IsVanillaOrTBC and i == 3 then
+				local kingsTalent = select(5, GetTalentInfo(2, 6))
+				if kingsTalent == 0 then spellName = nil end
+			end
 			if not spellName then -- fallback to lower blessings
 				spellName, spellRank = GetSpellInfo(PallyPower.Spells[i])
 			end
@@ -793,12 +847,16 @@ function PallyPower:ScanSpells()
 			if spellName then
 				RankInfo[i] = {}
 				RankInfo[i].rank = rank
-				if i == 1 then  -- wisdom
+				if i == 1 then -- Wisdom
 					talent = talent + select(5, GetTalentInfo(1, 10))
-				elseif i == 2 then -- might
-			    	talent = talent + select(5, GetTalentInfo(3, 5))
-			    --elseif i == 3 then -- kings
-			    --	talent = talent + select(5, GetTalentInfo(2, 2))
+				elseif i == 2 then -- Might
+					if PallyPower.IsVanillaOrTBC then
+						talent = talent + select(5, GetTalentInfo(3, 1))
+					elseif PallyPower.IsWrath then
+						talent = talent + select(5, GetTalentInfo(3, 5))
+					end
+				--elseif i == 3 then -- Kings
+				--	talent = talent + select(5, GetTalentInfo(2, 2))
 				end
 
 				RankInfo[i].talent = talent
@@ -820,15 +878,33 @@ function PallyPower:ScanSpells()
 				end
 				
 				local talent = 0
-				if i == 1 then
-					-- Lach22Mar08: Prot talent tree appears to be out-of-sync... 
-					-- Imp Dev. Aura should be 10, but wont return correct value unless 11 is used for the index...
-					-- I assume that they will correct if before release... 
-					talent = talent + select(5, GetTalentInfo(2, 11)) -- Improved Devotion Aura
-				elseif i == 2 then
-			    	talent = talent + select(5, GetTalentInfo(3, 14))  -- Sanctified Retribution
-			    elseif i == 3 then
-			    	talent = talent + select(5, GetTalentInfo(1, 9))  -- Improved Concentration Aura
+				if PallyPower.IsVanilla then
+					if i == 1 then
+						talent = talent + select(5, GetTalentInfo(2, 1)) -- Improved Devotion Aura
+					elseif i == 2 then
+						talent = talent + select(5, GetTalentInfo(3, 11))  -- Improved Retribution Aura
+					elseif i == 3 then
+						talent = talent + select(5, GetTalentInfo(2, 11))  -- Improved Concentration Aura
+					end
+				elseif PallyPower.IsTBC then
+					if i == 1 then
+						talent = talent + select(5, GetTalentInfo(2, 1)) -- Improved Devotion Aura
+					elseif i == 2 then
+						talent = talent + select(5, GetTalentInfo(3, 11))  -- Improved Retribution Aura
+					elseif i == 3 then
+						talent = talent + select(5, GetTalentInfo(2, 12))  -- Improved Concentration Aura
+					end
+				elseif PallyPower.IsWrath then
+					if i == 1 then
+						-- Lach22Mar08: Prot talent tree appears to be out-of-sync... 
+						-- Imp Dev. Aura should be 10, but wont return correct value unless 11 is used for the index...
+						-- I assume that they will correct if before release... 
+						talent = talent + select(5, GetTalentInfo(2, 11)) -- Improved Devotion Aura
+					elseif i == 2 then
+						talent = talent + select(5, GetTalentInfo(3, 14))  -- Sanctified Retribution
+					elseif i == 3 then
+						talent = talent + select(5, GetTalentInfo(1, 9))  -- Improved Concentration Aura
+					end
 				end
 
 				AllPallys[self.player].AuraInfo[i].talent = talent
@@ -869,7 +945,7 @@ function PallyPower:SendSelf()
 
 	local SkillInfo = AllPallys[self.player]
 	s = ""
-	for i = 1, 4 do
+	for i = 1, PALLYPOWER_MAXBLESSINGS do
 		if not SkillInfo[i] then
 			s = s.."nn"
 		else
@@ -1536,19 +1612,19 @@ function PallyPower:UpdateLayout()
 		local displayedColumns = math.min(displayedButtons, columns)
 		local displayedRows = math.floor((displayedButtons - 1) / columns) + 1
 
-		if (self.opt.display.alignClassButtons == "1") then
+		if (self.opt.display.alignClassButtons == "Top Right") then
 			point = "BOTTOMLEFT"
 			pointOpposite = "TOPLEFT"
-		elseif (self.opt.display.alignClassButtons == "3") then
+		elseif (self.opt.display.alignClassButtons == "Top Left") then
 			x = x * -1
 			point = "BOTTOMRIGHT"
 			pointOpposite = "TOPRIGHT"
-		elseif (self.opt.display.alignClassButtons == "7") then
+		elseif (self.opt.display.alignClassButtons == "Bottom Left") then
 			x = x * -1
 			y = y * -1
 			point = "TOPRIGHT"
 			pointOpposite = "BOTTOMRIGHT"
-		elseif (self.opt.display.alignClassButtons == "9") then
+		elseif (self.opt.display.alignClassButtons == "Bottom Right") then
 			y = y * -1
 			point = "TOPLEFT"
 			pointOpposite = "BOTTOMLEFT"
@@ -2831,12 +2907,12 @@ function PallyPower:SealAssign(seal)
 end
 
 -- Auto-Assign blessings by Maddeathelf
-local WisdomPallys, MightPallys, KingsPallys,  SancPallys = {}, {}, {}, {}
+local WisdomPallys, MightPallys, KingsPallys, SalvPallys, LightPallys, SancPallys = {}, {}, {}, {}, {}, {}
 
 function PallyPower:AutoAssign()
 
 	PallyPowerConfig_Clear()
-	WisdomPallys, MightPallys, KingsPallys,  SancPallys = {}, {}, {}, {}	
+	WisdomPallys, MightPallys, KingsPallys, SalvPallys, LightPallys, SancPallys = {}, {}, {}, {}, {}, {}
 	PallyPower:AutoAssignBlessings()
 	
 	local precedence = { 1, 3, 2, 4, 5, 6 }	 -- devotion, concentration, retribution, shadow, frost, fire
@@ -2845,7 +2921,7 @@ function PallyPower:AutoAssign()
 end
 
 function PallyPower:CalcSkillRanks1(name)
-	local wisdom, might, kings, sanct
+	local wisdom, might, kings, salv, light, sanct
 	if AllPallys[name][1] then
 		wisdom = tonumber(AllPallys[name][1].rank) + tonumber(AllPallys[name][1].talent)/12
 	else
@@ -2861,13 +2937,32 @@ function PallyPower:CalcSkillRanks1(name)
 	else
 		kings = 0
 	end
-	if AllPallys[name][4] then
-		sanct  = tonumber(AllPallys[name][4].rank)
-	else
-		sanct = 0
+
+	if PallyPower.IsVanillaOrTBC then
+		if AllPallys[name][4] then
+			salv  = tonumber(AllPallys[name][4].rank)
+		else
+			salv = 0
+		end
+		if AllPallys[name][5] then
+			light  = tonumber(AllPallys[name][5].rank)
+		else
+			light = 0
+		end
+		if AllPallys[name][6] then
+			sanct  = tonumber(AllPallys[name][6].rank)
+		else
+			sanct = 0
+		end
+	elseif PallyPower.IsWrath then
+		if AllPallys[name][4] then
+			sanct  = tonumber(AllPallys[name][4].rank)
+		else
+			sanct = 0
+		end
 	end
 	
-	return wisdom, might, kings, sanct
+	return wisdom, might, kings, salv, light, sanct
 end
 
 function PallyPower:AutoAssignBlessings()
@@ -2880,11 +2975,11 @@ function PallyPower:AutoAssignBlessings()
 	
 	if pc == 0 then return end
 	
-	if pc > 4 then pc = 4 end
+	if pc > PALLYPOWER_MAXBLESSINGS then pc = PALLYPOWER_MAXBLESSINGS end
 	
 	for name in pairs(AllPallys) do	
 		pallycount = pallycount + 1
-		local wisdom, might, kings, sanct = PallyPower:CalcSkillRanks1(name) 
+		local wisdom, might, kings, salv, light, sanct = PallyPower:CalcSkillRanks1(name) 
 		--self:Print("Adding")
 		--self:Print(name, wisdom, might, kings, sanct)
 		if wisdom then
@@ -2899,6 +2994,14 @@ function PallyPower:AutoAssignBlessings()
 			tinsert(KingsPallys, {pallyname = name, skill = kings})
 		end
 		
+		if salv then
+			tinsert(SalvPallys, {pallyname = name, skill = salv})
+		end
+
+		if light then
+			tinsert(LightPallys, {pallyname = name, skill = light})
+		end
+
 		if sanct then
 			tinsert(SancPallys, {pallyname = name, skill = sanct})
 		end
@@ -2907,17 +3010,40 @@ function PallyPower:AutoAssignBlessings()
 	local pt = PallyPower.Templates[pc]
 
 	-- assign based on the class templates
-	PallyPower:SelectBuffsByClass(pallycount, 1, pt[1])  	-- warrior
-	PallyPower:SelectBuffsByClass(pallycount, 2, pt[2])  	-- rogue
-	PallyPower:SelectBuffsByClass(pallycount, 3, pt[3])  	-- priest
-	PallyPower:SelectBuffsByClass(pallycount, 4, pt[4]) 	-- druid
-	PallyPower:SelectBuffsByClass(pallycount, 5, pt[5]) 	-- paladin
-	PallyPower:SelectBuffsByClass(pallycount, 6, pt[6]) 	-- hunter
-	PallyPower:SelectBuffsByClass(pallycount, 7, pt[7]) 	-- mage
-	PallyPower:SelectBuffsByClass(pallycount, 8, pt[8]) 	-- lock
-	PallyPower:SelectBuffsByClass(pallycount, 9, pt[9]) 	-- shaman
-	PallyPower:SelectBuffsByClass(pallycount, 10, pt[10]) 	-- dk
-	PallyPower:SelectBuffsByClass(pallycount, 11, pt[11]) 	-- pets
+	if PallyPower.IsVanilla then
+		PallyPower:SelectBuffsByClass(pallycount, 1, pt[1])  	-- warrior
+		PallyPower:SelectBuffsByClass(pallycount, 2, pt[2])  	-- rogue
+		PallyPower:SelectBuffsByClass(pallycount, 3, pt[3])  	-- priest
+		PallyPower:SelectBuffsByClass(pallycount, 4, pt[4]) 	-- druid
+		PallyPower:SelectBuffsByClass(pallycount, 5, pt[5]) 	-- paladin
+		PallyPower:SelectBuffsByClass(pallycount, 6, pt[6]) 	-- hunter
+		PallyPower:SelectBuffsByClass(pallycount, 7, pt[7]) 	-- mage
+		PallyPower:SelectBuffsByClass(pallycount, 8, pt[8]) 	-- lock
+		PallyPower:SelectBuffsByClass(pallycount, 9, pt[9]) 	-- pets
+	elseif PallyPower.IsTBC then
+		PallyPower:SelectBuffsByClass(pallycount, 1, pt[1])  	-- warrior
+		PallyPower:SelectBuffsByClass(pallycount, 2, pt[2])  	-- rogue
+		PallyPower:SelectBuffsByClass(pallycount, 3, pt[3])  	-- priest
+		PallyPower:SelectBuffsByClass(pallycount, 4, pt[4]) 	-- druid
+		PallyPower:SelectBuffsByClass(pallycount, 5, pt[5]) 	-- paladin
+		PallyPower:SelectBuffsByClass(pallycount, 6, pt[6]) 	-- hunter
+		PallyPower:SelectBuffsByClass(pallycount, 7, pt[7]) 	-- mage
+		PallyPower:SelectBuffsByClass(pallycount, 8, pt[8]) 	-- lock
+		PallyPower:SelectBuffsByClass(pallycount, 9, pt[9]) 	-- shaman
+		PallyPower:SelectBuffsByClass(pallycount, 10, pt[10]) 	-- pets
+	elseif PallyPower.IsWrath then
+		PallyPower:SelectBuffsByClass(pallycount, 1, pt[1])  	-- warrior
+		PallyPower:SelectBuffsByClass(pallycount, 2, pt[2])  	-- rogue
+		PallyPower:SelectBuffsByClass(pallycount, 3, pt[3])  	-- priest
+		PallyPower:SelectBuffsByClass(pallycount, 4, pt[4]) 	-- druid
+		PallyPower:SelectBuffsByClass(pallycount, 5, pt[5]) 	-- paladin
+		PallyPower:SelectBuffsByClass(pallycount, 6, pt[6]) 	-- hunter
+		PallyPower:SelectBuffsByClass(pallycount, 7, pt[7]) 	-- mage
+		PallyPower:SelectBuffsByClass(pallycount, 8, pt[8]) 	-- lock
+		PallyPower:SelectBuffsByClass(pallycount, 9, pt[9]) 	-- shaman
+		PallyPower:SelectBuffsByClass(pallycount, 10, pt[10]) 	-- dk
+		PallyPower:SelectBuffsByClass(pallycount, 11, pt[11]) 	-- pets
+	end
 end
 
 function PallyPower:SelectBuffsByClass(pallycount, class, prioritylist)
@@ -2951,10 +3077,19 @@ end
 function PallyPower:BuffSelections(buff, class, pallys)
 	--self:Print(">>Looking for buffer for: " .. buff)
 	local t = {}
-	if buff == 1 then t = WisdomPallys end
-	if buff == 2 then t = MightPallys end
-	if buff == 3 then t = KingsPallys end
-	if buff == 4 then t = SancPallys end
+	if PallyPower.IsVanillaOrTBC then
+		if buff == 1 then t = WisdomPallys end
+		if buff == 2 then t = MightPallys end
+		if buff == 3 then t = KingsPallys end
+		if buff == 4 then t = SalvPallys end
+		if buff == 5 then t = LightPallys end
+		if buff == 6 then t = SancPallys end
+	elseif PallyPower.IsWrath then
+		if buff == 1 then t = WisdomPallys end
+		if buff == 2 then t = MightPallys end
+		if buff == 3 then t = KingsPallys end
+		if buff == 4 then t = SancPallys end
+	end
 
 	local Buffer = ""
 	local testrank = 0

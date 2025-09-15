@@ -3,11 +3,12 @@ local L = AceLibrary("AceLocale-2.2"):new("PallyPower");
 
 PallyPower.commPrefix = "PLPWR";
 
-PALLYPOWER_MAXCLASSES = 11;
+PALLYPOWER_MAXCLASSES = (PallyPower.IsVanilla and 9) or (PallyPower.IsTBC and 10) or (PallyPower.IsWrath and 11);
 PALLYPOWER_MAXPERCLASS = 8;
-PALLYPOWER_NORMALBLESSINGDURATION = 10*60;
-PALLYPOWER_GREATERBLESSINGDURATION = 30*60;
-PALLYPOWER_MAXAURAS = 7;
+PALLYPOWER_NORMALBLESSINGDURATION = (PallyPower.IsTBC or PallyPower.IsWrath) and 10*60 or 5*60;
+PALLYPOWER_GREATERBLESSINGDURATION = (PallyPower.IsTBC or PallyPower.IsWrath) and 30*60 or 15*60;
+PALLYPOWER_MAXAURAS = PallyPower.IsTBC and 8 or 7;
+PALLYPOWER_MAXBLESSINGS = PallyPower.IsVanillaOrTBC and 6 or 4;
 
 PallyPower.CONFIG_DRAGHANDLE = L["DRAGHANDLE"];
 
@@ -28,7 +29,7 @@ PALLYPOWER_DEFAULT_VALUES = {
 	},
 	display = {
 		-- buttons
-		rows = 11,
+		rows = (PallyPower.IsVanilla and 9) or (PallyPower.IsTBC and 10) or (PallyPower.IsWrath and 11),
 		columns = 1,
 		gapping = -1,
 		buttonWidth = 100,
@@ -83,7 +84,28 @@ PallyPower_Credits1 = "Pally Power - by Aznamir";
 
 PallyPower.BuffBarTitle = "Pally Buffs (%d)";
 
-PallyPower.ClassID = { 
+PallyPower.ClassID = PallyPower.IsVanilla and { 
+	[1] = "WARRIOR",
+	[2] = "ROGUE",
+	[3] = "PRIEST",
+	[4] = "DRUID",
+	[5] = "PALADIN",
+	[6] = "HUNTER",
+	[7] = "MAGE",
+	[8] = "WARLOCK",
+	[9] = "PET",
+} or PallyPower.IsTBC and { 
+	[1] = "WARRIOR",
+	[2] = "ROGUE",
+	[3] = "PRIEST",
+	[4] = "DRUID",
+	[5] = "PALADIN",
+	[6] = "HUNTER",
+	[7] = "MAGE",
+	[8] = "WARLOCK",
+	[9] = "SHAMAN",
+	[10] = "PET",
+} or PallyPower.IsWrath and { 
 	[1] = "WARRIOR",
 	[2] = "ROGUE",
 	[3] = "PRIEST",
@@ -94,9 +116,31 @@ PallyPower.ClassID = {
 	[8] = "WARLOCK",
 	[9] = "SHAMAN",
 	[10] = "DEATHKNIGHT",
-	[11] = "PET"};
+	[11] = "PET",
+}
 	
-PallyPower.ClassToID = {
+PallyPower.ClassToID = PallyPower.IsVanilla and {
+	["WARRIOR"] 	= 1,
+	["ROGUE"] 		= 2,
+	["PRIEST"] 		= 3,
+	["DRUID"] 		= 4,
+	["PALADIN"] 	= 5,
+	["HUNTER"] 		= 6,
+	["MAGE"] 		= 7,
+	["WARLOCK"]		= 8,
+	["PET"]			= 9,
+} or PallyPower.IsTBC and {
+	["WARRIOR"] 	= 1,
+	["ROGUE"] 		= 2,
+	["PRIEST"] 		= 3,
+	["DRUID"] 		= 4,
+	["PALADIN"] 	= 5,
+	["HUNTER"] 		= 6,
+	["MAGE"] 		= 7,
+	["WARLOCK"]		= 8,
+	["SHAMAN"]		= 9,
+	["PET"]			= 10,
+} or PallyPower.IsWrath and {
 	["WARRIOR"] 	= 1,
 	["ROGUE"] 		= 2,
 	["PRIEST"] 		= 3,
@@ -107,9 +151,31 @@ PallyPower.ClassToID = {
 	["WARLOCK"]		= 8,
 	["SHAMAN"]		= 9,
 	["DEATHKNIGHT"]	= 10,
-	["PET"]			= 11};	
+	["PET"]			= 11,
+}
 
-PallyPower.ClassIcons = {
+PallyPower.ClassIcons = PallyPower.IsVanilla and {
+	[1] = "Interface\\AddOns\\PallyPower\\Icons\\Warrior",
+	[2] = "Interface\\AddOns\\PallyPower\\Icons\\Rogue",
+	[3] = "Interface\\AddOns\\PallyPower\\Icons\\Priest",
+	[4] = "Interface\\AddOns\\PallyPower\\Icons\\Druid",
+	[5] = "Interface\\AddOns\\PallyPower\\Icons\\Paladin",
+	[6] = "Interface\\AddOns\\PallyPower\\Icons\\Hunter",
+	[7] = "Interface\\AddOns\\PallyPower\\Icons\\Mage",
+	[8] = "Interface\\AddOns\\PallyPower\\Icons\\Warlock",
+	[9] = "Interface\\AddOns\\PallyPower\\Icons\\Pet",
+} or PallyPower.IsTBC and {
+	[1] = "Interface\\AddOns\\PallyPower\\Icons\\Warrior",
+	[2] = "Interface\\AddOns\\PallyPower\\Icons\\Rogue",
+	[3] = "Interface\\AddOns\\PallyPower\\Icons\\Priest",
+	[4] = "Interface\\AddOns\\PallyPower\\Icons\\Druid",
+	[5] = "Interface\\AddOns\\PallyPower\\Icons\\Paladin",
+	[6] = "Interface\\AddOns\\PallyPower\\Icons\\Hunter",
+	[7] = "Interface\\AddOns\\PallyPower\\Icons\\Mage",
+	[8] = "Interface\\AddOns\\PallyPower\\Icons\\Warlock",
+	[9] = "Interface\\AddOns\\PallyPower\\Icons\\Shaman",
+	[10] = "Interface\\AddOns\\PallyPower\\Icons\\Pet",
+} or PallyPower.IsWrath and {
 	[1] = "Interface\\AddOns\\PallyPower\\Icons\\Warrior",
 	[2] = "Interface\\AddOns\\PallyPower\\Icons\\Rogue",
 	[3] = "Interface\\AddOns\\PallyPower\\Icons\\Priest",
@@ -120,23 +186,61 @@ PallyPower.ClassIcons = {
 	[8] = "Interface\\AddOns\\PallyPower\\Icons\\Warlock",
 	[9] = "Interface\\AddOns\\PallyPower\\Icons\\Shaman",
 	[10] = "Interface\\AddOns\\PallyPower\\Icons\\DeathKnight",
-	[11] = "Interface\\AddOns\\PallyPower\\Icons\\Pet"};
+	[11] = "Interface\\AddOns\\PallyPower\\Icons\\Pet",
+}
 
-PallyPower.BlessingIcons = {
+PallyPower.BlessingIcons = PallyPower.IsVanillaOrTBC and {
+	[-1] = "",
+	[1] = "Interface\\Icons\\Spell_Holy_GreaterBlessingofWisdom", -- Greater Wisdom
+	[2] = "Interface\\Icons\\Spell_Holy_GreaterBlessingofKings", -- Greater Might
+	[3] = "Interface\\Icons\\Spell_Magic_GreaterBlessingofKings", -- Greater Kings
+	[4] = "Interface\\Icons\\Spell_Holy_GreaterBlessingofSalvation", -- Greater Salvation
+	[5] = "Interface\\Icons\\Spell_Holy_GreaterBlessingofLight", -- Greater Light
+	[6] = "Interface\\Icons\\Spell_Holy_GreaterBlessingofSanctuary", -- Greater Sanctuary
+} or PallyPower.IsWrath and {
     [-1] = "",
 	[1] = "Interface\\Icons\\Spell_Holy_GreaterBlessingofWisdom",
 	[2] = "Interface\\Icons\\Spell_Holy_GreaterBlessingofKings",
 	[3] = "Interface\\Icons\\Spell_Magic_GreaterBlessingofKings",
-	[4] = "Interface\\Icons\\Spell_Holy_GreaterBlessingofSanctuary"};
+	[4] = "Interface\\Icons\\Spell_Holy_GreaterBlessingofSanctuary",
+}
 	
-PallyPower.NormalBlessingIcons = {
+PallyPower.NormalBlessingIcons = PallyPower.IsVanillaOrTBC and {
+	[-1] = "",
+	[1] = "Interface\\Icons\\Spell_Holy_SealOfWisdom", -- Wisdom
+	[2] = "Interface\\Icons\\Spell_Holy_FistOfJustice", -- Might
+	[3] = "Interface\\Icons\\Spell_Magic_MageArmor", -- Kings
+	[4] = "Interface\\Icons\\Spell_Holy_SealOfSalvation", -- Salvation
+	[5] = "Interface\\Icons\\Spell_Holy_PrayerOfHealing02", -- Light
+	[6] = "Interface\\Icons\\Spell_Nature_LightningShield", -- Sanctuary
+} or PallyPower.IsWrath and {
     [-1] = "",
 	[1] = "Interface\\Icons\\Spell_Holy_SealOfWisdom",
 	[2] = "Interface\\Icons\\Spell_Holy_FistOfJustice",
 	[3] = "Interface\\Icons\\Spell_Magic_MageArmor",
-	[4] = "Interface\\Icons\\Spell_Nature_LightningShield"};
+	[4] = "Interface\\Icons\\Spell_Nature_LightningShield",
+}
 
-PallyPower.AuraIcons = {
+PallyPower.AuraIcons = PallyPower.IsVanilla and {
+	[-1] = "",
+	[1] = "Interface\\Icons\\Spell_Holy_DevotionAura",
+	[2] = "Interface\\Icons\\Spell_Holy_AuraOfLight",
+	[3] = "Interface\\Icons\\Spell_Holy_MindSooth",
+	[4] = "Interface\\Icons\\Spell_Shadow_SealOfKings",
+	[5] = "Interface\\Icons\\Spell_Frost_WizardMark",
+	[6] = "Interface\\Icons\\Spell_Fire_SealOfFire",
+	[7] = "Interface\\Icons\\Spell_Holy_MindVision",
+} or PallyPower.IsTBC and {
+	[-1] = "",
+	[1] = "Interface\\Icons\\Spell_Holy_DevotionAura",
+	[2] = "Interface\\Icons\\Spell_Holy_AuraOfLight",
+	[3] = "Interface\\Icons\\Spell_Holy_MindSooth",
+	[4] = "Interface\\Icons\\Spell_Shadow_SealOfKings",
+	[5] = "Interface\\Icons\\Spell_Frost_WizardMark",
+	[6] = "Interface\\Icons\\Spell_Fire_SealOfFire",
+	[7] = "Interface\\Icons\\Spell_Holy_MindVision",
+	[8] = "Interface\\Icons\\Spell_Holy_CrusaderAura",
+} or PallyPower.IsWrath and {
     [-1] = "",
 	[1] = "Interface\\Icons\\Spell_Holy_DevotionAura",
 	[2] = "Interface\\Icons\\Spell_Holy_AuraOfLight",
@@ -145,7 +249,7 @@ PallyPower.AuraIcons = {
 	[5] = "Interface\\Icons\\Spell_Frost_WizardMark",
 	[6] = "Interface\\Icons\\Spell_Fire_SealOfFire",
 	[7] = "Interface\\Icons\\Spell_Holy_CrusaderAura",
-};
+}
 
 --
 -- Need to add localizations
@@ -160,21 +264,37 @@ PALLYPOWER_ASSIGNMENTS1 = L["PP_RAS1"];
 PALLYPOWER_ASSIGNMENTS2 = L["PP_RAS2"];
 
 -- get translations directly
-PallyPower.Spells = {
+PallyPower.Spells = PallyPower.IsVanillaOrTBC and {
 	[0] = "",
-	[1] = GetSpellInfo(19742), --BS["Blessing of Wisdom"],
-	[2] = GetSpellInfo(19740), --BS["Blessing of Might"],
-	[3] = GetSpellInfo(20217), --BS["Blessing of Kings"],
-	[4] = GetSpellInfo(20911), --BS["Blessing of Sanctuary"],
-};
+	[1] = GetSpellInfo(19742),	--BS["Blessing of Wisdom"],
+	[2] = GetSpellInfo(19740),	--BS["Blessing of Might"],
+	[3] = GetSpellInfo(20217),	--BS["Blessing of Kings"],
+	[4] = GetSpellInfo(1038),	--BS["Blessing of Salvation"],
+	[5] = GetSpellInfo(19977),	--BS["Blessing of Light"],
+	[6] = GetSpellInfo(20911),	--BS["Blessing of Sanctuary"],
+} or PallyPower.IsWrath and {
+	[0] = "",
+	[1] = GetSpellInfo(19742),	--BS["Blessing of Wisdom"],
+	[2] = GetSpellInfo(19740),	--BS["Blessing of Might"],
+	[3] = GetSpellInfo(20217),	--BS["Blessing of Kings"],
+	[4] = GetSpellInfo(20911),	--BS["Blessing of Sanctuary"],
+}
 
-PallyPower.GSpells = {
+PallyPower.GSpells = PallyPower.IsVanillaOrTBC and {
 	[0] = "",
-	[1] = GetSpellInfo(25894), --BS["Greater Blessing of Wisdom"],
-	[2] = GetSpellInfo(25782), --BS["Greater Blessing of Might"],
-	[3] = GetSpellInfo(25898), --BS["Greater Blessing of Kings"],
-	[4] = GetSpellInfo(25899), --BS["Greater Blessing of Sanctuary"],
-};
+	[1] = GetSpellInfo(25894),	--BS["Greater Blessing of Wisdom"],
+	[2] = GetSpellInfo(25782),	--BS["Greater Blessing of Might"],
+	[3] = GetSpellInfo(25898),	--BS["Greater Blessing of Kings"],
+	[4] = GetSpellInfo(25895),	--BS["Greater Blessing of Salvation"],
+	[5] = GetSpellInfo(25890),	--BS["Greater Blessing of Light"],
+	[6] = GetSpellInfo(25899),	--BS["Greater Blessing of Sanctuary"],
+} or PallyPower.IsWrath and {
+	[0] = "",
+	[1] = GetSpellInfo(25894),	--BS["Greater Blessing of Wisdom"],
+	[2] = GetSpellInfo(25782),	--BS["Greater Blessing of Might"],
+	[3] = GetSpellInfo(25898),	--BS["Greater Blessing of Kings"],
+	[4] = GetSpellInfo(25899),	--BS["Greater Blessing of Sanctuary"],
+}
 
 PallyPower.RFSpell = GetSpellInfo(25780) --BS["Righteous Fury"]
 
@@ -199,7 +319,7 @@ PallyPower.Seals = {
     [1] = GetSpellInfo(20164), -- seal of justice
 	[2] = GetSpellInfo(20165), -- seal of light
     [3] = GetSpellInfo(20166), -- seal of wisdom
-    [4] = GetSpellInfo(21084), -- seal of right
+    [4] = GetSpellInfo(21084), -- seal of righteousness
     [5] = GetSpellInfo(53720), -- seal of martyr
     [6] = GetSpellInfo(31801), -- seal of vengeance
     [7] = GetSpellInfo(20375), -- seal of command
@@ -208,7 +328,26 @@ PallyPower.Seals = {
     [10] = "",
 };
 
-PallyPower.Auras = {
+PallyPower.Auras = PallyPower.IsVanilla and {
+	[0] = "",
+	[1] = GetSpellInfo(465), --BS["Devotion Aura"],
+	[2] = GetSpellInfo(7294), --BS["Retribution Aura"],
+	[3] = GetSpellInfo(19746), --BS["Concentration Aura"],
+	[4] = GetSpellInfo(19876), --BS["Shadow Resistance Aura"],
+	[5] = GetSpellInfo(19888), --BS["Frost Resistance Aura"],
+	[6] = GetSpellInfo(19891), --BS["Fire Resistance Aura"],
+	[7] = GetSpellInfo(20218), --BS["Sanctity Aura"],
+} or PallyPower.IsTBC and {
+	[0] = "",
+	[1] = GetSpellInfo(465), --BS["Devotion Aura"],
+	[2] = GetSpellInfo(7294), --BS["Retribution Aura"],
+	[3] = GetSpellInfo(19746), --BS["Concentration Aura"],
+	[4] = GetSpellInfo(19876), --BS["Shadow Resistance Aura"],
+	[5] = GetSpellInfo(19888), --BS["Frost Resistance Aura"],
+	[6] = GetSpellInfo(19891), --BS["Fire Resistance Aura"],
+	[7] = GetSpellInfo(20218), --BS["Sanctity Aura"],
+	[8] = GetSpellInfo(32223), --BS["Crusader Aura"],
+} or PallyPower.IsWrath and {
 	[0] = "",
 	[1] = GetSpellInfo(465), --BS["Devotion Aura"],
 	[2] = GetSpellInfo(7294), --BS["Retribution Aura"],
@@ -217,9 +356,149 @@ PallyPower.Auras = {
 	[5] = GetSpellInfo(19888), --BS["Frost Resistance Aura"],
 	[6] = GetSpellInfo(19891), --BS["Fire Resistance Aura"],
 	[7] = GetSpellInfo(32223), --BS["Crusader Aura"],
-};
+}
 -- Buff templates
-PallyPower.Templates={
+PallyPower.Templates = PallyPower.IsVanilla and {
+	[1] = {
+		[1]=  {4},
+		[2]=  {4},
+		[3]=  {3, 1},
+		[4]=  {3, 1},
+		[5]=  {3, 2},
+		[6]=  {4},
+		[7]=  {4},
+		[8]=  {4},
+		[9]= {3, 2},
+	},
+	[2] = {
+		[1]=  {4, 3, 2},
+		[2]=  {4, 3, 2},
+		[3]=  {1, 3, 4},
+		[4]=  {1, 3, 4},
+		[5]=  {1, 3, 2},
+		[6]=  {4, 3, 2},
+		[7]=  {4, 3, 1},
+		[8]=  {4, 3, 1},
+		[9]= {2, 3, 1},
+	},
+	[3]= {
+		[1]=  {4, 2, 3, 5, 6},
+		[2]=  {4, 2, 3, 5, 6},
+		[3]=  {1, 4, 3, 5, 6},
+		[4]=  {2, 4, 3, 1},
+		[5]=  {1, 2, 3, 4},
+		[6]=  {2, 4, 3, 1},
+		[7]=  {1, 4, 3, 5, 6},
+		[8]=  {1, 4, 3, 5, 6},
+		[9]= {2, 1, 3, 4},
+	},
+	[4]= {
+		[1]=  {2, 4, 3, 5, 6},
+		[2]=  {2, 4, 3, 5, 6},
+		[3]=  {1, 4, 3, 5, 6},
+		[4]=  {1, 2, 4, 3, 5, 6},
+		[5]=  {1, 2, 4, 3, 5, 6},
+		[6]=  {2, 1, 4, 3, 5, 6},
+		[7]=  {1, 4, 3, 5, 6},
+		[8]=  {1, 4, 3, 5, 6},
+		[9]= {2, 1, 4, 3, 5, 6},
+	},
+	[5]= {
+		[1]=  {2, 4, 3, 5, 6},
+		[2]=  {2, 4, 3, 5, 6},
+		[3]=  {1, 4, 3, 5, 6},
+		[4]=  {1, 2, 4, 3, 5, 6},
+		[5]=  {1, 2, 4, 3, 5, 6},
+		[6]=  {2, 1, 4, 3, 5, 6},
+		[7]=  {1, 4, 3, 5, 6},
+		[8]=  {1, 4, 3, 5, 6},
+		[9]=  {2, 1, 4, 3, 5, 6},
+	},
+	[6]= {
+		[1]=  {2, 4, 3, 5, 6},
+		[2]=  {2, 4, 3, 5, 6},
+		[3]=  {1, 4, 3, 5, 6},
+		[4]=  {1, 2, 4, 3, 5, 6},
+		[5]=  {1, 2, 4, 3, 5, 6},
+		[6]=  {2, 1, 4, 3, 5, 6},
+		[7]=  {1, 4, 3, 5, 6},
+		[8]=  {1, 4, 3, 5, 6},
+		[9]=  {2, 1, 4, 3, 5, 6},
+	},
+} or PallyPower.IsTBC and {
+	[1] = {
+		[1]=  {4},
+		[2]=  {4},
+		[3]=  {3, 1},
+		[4]=  {3, 1},
+		[5]=  {3, 2},
+		[6]=  {4},
+		[7]=  {4},
+		[8]=  {4},
+		[9]=  {4},
+		[10]= {3, 2},
+	},
+	[2] = {
+		[1]=  {4, 3, 2},
+		[2]=  {4, 3, 2},
+		[3]=  {1, 3, 4},
+		[4]=  {1, 3, 4},
+		[5]=  {1, 3, 2},
+		[6]=  {4, 3, 2},
+		[7]=  {4, 3, 1},
+		[8]=  {4, 3, 1},
+		[9]=  {1, 3, 4},
+		[10]= {2, 3, 1},
+	},
+	[3]= {
+		[1]=  {4, 2, 3, 5, 6},
+		[2]=  {4, 2, 3, 5, 6},
+		[3]=  {1, 4, 3, 5, 6},
+		[4]=  {2, 4, 3, 1},
+		[5]=  {1, 2, 3, 4},
+		[6]=  {2, 4, 3, 1},
+		[7]=  {1, 4, 3, 5, 6},
+		[8]=  {1, 4, 3, 5, 6},
+		[9]=  {2, 4, 3, 1},
+		[10]= {2, 1, 3, 4},
+	},
+	[4]= {
+		[1]=  {2, 4, 3, 5, 6},
+		[2]=  {2, 4, 3, 5, 6},
+		[3]=  {1, 4, 3, 5, 6},
+		[4]=  {1, 2, 4, 3, 5, 6},
+		[5]=  {1, 2, 4, 3, 5, 6},
+		[6]=  {2, 1, 4, 3, 5, 6},
+		[7]=  {1, 4, 3, 5, 6},
+		[8]=  {1, 4, 3, 5, 6},
+		[9]=  {1, 2, 4, 3, 5, 6},
+		[10]= {2, 1, 4, 3, 5, 6},
+	},
+	[5]= {
+		[1]=  {2, 4, 3, 5, 6},
+		[2]=  {2, 4, 3, 5, 6},
+		[3]=  {1, 4, 3, 5, 6},
+		[4]=  {1, 2, 4, 3, 5, 6},
+		[5]=  {1, 2, 4, 3, 5, 6},
+		[6]=  {2, 1, 4, 3, 5, 6},
+		[7]=  {1, 4, 3, 5, 6},
+		[8]=  {1, 4, 3, 5, 6},
+		[9]=  {1, 2, 4, 3, 5, 6},
+		[10]=  {2, 1, 4, 3, 5, 6},
+	},
+	[6]= {
+		[1]=  {2, 4, 3, 5, 6},
+		[2]=  {2, 4, 3, 5, 6},
+		[3]=  {1, 4, 3, 5, 6},
+		[4]=  {1, 2, 4, 3, 5, 6},
+		[5]=  {1, 2, 4, 3, 5, 6},
+		[6]=  {2, 1, 4, 3, 5, 6},
+		[7]=  {1, 4, 3, 5, 6},
+		[8]=  {1, 4, 3, 5, 6},
+		[9]=  {1, 2, 4, 3, 5, 6},
+		[10]=  {2, 1, 4, 3, 5, 6},
+	},
+} or PallyPower.IsWrath and {
 	[1] = {
 		[1]=  {3},
 		[2]=  {3},
@@ -274,7 +553,1316 @@ PallyPower.Templates={
 	},
 }
 -- Layouts
-PallyPower.Layouts = {
+PallyPower.Layouts = PallyPower.IsVanilla and {
+	["Layout 1"] = { 	
+					c = {
+							[1] = {	
+									x = 0, y = 0, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[2] = {
+									x = 0, y = -1, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[3] = {
+									x = 0, y = -2, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[4] = {
+									x = 0, y = -3, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[5] = {
+									x = 0, y = -4, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[6] = {
+									x = 0, y = -5, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[7] = {
+									x = 0, y = -6, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[8] = {
+									x = 0, y = -7, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[9] = {
+									x = 0, y = -9,
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+		 		},
+				ab = {x = 0, y = 1},
+    			rf = {x = 0, y = 2},
+		 		au = {x = 0, y = 3},
+
+	},
+	["Layout 2"] = { 	
+					c = {
+							[1] = {	
+									x = 0, y = 0, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[2] = {
+									x = 0, y = -1, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[3] = {
+									x = 0, y = -2, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[4] = {
+									x = 0, y = -3, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[5] = {
+									x = 0, y = -4, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[6] = {
+									x = 0, y = -5, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[7] = {
+									x = 0, y = -6, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[8] = {
+									x = 0, y = -7, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[9] = {
+									x = 0, y = -9,
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+		 		},
+				ab = {x = 0, y = 1},
+    			rf = {x = 0, y = 2},
+		 		au = {x = 0, y = 3},
+	},	
+	["Layout 3"] = { 	
+					c = {
+							[1] = {	
+									x = 0, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[2] = {
+									x = 1, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[3] = {
+									x = 2, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[4] = {
+									x = 3, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[5] = {
+									x = 4, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[6] = {
+									x = 5, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[7] = {
+									x = 6, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[8] = {
+									x = 7, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[9] = {
+									x = 9, y = 0,
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+		 		},
+				ab = {x = -1, y = 0},
+    			rf = {x = -2, y = 0},
+		 		au = {x = -3, y = 0},
+	},
+	["Layout 4"] = { 	
+					c = {
+							[1] = {	
+									x = 0, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[2] = {
+									x = 1, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[3] = {
+									x = 2, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[4] = {
+									x = 3, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[5] = {
+									x = 4, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[6] = {
+									x = 5, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[7] = {
+									x = 6, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+									},
+							[8] = {
+									x = 7, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[9] = {
+									x = 9, y = 0,
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+		 		},
+				ab = {x = -1, y = 0},
+    			rf = {x = -2, y = 0},
+		 		au = {x = -3, y = 0},
+	},	
+	["Layout 5"] = { 	
+					c = {
+							[1] = {	
+									x = -0, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[2] = {
+									x = -1, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[3] = {
+									x = -2, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[4] = {
+									x = -3, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[5] = {
+									x = -4, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[6] = {
+									x = -5, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[7] = {
+									x = -6, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+									},
+							[8] = {
+									x = -7, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[9] = {
+									x = -9, y = 0,
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+		 		},
+				ab = {x = 3, y = 0},
+    			rf = {x = 2, y = 0},
+		 		au = {x = 1, y = 0},
+	},
+} or PallyPower.IsTBC and {
+	["Layout 1"] = { 	
+					c = {
+							[1] = {	
+									x = 0, y = 0, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[2] = {
+									x = 0, y = -1, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[3] = {
+									x = 0, y = -2, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[4] = {
+									x = 0, y = -3, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[5] = {
+									x = 0, y = -4, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[6] = {
+									x = 0, y = -5, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[7] = {
+									x = 0, y = -6, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[8] = {
+									x = 0, y = -7, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[9] = {
+									x = 0, y = -8, 
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+							[10] = {
+									x = 0, y = -9,
+									p = { 
+											[1] = {x = 1, y = 0},
+											[2] = {x = 1, y = -1},
+											[3] = {x = 1, y = -2},
+											[4] = {x = 1, y = -3},
+											[5] = {x = 1, y = -4},
+											[6] = {x = 1, y = -5},
+											[7] = {x = 1, y = -6},
+											[8] = {x = 1, y = -7},
+										},
+								},
+		 		},
+				ab = {x = 0, y = 1},
+    			rf = {x = 0, y = 2},
+		 		au = {x = 0, y = 3},
+
+	},
+	["Layout 2"] = { 	
+					c = {
+							[1] = {	
+									x = 0, y = 0, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[2] = {
+									x = 0, y = -1, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[3] = {
+									x = 0, y = -2, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[4] = {
+									x = 0, y = -3, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[5] = {
+									x = 0, y = -4, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[6] = {
+									x = 0, y = -5, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[7] = {
+									x = 0, y = -6, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[8] = {
+									x = 0, y = -7, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[9] = {
+									x = 0, y = -8, 
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+							[10] = {
+									x = 0, y = -9,
+									p = { 
+											[1] = {x = -1, y = 0},
+											[2] = {x = -1, y = -1},
+											[3] = {x = -1, y = -2},
+											[4] = {x = -1, y = -3},
+											[5] = {x = -1, y = -4},
+											[6] = {x = -1, y = -5},
+											[7] = {x = -1, y = -6},
+											[8] = {x = -1, y = -7},
+										},
+								},
+		 		},
+				ab = {x = 0, y = 1},
+    			rf = {x = 0, y = 2},
+		 		au = {x = 0, y = 3},
+	},	
+	["Layout 3"] = { 	
+					c = {
+							[1] = {	
+									x = 0, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[2] = {
+									x = 1, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[3] = {
+									x = 2, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[4] = {
+									x = 3, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[5] = {
+									x = 4, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[6] = {
+									x = 5, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[7] = {
+									x = 6, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[8] = {
+									x = 7, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[9] = {
+									x = 8, y = 0, 
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+							[10] = {
+									x = 9, y = 0,
+									p = { 
+											[1] = {x = 0, y = -1},
+											[2] = {x = 0, y = -2},
+											[3] = {x = 0, y = -3},
+											[4] = {x = 0, y = -4},
+											[5] = {x = 0, y = -5},
+											[6] = {x = 0, y = -6},
+											[7] = {x = 0, y = -7},
+											[8] = {x = 0, y = -8},
+										},
+								},
+		 		},
+				ab = {x = -1, y = 0},
+    			rf = {x = -2, y = 0},
+		 		au = {x = -3, y = 0},
+	},
+	["Layout 4"] = { 	
+					c = {
+							[1] = {	
+									x = 0, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[2] = {
+									x = 1, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[3] = {
+									x = 2, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[4] = {
+									x = 3, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[5] = {
+									x = 4, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[6] = {
+									x = 5, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[7] = {
+									x = 6, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+									},
+							[8] = {
+									x = 7, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[9] = {
+									x = 8, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[10] = {
+									x = 9, y = 0,
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+		 		},
+				ab = {x = -1, y = 0},
+    			rf = {x = -2, y = 0},
+		 		au = {x = -3, y = 0},
+	},	
+	["Layout 5"] = { 	
+					c = {
+							[1] = {	
+									x = -0, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[2] = {
+									x = -1, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[3] = {
+									x = -2, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[4] = {
+									x = -3, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[5] = {
+									x = -4, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[6] = {
+									x = -5, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[7] = {
+									x = -6, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+									},
+							[8] = {
+									x = -7, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[9] = {
+									x = -8, y = 0, 
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+							[10] = {
+									x = -9, y = 0,
+									p = { 
+											[1] = {x = 0, y = 1},
+											[2] = {x = 0, y = 2},
+											[3] = {x = 0, y = 3},
+											[4] = {x = 0, y = 4},
+											[5] = {x = 0, y = 5},
+											[6] = {x = 0, y = 6},
+											[7] = {x = 0, y = 7},
+											[8] = {x = 0, y = 8},
+										},
+								},
+		 		},
+				ab = {x = 3, y = 0},
+    			rf = {x = 2, y = 0},
+		 		au = {x = 1, y = 0},
+	},
+} or PallyPower.IsWrath and {
 	["Layout 1"] = { 	
 					c = {
 							[1] = {	
