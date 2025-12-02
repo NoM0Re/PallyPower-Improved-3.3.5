@@ -17,16 +17,16 @@ LastCast = {}
 PallyPower_Assignments = {}
 PallyPower_NormalAssignments = {}
 PallyPower_AuraAssignments = {}
-
-PallyPower_SavedPresets = {}
-
-AllPallys = {}
-SyncList = {}
-ChatControl = {}
-
-local initalized = false
-PP_Symbols = 0
-PP_IsPally = false
+-- Pre-create SavedVariables flavor
+PallyPower_Assignments["Vanilla"] = {}
+PallyPower_Assignments["TBC"] = {}
+PallyPower_Assignments["Wrath"] = {}
+PallyPower_NormalAssignments["Vanilla"] = {}
+PallyPower_NormalAssignments["TBC"] = {}
+PallyPower_NormalAssignments["Wrath"] = {}
+PallyPower_AuraAssignments["Vanilla"] = {}
+PallyPower_AuraAssignments["TBC"] = {}
+PallyPower_AuraAssignments["Wrath"] = {}
 
 local flavor
 --if then
@@ -41,6 +41,16 @@ PallyPower.IsVanilla = flavor == "Vanilla"
 PallyPower.IsTBC = flavor == "TBC"
 PallyPower.IsVanillaOrTBC = flavor == "Vanilla" or flavor == "TBC"
 PallyPower.IsWrath = flavor == "Wrath"
+
+PallyPower_SavedPresets = {}
+
+AllPallys = {}
+SyncList = {}
+ChatControl = {}
+
+local initalized = false
+PP_Symbols = 0
+PP_IsPally = false
 
 -- unit tables
 local party_units = {}

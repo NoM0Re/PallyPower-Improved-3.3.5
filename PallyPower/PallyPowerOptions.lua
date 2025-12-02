@@ -4,7 +4,7 @@ PallyPower.options = {
 	type = "group",
 	args = {
 		config = {
-		        name = L["BAS"],
+		    name = L["BAS"],
 			type = "execute",
 			desc = L["BAS_DESC"],
 			func = function() PallyPowerConfig_Toggle() end,
@@ -40,7 +40,7 @@ PallyPower.options = {
 			type = "execute",
 			desc = L["RESET_DESC"],
 			func = function() PallyPower:Reset() end,			
-			},
+		},
 		smartbuff = {
 			name = L["SBUFF"],
 			type = "toggle",

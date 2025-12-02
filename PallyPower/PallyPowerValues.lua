@@ -77,7 +77,7 @@ PALLYPOWER_DEFAULT_VALUES = {
 	aura = 1,
 	disabled = false,
 	layout = "Layout 1",
-	};
+}
 
 PallyPower_Credits1 = "Pally Power - by Aznamir";
 --PallyPower_Credits2 = "Version "..PallyPower_Version;
