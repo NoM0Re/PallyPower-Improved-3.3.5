@@ -31,7 +31,7 @@ PallyPower_AuraAssignments["Wrath"] = {}
 local flavor
 --if then
 --	flavor = "Vanilla"
-if ((GetRealmName() == "Onyxia" or GetRealmName() == "Blackrock [PvP only]") and GetExpansionLevel() == 1) or GetRealmName() == "Kezan" or GetRealmName() == "Menethil" or GetRealmName() == "Gurubashi" then
+if (time() < time{year=2025, month=12, day=22, hour=9, min=30} and (GetRealmName() == "Onyxia" or GetRealmName() == "Blackrock [PvP only]") and GetExpansionLevel() == 1) or GetRealmName() == "Kezan" or GetRealmName() == "Menethil" or GetRealmName() == "Gurubashi" then
 	flavor = "TBC"
 else
 	flavor = "Wrath"
