@@ -41,7 +41,18 @@ This add-on provides an interactive and easy to use interface that allows you to
 - **In-Combat Class Buff Button**: Added functionality that enables players to click the class buff buttons during combat.<br/>
 A designated player for each class will be determined before combat, if the player/s are in range and alive they will receive the buff/s while combat now, otherwise you'll still need to use the Player Buttons.<br/>
 
+**Dynamic Support for Vanilla, TBC and WOTLK:**<br/>
+
+- **Realm Based Support**: The AddOn will work with Vanilla and TBC servers using the 3.3.5a client. If the server you are playing on is not supported then [open an issue](https://github.com/NoM0Re/PallyPower-Improved-3.3.5/issues) stating the server, realm and the expansion it's based on.
+
 # **Installation:**
-1. [Download here](https://github.com/NoM0Re/PallyPower-Improved-3.3.5/archive/refs/heads/main.zip)<br/><br/>
-2. Unzip and take folder **PallyPower** (not the PallyPower-Improved-3.3.5-main)<br/><br/>
-3. Put it in your WoW/Interface/Addons folder<br/><br/><br/>
+**IMPORTANT: If you have used a different PallyPower before or are updating this version from v3.2.20 to v3.2.21 and have profiles that you wish to save, backup your WTF folder. We must do a clean install, otherwise the AddOn will not work! You can perform a clean installation with the following steps:**
+1. In your AddOns folder *(Interface/AddOns)* select the PallyPower folder and **delete** it.
+2. In your SavedVariables folder *(WTF/Account/[AccountName]/SavedVariables)* select every PallyPower file *(everything that starts with PallyPower)* and **delete** them. **THIS STEP WILL REMOVE YOUR PALLYPOWER CONFIGURATIONS/PROFILES!**
+
+*If you are unsure whether you have a clean install then do the above steps just to check!*
+
+**Now we can do the regular installation:**
+1. [Download here](https://github.com/NoM0Re/PallyPower-Improved-3.3.5/archive/refs/heads/main.zip)
+2. Unzip and take folder **PallyPower** (not the PallyPower-Improved-3.3.5-main).
+3. Put it in your WoW/Interface/AddOns folder.<br/>

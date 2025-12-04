@@ -4,7 +4,7 @@ PallyPower.options = {
 	type = "group",
 	args = {
 		config = {
-		        name = L["BAS"],
+		    name = L["BAS"],
 			type = "execute",
 			desc = L["BAS_DESC"],
 			func = function() PallyPowerConfig_Toggle() end,
@@ -40,7 +40,7 @@ PallyPower.options = {
 			type = "execute",
 			desc = L["RESET_DESC"],
 			func = function() PallyPower:Reset() end,			
-			},
+		},
 		smartbuff = {
 			name = L["SBUFF"],
 			type = "toggle",
@@ -117,7 +117,7 @@ PallyPower.options = {
 					type = "range",
 					desc = L["DISPCOL_DESC"],
 					min = 1,
-					max = 11,
+					max = (PallyPower.IsVanilla and 9) or (PallyPower.IsTBC and 10) or 11,
 					step = 1,
 					get = "displayColumns",
 					set = "displayColumns",	
@@ -127,7 +127,7 @@ PallyPower.options = {
 					type = "range",
 					desc = L["DISPROWS_DESC"],
 					min = 1,
-					max = 11,
+					max = (PallyPower.IsVanilla and 9) or (PallyPower.IsTBC and 10) or 11,
 					step = 1,
 					get = "displayRows",
 					set = "displayRows",	
@@ -160,10 +160,11 @@ PallyPower.options = {
 					get = "displayAlignClassButtons",
 					set = "displayAlignClassButtons",
 					validate = {
-							"1", 
-							"3", 
-							"7", 
-							"9"},
+							"Top Right", 
+							"Top Left", 
+							"Bottom Left", 
+							"Bottom Right"},
+					disabled = function() return PallyPower.opt.layout ~= "Standard" end,
 				},
 				palign = {
 					name = L["DISPPL"],
