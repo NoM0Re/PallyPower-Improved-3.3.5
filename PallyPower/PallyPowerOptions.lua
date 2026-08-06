@@ -180,6 +180,7 @@ PallyPower.options = {
 							"compact-left", 
 							"compact-right",
 					},
+					disabled = function() return PallyPower.opt.layout ~= "Standard" end,
 				},
 				pbuttons = {
 					name = L["HIDEPB"],
