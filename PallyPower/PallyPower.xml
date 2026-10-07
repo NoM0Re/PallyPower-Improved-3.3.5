@@ -86,7 +86,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		  </PreClick>
 		  <OnMouseWheel>
 			  if InCombatLockdown() then return false end
-			  if (arg1==-1) then  --mouse wheel down
+			  if (delta==-1) then  --mouse wheel down
 				  PallyPower:PerformCycle(PallyPower.player, self:GetAttribute("classID"), true);
 			  else
 				  PallyPower:PerformCycleBackwards(PallyPower.player, self:GetAttribute("classID"), true);
@@ -243,7 +243,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 	  </Layers>
 	  <Scripts>
 		  <OnMouseWheel>
-			  if (arg1==-1) then
+			  if (delta==-1) then
 				  PallyPower:SealCycle()
 			  else
 				  PallyPower:SealCycleBackward()
@@ -310,7 +310,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
     <Scripts>
       <OnMouseWheel>
         if InCombatLockdown() then return false end
-        if (arg1==-1) then  --mouse wheel down
+        if (delta==-1) then  --mouse wheel down
         PallyPower:PerformAuraCycle(PallyPower.player, true);
         else
         PallyPower:PerformAuraCycleBackwards(PallyPower.player, true);
@@ -403,7 +403,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		  <OnMouseWheel>
 			  if InCombatLockdown() then return false end
 			  local pname = getglobal(self:GetName() .. "Name"):GetText()
-			  PallyPower:PerformPlayerCycle(arg1, pname, self:GetAttribute("classID"));
+			  PallyPower:PerformPlayerCycle(delta, pname, self:GetAttribute("classID"));
 			  PallyPower:ButtonsUpdate();
 		  </OnMouseWheel> 
 	  </Scripts>
@@ -426,7 +426,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 					  self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 				  </OnLoad>
 				  <OnClick>
-					  PallyPower:ClickHandle(self, arg1);
+					  PallyPower:ClickHandle(self, button);
 				  </OnClick>
 				  <OnDragStart>
 					  PallyPower:DragStart();
@@ -501,7 +501,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
         self:RegisterForClicks("LeftButtonUp","RightButtonUp");
       </OnLoad>
       <OnClick>
-        --PallyPowerClassButton_OnClick(this,arg1);
+        --PallyPowerClassButton_OnClick(this,button);
       </OnClick>
     </Scripts>
   </Button>
@@ -551,10 +551,10 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 	  PlayerButton_DragStop(self)
   </OnDragStop>
   <OnClick>
-	  PallyPowerPlayerButton_OnClick(self, arg1);
+	  PallyPowerPlayerButton_OnClick(self, button);
   </OnClick>
   <OnMouseWheel>
-	  PallyPowerPlayerButton_OnMouseWheel(self, arg1);
+	  PallyPowerPlayerButton_OnMouseWheel(self, delta);
   </OnMouseWheel> 
   </Scripts>
   </Button>
@@ -690,10 +690,10 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
         self:EnableMouseWheel(1);
       </OnLoad>
       <OnClick>
-        PallyPowerGridButton_OnClick(self,arg1);
+        PallyPowerGridButton_OnClick(self,button);
       </OnClick>
       <OnMouseWheel>
-        PallyPowerGridButton_OnMouseWheel(self, arg1);
+        PallyPowerGridButton_OnMouseWheel(self, delta);
       </OnMouseWheel>
     </Scripts>
   </Button>
@@ -737,7 +737,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
         self:RegisterForClicks("LeftButtonUp","RightButtonUp");
       </OnLoad>
       <OnClick>
-        --PallyPowerAuraHeader_OnClick(this,arg1);
+        --PallyPowerAuraHeader_OnClick(this,button);
       </OnClick>
     </Scripts>
   </Button>
@@ -780,10 +780,10 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
         self:EnableMouseWheel(1);
       </OnLoad>
       <OnClick>
-        PallyPowerAuraButton_OnClick(self, arg1);
+        PallyPowerAuraButton_OnClick(self, button);
       </OnClick>
       <OnMouseWheel>
-        PallyPowerAuraButton_OnMouseWheel(self, arg1);
+        PallyPowerAuraButton_OnMouseWheel(self, delta);
       </OnMouseWheel>
     </Scripts>
   </Button>
@@ -919,10 +919,10 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
         self:EnableMouseWheel(1);
       </OnLoad>
       <OnClick>
-        PallyPowerAuraButton_OnClick(self,arg1);
+        PallyPowerAuraButton_OnClick(self,button);
       </OnClick>
       <OnMouseWheel>
-        PallyPowerAuraButton_OnMouseWheel(self, arg1);
+        PallyPowerAuraButton_OnMouseWheel(self, delta);
       </OnMouseWheel>
     </Scripts>
   </Button>
@@ -1448,7 +1448,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 					  HideUIPanel(GameTooltip);
 				  </OnLeave> 
           			  <OnMouseDown>
-					  PallyPowerConfigFrame_MouseDown(arg1)
+					  PallyPowerConfigFrame_MouseDown(button)
 				  </OnMouseDown>
 				  <OnMouseUp>
 					  PallyPowerConfigFrame_MouseUp()
@@ -1744,7 +1744,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			  PallyPowerConfigFrame_MouseUp()
 		  </OnMouseUp> 
 		  <OnMouseDown>
-			  PallyPowerConfigFrame_MouseDown(arg1)
+			  PallyPowerConfigFrame_MouseDown(button)
 		  </OnMouseDown> 
 		  <OnHide>
 			  if ( self.isMoving ) then 

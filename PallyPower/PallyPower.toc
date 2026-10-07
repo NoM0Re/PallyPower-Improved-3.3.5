@@ -9,6 +9,7 @@
 ## Dependencies:
 ## OptionalDeps: Ace2, RosterLib, DewdropLib
 ## X-Category: Paladin
+## X-Flavor: Wrath
 ## X-Embeds: Ace2, RosterLib, DewdropLib
 ## X-RelSite-Curse: 3738
 ## SavedVariables: PallyPowerDB, PallyPower_Assignments, PallyPower_NormalAssignments, PallyPower_AuraAssignments, PallyPower_SavedPresets
