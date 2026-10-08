@@ -29,6 +29,7 @@ locale\frFR.lua
 locale\koKR.lua
 locale\esES.lua
 locale\esMX.lua
+locale\ptBR.lua
 locale\zhCN.lua
 locale\zhTW.lua
 

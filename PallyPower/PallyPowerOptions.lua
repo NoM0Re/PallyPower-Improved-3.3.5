@@ -1,5 +1,10 @@
 local L = AceLibrary("AceLocale-2.2"):new("PallyPower");
 
+local tankBlessings = {}
+for id = 1, PALLYPOWER_MAXBLESSINGS do
+	if PallyPower.Spells[id] then table.insert(tankBlessings, PallyPower.Spells[id]) end
+end
+
 PallyPower.options = {
 	type = "group",
 	args = {
@@ -75,6 +80,50 @@ PallyPower.options = {
 			},
 		},
 
+		tanks = {
+			name = L["TANKS"], type = "group", desc = L["TANKS_DESC"],
+			disabled = function() return InCombatLockdown() end,
+			args = {
+				protection = {
+					name = L["TANK_PROTECTION"], type = "toggle", desc = L["TANK_PROTECTION_DESC"],
+					disabled = function() return PallyPower.IsWrath end,
+					get = function() return PallyPower.opt.tankProtection end,
+					set = function(value) PallyPower.opt.tankProtection = value; PallyPower:UpdateRoster() end,
+				},
+				mainTank = {
+					name = L["MAIN_TANK_AUTO"], type = "toggle", desc = L["MAIN_TANK_AUTO_DESC"],
+					get = function() return PallyPower.opt.mainTank end,
+					set = function(value) PallyPower.opt.mainTank = value; PallyPower:UpdateRoster() end,
+				},
+				mainTankBlessing = {
+					name = L["MAIN_TANK_BLESSING"], type = "text", desc = L["TANK_BLESSING_DESC"], validate = tankBlessings,
+					disabled = function() return not PallyPower.opt.mainTank end,
+					get = function() return (GetSpellInfo(PallyPower.opt.mainTankBlessing)) end,
+					set = function(value)
+						for id, spell in pairs(PallyPower.Spells) do
+							if spell == value then PallyPower.opt.mainTankBlessing = PallyPower.BlessingSpellIDs[id]; break end
+						end
+						PallyPower:UpdateRoster()
+					end,
+				},
+				mainAssist = {
+					name = L["MAIN_ASSIST_AUTO"], type = "toggle", desc = L["MAIN_ASSIST_AUTO_DESC"],
+					get = function() return PallyPower.opt.mainAssist end,
+					set = function(value) PallyPower.opt.mainAssist = value; PallyPower:UpdateRoster() end,
+				},
+				mainAssistBlessing = {
+					name = L["MAIN_ASSIST_BLESSING"], type = "text", desc = L["TANK_BLESSING_DESC"], validate = tankBlessings,
+					disabled = function() return not PallyPower.opt.mainAssist end,
+					get = function() return (GetSpellInfo(PallyPower.opt.mainAssistBlessing)) end,
+					set = function(value)
+						for id, spell in pairs(PallyPower.Spells) do
+							if spell == value then PallyPower.opt.mainAssistBlessing = PallyPower.BlessingSpellIDs[id]; break end
+						end
+						PallyPower:UpdateRoster()
+					end,
+				},
+			},
+		},
 		display = {
 			name = L["DISP"],
 			type = "group",
@@ -93,6 +142,9 @@ PallyPower.options = {
 						"Layout 3",
 						"Layout 4",
 						"Layout 5",
+						"Layout 6",
+						"Layout 7",
+						"Layout 8",
 					},
 				},
 				skin = {
@@ -103,6 +155,9 @@ PallyPower.options = {
 					set = "skinButtons",
 					validate = {
 							"None",
+							"Blizzard Dialog",
+							"Blizzard Parchment",
+							"Solid",
 							"Banto",
 							"BantoBarReverse",
 							"Glaze",
@@ -111,6 +166,12 @@ PallyPower.options = {
 							"oCB",
 							"Smooth",
 					},
+				},
+				border = {
+					name = L["BORDER"], type = "text", desc = L["BORDER_DESC"],
+					get = "borderButtons", set = "borderButtons",
+					validate = {"Blizzard Tooltip", "Blizzard Dialog", "Blizzard Dialog Gold", "Blizzard Chat Bubble", "Blizzard Party"},
+					disabled = function() return not PallyPower.opt.display.edges end,
 				},
 				columns = {
 					name = L["DISPCOL"],
@@ -407,6 +468,12 @@ function PallyPower:skinButtons(value)
     	self.opt.skin = value
 		PallyPower:ApplySkin(value)
 	end
+end
+
+function PallyPower:borderButtons(value)
+	if not value then return self.opt.border end
+	self.opt.border = value
+	self:ApplySkin(self.opt.skin)
 end
 
 function PallyPower:ToggleEdges(value)

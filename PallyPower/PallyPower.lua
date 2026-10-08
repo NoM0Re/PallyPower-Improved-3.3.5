@@ -128,6 +128,10 @@ function PallyPower:OnProfileEnable()
 	--PallyPower:SealAssign(self.opt.seal)
 end
 
+function PallyPower:OnProfileDisable()
+	self:UpdateTankAssignments(true)
+end
+
 function PallyPower:OnEnable()
 	-- events
 	self.opt.disable = false
@@ -165,6 +169,7 @@ end
 function PallyPower:OnDisable()
 	-- events
 	self.opt.disable = true
+	self:UpdateTankAssignments(true)
 	for i = 1, PALLYPOWER_MAXCLASSES do
 		classlist[i] = 0
 		classes[i] = {}
@@ -1183,7 +1188,10 @@ function PallyPower:ParseMessage(sender, msg)
 	if sfind(msg, "^SELF") then
 		local numbers, assign = msg:match("^SELF ([0-9n]+)@([0-9n]*)$")
 		if not numbers then return end
-		PallyPower_NormalAssignments[flavor][sender] = {}
+		-- Individual blessings are sent separately and must survive SELF refreshes.
+		if not PallyPower_NormalAssignments[flavor][sender] then
+			PallyPower_NormalAssignments[flavor][sender] = {}
+		end
 		PallyPower_Assignments[flavor][sender] = {}
 		AllPallys[sender] = {}
 
@@ -1380,6 +1388,7 @@ function PallyPower:UpdateRoster()
 					local n = select(3, unitid:find("(%d+)"))
 					--PallyPower:Print("n="..n)
 					tmp.rank, tmp.subgroup = select(2, GetRaidRosterInfo(n))
+					if not isPet then tmp.role = select(10, GetRaidRosterInfo(n)) end
 				else
 					tmp.rank = UnitIsPartyLeader(unitid) and 2 or 0
 					tmp.subgroup = 1
@@ -1601,6 +1610,7 @@ end
 function PallyPower:UpdateLayout()
 	self:Debug("Update Layout -- begin")
 	if InCombatLockdown() then return false end
+	self:UpdateTankAssignments()
 
 	PallyPowerFrame:SetScale(self.opt.buffscale)
 
@@ -1823,8 +1833,8 @@ function PallyPower:UpdateLayout()
 
 	local cbNum = 0
 	for classIndex = 1, PALLYPOWER_MAXCLASSES do
-	local _, gspellID = PallyPower:GetSpellID(classIndex)
-        if (classlist[classIndex] and classlist[classIndex] ~= 0 and (gspellID ~= 0 or PallyPower:NormalBlessingCount(classIndex) > 0)) then
+	local spellID, gspellID = PallyPower:GetSpellID(classIndex)
+        if (classlist[classIndex] and classlist[classIndex] ~= 0 and (spellID ~= 0 or gspellID ~= 0 or PallyPower:NormalBlessingCount(classIndex) > 0)) then
 			cbNum = cbNum + 1
 			--self:Print("cbNum="..cbNum)
 			local cButton = self.classButtons[cbNum]
@@ -2370,6 +2380,10 @@ function PallyPower:UpdatePButton(button, baseName, classID, playerID)
 end
 
 function PallyPower:ButtonsUpdate()
+	if self:UpdateTankAssignments() then
+		self:UpdateLayout()
+		return
+	end
 	local minClassExpire, minClassDuration, minSpecialExpire, minSpecialDuration, sumnhave, sumnneed, sumnspecial = 9999, 9999, 9999, 9999, 0, 0, 0
 	for cbNum = 1, PALLYPOWER_MAXCLASSES do -- scan classes and if populated then assign textures, etc
 		local cButton = self.classButtons[cbNum]
@@ -2522,7 +2536,67 @@ function PallyPower:GetSpellID(classID, playerName)
 	if normal == 0 then
 		normal = greater
 	end
+	-- Greater Salvation affects the whole class, including its tanks.
+	if self.IsVanillaOrTBC and self.opt.tankProtection then
+		for _, unit in ipairs(classes[classID] or {}) do
+			if unit.role == "MAINTANK" or (unit.role == "MAINASSIST" and self.opt.mainAssist) then
+				if greater == 4 then greater = 0 end
+				if unit.name == playerName and normal == 4 then normal = 0 end
+			end
+		end
+	end
 	return normal, greater
+end
+
+function PallyPower:UpdateTankAssignments(clear)
+	if not PP_IsPally or not self.opt or InCombatLockdown() then return false end
+	local saved = self.opt.autoTankAssignments
+	if not saved then saved = {}; self.opt.autoTankAssignments = saved end
+	if not saved[flavor] then saved[flavor] = {} end
+	if not saved[flavor][self.player] then saved[flavor][self.player] = {} end
+	local assigned = saved[flavor][self.player]
+	local desired = {}
+	local greater = PallyPower_Assignments[flavor][self.player] or {}
+	local normal = PallyPower_NormalAssignments[flavor][self.player] or {}
+	if not clear and not self.opt.disable then
+		for class, units in pairs(classes) do
+			for _, unit in ipairs(units) do
+				local selected, blessing
+				if unit.role == "MAINTANK" and self.opt.mainTank then selected = self.opt.mainTankBlessing end
+				if unit.role == "MAINASSIST" and self.opt.mainAssist then selected = self.opt.mainAssistBlessing end
+				for id, spellID in ipairs(self.BlessingSpellIDs) do
+					if spellID == selected then blessing = id; break end
+				end
+				if blessing and greater[class] and greater[class] > 0 and blessing ~= greater[class]
+					and self:CanBuff(self.player, blessing)
+					and not (self.IsVanillaOrTBC and self.opt.tankProtection and blessing == 4) then
+					desired[unit.name] = { class = class, blessing = blessing }
+				end
+			end
+		end
+	end
+	local changed = false
+	for name, previous in pairs(assigned) do
+		local wanted = desired[name]
+		if not wanted or wanted.class ~= previous.class or wanted.blessing ~= previous.blessing then
+			if normal[previous.class] and normal[previous.class][name] == previous.blessing then
+				SetNormalBlessings(self.player, previous.class, name, previous.previous)
+				changed = true
+			end
+			assigned[name] = nil
+		end
+	end
+	for name, wanted in pairs(desired) do
+		local current = normal[wanted.class] and normal[wanted.class][name] or 0
+		if current ~= wanted.blessing then
+			if not assigned[name] then
+				assigned[name] = { class = wanted.class, blessing = wanted.blessing, previous = current }
+			end
+			SetNormalBlessings(self.player, wanted.class, name, wanted.blessing)
+			changed = true
+		end
+	end
+	return changed
 end
 
 function PallyPower:GetUnit(classID, playerID)
@@ -2639,6 +2713,7 @@ end
 -- Start dragging if not locked
 function PallyPower:DragStart()
 	if not InCombatLockdown() and not self.opt.display.frameLocked then
+		_G["PallyPowerFrame"]:SetClampedToScreen(true)
 		_G["PallyPowerFrame"]:StartMoving()
 	end
 end
@@ -2801,7 +2876,7 @@ end
 function PallyPower:ApplySkin(skinname)
 	local edge
 	if self.opt.display.edges then
-		edge = PallyPower.Edge
+		edge = PallyPower.Borders[self.opt.border] or PallyPower.Edge
 	else
 		edge = nil
 	end

@@ -21,6 +21,16 @@ PALLYPOWER_DEFAULT_VALUES = {
 	rfbuff = false,
 	auras = false,
 	extras = false,
+	hideClassButtons = true,
+	classColor = false,
+	nameClassColor = false,
+	flashBuffAutoButtons = true,
+	tankProtection = true,
+	mainTank = false,
+	mainAssist = false,
+	mainTankBlessing = 20911,
+	mainAssistBlessing = 20911,
+	autoTankAssignments = {},
 	autobuff = {
 		autokey1 = ",",
 		autokey2 = "CTRL-,",
@@ -40,10 +50,6 @@ PALLYPOWER_DEFAULT_VALUES = {
         frameLocked = false,
 		hideDragHandle = false,
 		hidePlayerButtons = false,
-		hideClassButtons = true,
-		classColor = false,
-		nameClassColor = false,
-		flashBuffAutoButtons = true,
 		PlainButtons = false,
 		HideKeyText = false,
 		HideCount = false,
@@ -54,6 +60,7 @@ PALLYPOWER_DEFAULT_VALUES = {
 	ShowInParty = true,
 	ShowWhenSingle = true,
 	skin = "Smooth",
+	border = "Blizzard Tooltip",
 	cBuffNeedAll     = {r = 1.0, g = 0.0, b = 0.0, t = 0.5},
  	cBuffNeedSome    = {r = 1.0, g = 1.0, b = 0.5, t = 0.5},
  	cBuffNeedSpecial = {r = 0.0, g = 0.0, b = 1.0, t = 0.5},
@@ -264,6 +271,11 @@ PALLYPOWER_ASSIGNMENTS1 = L["PP_RAS1"];
 PALLYPOWER_ASSIGNMENTS2 = L["PP_RAS2"];
 
 -- get translations directly
+-- Store role options by spell ID so switching expansions keeps the same blessing.
+PallyPower.BlessingSpellIDs = PallyPower.IsVanillaOrTBC
+	and {19742, 19740, 20217, 1038, 19977, 20911}
+	or {19742, 19740, 20217, 20911}
+
 PallyPower.Spells = PallyPower.IsVanillaOrTBC and {
 	[0] = "",
 	[1] = GetSpellInfo(19742),	--BS["Blessing of Wisdom"],
@@ -302,6 +314,9 @@ PallyPower.HLSpell = GetSpellInfo(635)
 
 PallyPower.Skins = {
     ["None"] = "Interface\\Tooltips\\UI-Tooltip-Background",
+	["Blizzard Dialog"] = "Interface\\DialogFrame\\UI-DialogBox-Background",
+	["Blizzard Parchment"] = "Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal",
+	["Solid"] = "Interface\\Buttons\\WHITE8X8",
 	["Banto"] = "Interface\\AddOns\\PallyPower\\Skins\\Banto",
 	["BantoBarReverse"] = "Interface\\AddOns\\PallyPower\\Skins\\BantoBarReverse",
 	["Glaze"] = "Interface\\AddOns\\PallyPower\\Skins\\Glaze",
@@ -312,6 +327,13 @@ PallyPower.Skins = {
 };
 
 PallyPower.Edge = 'Interface\\Tooltips\\UI-Tooltip-Border'
+PallyPower.Borders = {
+	["Blizzard Tooltip"] = PallyPower.Edge,
+	["Blizzard Dialog"] = "Interface\\DialogFrame\\UI-DialogBox-Border",
+	["Blizzard Dialog Gold"] = "Interface\\DialogFrame\\UI-DialogBox-Gold-Border",
+	["Blizzard Chat Bubble"] = "Interface\\Tooltips\\ChatBubble-Backdrop",
+	["Blizzard Party"] = "Interface\\CHARACTERFRAME\\UI-Party-Border",
+}
 --PallyPower.Edge = ''	
 
 PallyPower.Seals = {
@@ -2615,3 +2637,23 @@ PallyPower.Layouts = PallyPower.IsVanilla and {
 		 		au = {x = 1, y = 0},
 	},
  }
+
+-- Keep Layout 5 unchanged and add the other three horizontal directions.
+for number = 6, 8 do
+	local source = PallyPower.Layouts["Layout 5"]
+	local mirrorX = number >= 7 and -1 or 1
+	local mirrorY = number == 7 and 1 or -1
+	local layout = { c = {} }
+	for _, name in ipairs({"ab", "rf", "au"}) do
+		layout[name] = { x = source[name].x * mirrorX, y = source[name].y * mirrorY }
+	end
+	for class = 1, PALLYPOWER_MAXCLASSES do
+		local position = source.c[class]
+		layout.c[class] = { x = position.x * mirrorX, y = position.y * mirrorY, p = {} }
+		for player = 1, PALLYPOWER_MAXPERCLASS do
+			local target = position.p[player]
+			layout.c[class].p[player] = { x = target.x * mirrorX, y = target.y * mirrorY }
+		end
+	end
+	PallyPower.Layouts["Layout " .. number] = layout
+end
